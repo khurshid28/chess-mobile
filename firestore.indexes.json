@@ -1,0 +1,59 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "games",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "participants",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "completedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "matchmaking_queue",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "timeControl",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "matchedGameId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "elo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "queuedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+  "collectionGroup": "games",
+  "queryScope": "COLLECTION",
+  "fields": [
+    {
+      "fieldPath": "status",
+      "order": "ASCENDING"
+    },
+    {
+      "fieldPath": "maxElo",
+      "order": "DESCENDING"
+    }
+  ]
+}
+  ],
+  "fieldOverrides": []
+}

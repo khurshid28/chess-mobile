@@ -1,0 +1,24 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Rules for user profile images
+    // We match any file in the directory and validate the name in the condition
+    match /user_profiles/{fileName} {
+      // Allow anyone to view profile pictures
+      allow read;
+
+      // Allow the owner to upload/update/delete their picture
+      allow write: if request.auth != null && 
+                       // Ensure the filename exactly matches the UID + ".jpg" (as used in FirestoreService.dart)
+                       fileName == request.auth.uid + ".jpg" &&
+                       // Enforcing a size limit (e.g., 2MB)
+                       request.resource.size < 2 * 1024 * 1024;
+    }
+
+    // Default deny for anything else not explicitly matched above
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

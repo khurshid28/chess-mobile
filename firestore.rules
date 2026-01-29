@@ -1,0 +1,83 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helper Functions ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Helper to check if the user is a participant in the game
+    // We must ensure resource.data exists before accessing properties
+    function isParticipant() {
+       return isSignedIn() && resource.data != null && request.auth.uid in resource.data.participants;
+    }
+
+    // --- Time Sync Collection ---
+    match /timeSync/syncCheck {
+      allow read;
+      // Allow writes, but ONLY the timestamp field, using the server's time.
+      allow write: if request.resource.data.keys().hasOnly(['timestamp']) &&
+                       request.resource.data.timestamp == request.time;
+    }
+
+    // --- Users Collection ---
+    match /users/{userId} {
+      // Allow authenticated users to read profiles.
+      allow read: if isSignedIn();
+      // Allow creation if the user owns the document ID AND the data is valid.
+      allow create: if isOwner(userId) && isValidNewUser(request.resource.data);
+      // Allow updates if the user owns the document AND is only updating allowed fields.
+      allow update: if isOwner(userId) && isValidUserUpdate();
+    }
+
+    function isValidNewUser(data) {
+      return data.keys().hasAll(['email', 'displayName', 'elo', 'stats']) &&
+             data.displayName is string && data.displayName.size() > 0 &&
+             // CRITICAL: Ensure ELO and stats start at defaults.
+             data.elo == 1200 &&
+             data.stats.wins == 0 &&
+             data.stats.losses == 0 &&
+             data.stats.draws == 0;
+    }
+
+    function isValidUserUpdate() {
+      let allowedFields = ['preferences', 'profileImage', 'displayName', 'countryCode'];
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowedFields);
+    }
+
+    // --- Matchmaking Queue Collection ---
+    match /matchmaking_queue/{userId} {
+      // Allow the user to read their own queue entry
+      allow read: if isOwner(userId);
+      
+      // Allow the client to delete their own entry
+      allow delete: if isOwner(userId);
+
+      // Deny direct creations/updates from the client. Handled by Cloud Functions.
+      allow create, update: if false;
+    }
+
+    // --- Games Collection ---
+    match /games/{gameId} {
+      // Allow reading (get and list) if:
+      // 1. The user is signed in AND the game is 'inprogress' (for spectating/live list)
+      // 2. The user is signed in AND the game is 'completed' (for viewing history/results)
+      // 3. The user is a participant (covers 'waiting' status)
+      // We must ensure resource.data is not null before accessing status.
+      allow read: if resource.data != null && (
+                     (isSignedIn() && resource.data.status == 'inprogress') || 
+                     (isSignedIn() && resource.data.status == 'completed') ||
+                     isParticipant()
+                  );
+
+      // Deny all direct writes from the client. Handled by Cloud Functions.
+      allow write: if false;
+    }
+  }
+}

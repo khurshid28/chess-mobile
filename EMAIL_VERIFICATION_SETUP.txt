@@ -1,0 +1,107 @@
+EMAIL VERIFICATION SOZLASH YO'RIQNOMASI
+
+===============================================
+MUAMMO
+===============================================
+Gmail va boshqa email provayderlariga tasdiqlash emaili kelmasligi.
+
+===============================================
+YECHIM
+===============================================
+
+1. FIREBASE CONSOLE SOZLAMALARI
+--------------------------------
+
+1. Firebase Console ga kiring: https://console.firebase.google.com
+2. Loyihangizni tanlang
+3. Authentication bo'limiga o'ting
+4. Settings -> Templates ga o'ting
+5. Email address verification template'ni tanlang
+
+Email template sozlamalari:
+- From email: Tasdiqlangan emaildan jo'nating
+- Sender name: Ilovangiz nomi
+- Subject: Tashrif buyurish linkini sozlang
+- Email body: O'zbek tilidagi matn qo'shish mumkin
+
+2. EMAIL PROVAYDERINI SOZLASH (Muhim!)
+---------------------------------------
+
+Firebase Console -> Authentication -> Templates -> SMTP settings:
+
+Odatiy Firebase email provayderining muammolari:
+- Ba'zi email provayderlar (ayniqsa Gmail) Firebase'ning odatiy noreply@*.firebaseapp.com manzillarini spam deb hisoblaydi
+- Emaillar spam/junk folderga tushishi mumkin
+
+Yechim:
+1. O'zingizning domain emailingizdan foydalaning
+2. Yoki SendGrid, Amazon SES kabi professional SMTP xizmatlaridan foydalaning
+
+3. TEST QILISH
+--------------
+
+1. Yangi hisob yaratib ko'ring
+2. Email kelmasangiz:
+   - SPAM/JUNK papkasini tekshiring
+   - Firebase Console -> Authentication -> Users da email verified holatini tekshiring
+   - Debug consoleda log'larni tekshiring
+
+4. DEBUG LOG'LARNI TEKSHIRISH
+------------------------------
+
+Kod o'zgartirildi va quyidagi log'lar qo'shildi:
+- debugPrint("Verification email sent to: $email");
+- debugPrint("Failed to send verification email: $e");
+
+VS Code Debug Console yoki Android Studio Logcat'da bu xabarlarni tekshiring.
+
+5. GMAIL UCHUN MAXSUS MASLAHATLAR
+----------------------------------
+
+Gmail emailni spam deb belgilashi mumkin:
+- SPAM papkasini tekshiring
+- Birinchi emaildan keyin 5-10 daqiqa kuting
+- "Resend Email" tugmasini bir necha marta bosmang (spam sifatida belgilanishi mumkin)
+- Gmail Settings -> Filters da Firebase emaillarini whitelist qiling
+
+6. MUQOBIL YECHIM: CUSTOM EMAIL PROVIDER
+-----------------------------------------
+
+Agar muammo davom etsa, SendGrid yoki Amazon SES'dan foydalaning:
+Custom SMTP sozlamalari Firebase Console'da
+Settings -> Templates -> SMTP Configuration
+
+7. TEST REJIMIDA ISHLASH
+-------------------------
+
+Development davrida emailsiz ishlash uchun:
+Faqat development uchun - production'da o'chiring!
+FirebaseAuth.instance.currentUser?.emailVerified ni manual true qiling
+
+OGOHLANTIRISH: Production'da hech qachon email verification'ni o'tkazib yubormang!
+
+8. UMUMIY XATOLAR VA YECHIMLARI
+--------------------------------
+
+Xato                    | Sabab              | Yechim
+------------------------|--------------------|--------------------------
+Email kelmayapti        | Spam folder        | Spam papkani tekshiring
+too-many-requests       | Ko'p urinishlar    | 5 daqiqa kuting
+invalid-action-code     | Eski link          | Yangi email jo'nating
+Email keladi lekin      | Deep link          | ActionCodeSettings
+ochilmaydi              | sozlanmagan        | sozlang
+
+===============================================
+O'ZGARTIRILGAN FAYLLAR
+===============================================
+- lib/providers/auth_provider.dart - Debug logging qo'shildi
+- lib/screens/verify_email_screen.dart - Spam folder haqida xabar qo'shildi
+
+===============================================
+KEYINGI QADAMLAR
+===============================================
+1. Firebase Console'da email template'ni sozlang
+2. Test hisob yarating
+3. Spam papkani tekshiring
+4. Debug log'larni tekshiring
+5. Agar kerak bo'lsa, custom SMTP sozlang

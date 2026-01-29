@@ -1,0 +1,23 @@
+====================================================================
+BILLING ASSISTANT PROMPT (Copy this text)
+====================================================================
+
+I upgraded my Firebase project (chess-app-c6b03, project number 752371614971) 
+to Blaze plan. The $10 prepayment was charged and Firebase Console shows 
+"Blaze plan active".
+
+However, when I try to deploy Cloud Functions, I get this error:
+
+"Billing account for project '752371614971' is not open. Billing must be 
+enabled for activation of service(s) cloudbuild.googleapis.com, 
+artifactregistry.googleapis.com, containerregistry.googleapis.com"
+
+Google Cloud Console still shows the project as not linked to a billing account.
+
+How do I sync the billing account (Firebase Payment) to this project so I can 
+use Cloud Functions and other paid services?
+
+Project ID: chess-app-c6b03
+Project Number: 752371614971
+
+====================================================================
