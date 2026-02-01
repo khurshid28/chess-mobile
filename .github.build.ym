@@ -1,0 +1,79 @@
+name: Flutter Build APK --release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Repo clone
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # 2. Java (Android uchun)
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Flutter (ENG OXIRGI STABLE)
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      # 4. Flutter version tekshir (debug uchun)
+      - name: Flutter doctor
+        run: |
+          flutter --version
+          flutter doctor -v
+
+      # 5. Version auto bump (1.0.2+4 → 1.0.3+5)
+      - name: Bump app version
+        run: |
+          VERSION_LINE=$(grep '^version:' pubspec.yaml)
+          VERSION=$(echo $VERSION_LINE | cut -d ' ' -f2)
+
+          APP_VERSION=$(echo $VERSION | cut -d '+' -f1)
+          BUILD_NUMBER=$(echo $VERSION | cut -d '+' -f2)
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$APP_VERSION"
+
+          PATCH=$((PATCH + 1))
+          BUILD_NUMBER=$((BUILD_NUMBER + 1))
+
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH+$BUILD_NUMBER"
+
+          sed -i "s/^version:.*/version: $NEW_VERSION/" pubspec.yaml
+
+          echo "New version: $NEW_VERSION"
+
+      # 6. Version commit qilib push qiladi
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pubspec.yaml
+          git commit -m "chore: bump version" || echo "No changes to commit"
+          git push
+
+      # 7. Dependencies
+      - name: Flutter pub get
+        run: flutter pub get
+
+      # 8. APK build (release)
+      - name: Build APK (release)
+        run: flutter build apk --release
+
+      # 9. APK yuklab olish uchun
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
