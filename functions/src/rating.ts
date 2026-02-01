@@ -3,14 +3,6 @@ import admin from "firebase-admin";
 
 const db = admin.firestore();
 
-interface GameResult {
-  winnerId?: string;
-  isDraw: boolean;
-  isRanked: boolean;
-  playerWhiteId: string;
-  playerBlackId: string;
-}
-
 // Calculate ELO rating after a game
 export const updateEloRating = onDocumentUpdated(
   "games/{gameId}",

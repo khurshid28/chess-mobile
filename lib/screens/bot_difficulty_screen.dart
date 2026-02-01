@@ -9,10 +9,7 @@ import 'game_screen.dart';
 class BotDifficultyScreen extends StatefulWidget {
   final BotPersonality bot;
 
-  const BotDifficultyScreen({
-    super.key,
-    required this.bot,
-  });
+  const BotDifficultyScreen({super.key, required this.bot});
 
   @override
   State<BotDifficultyScreen> createState() => _BotDifficultyScreenState();
@@ -40,7 +37,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -61,33 +58,41 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
               // Difficulty selection
               const Text(
                 'Qiyinlik darajasi:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
-              
+
               _buildDifficultyButton('easy', widget.bot.easy, '😊', 'OSON'),
-              _buildDifficultyButton('medium', widget.bot.medium, '😐', 'O\'RTACHA'),
+              _buildDifficultyButton(
+                'medium',
+                widget.bot.medium,
+                '😐',
+                'O\'RTACHA',
+              ),
               _buildDifficultyButton('hard', widget.bot.hard, '😠', 'QIYIN'),
-              _buildDifficultyButton('maximum', widget.bot.maximum, '😈', 'MAKSIMAL'),
-              
+              _buildDifficultyButton(
+                'maximum',
+                widget.bot.maximum,
+                '😈',
+                'MAKSIMAL',
+              ),
+
               const SizedBox(height: 24),
 
               // Side selection
               const Text(
                 'Rangni tanlang:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(
-                    child: _buildSideButton(Side.white, 'Oq', Icons.circle_outlined),
+                    child: _buildSideButton(
+                      Side.white,
+                      'Oq',
+                      Icons.circle_outlined,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -99,16 +104,13 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 24),
 
               // Time control
               const Text(
                 'Vaqt kontroli:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Row(
@@ -121,7 +123,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
                 ],
               ),
 
-              const Spacer(),
+              const SizedBox(height: 24),
 
               // Start game button
               SizedBox(
@@ -137,10 +139,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
                   ),
                   child: const Text(
                     'O\'YINNI BOSHLASH',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -191,9 +190,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: isSelected
-                            ? theme.colorScheme.primary
-                            : null,
+                        color: isSelected ? theme.colorScheme.primary : null,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -234,9 +231,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
               : theme.colorScheme.surface.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected
-                ? theme.colorScheme.primary
-                : theme.dividerColor,
+            color: isSelected ? theme.colorScheme.primary : theme.dividerColor,
             width: 2,
           ),
         ),
@@ -278,9 +273,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
               : theme.colorScheme.surface.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected
-                ? theme.colorScheme.primary
-                : theme.dividerColor,
+            color: isSelected ? theme.colorScheme.primary : theme.dividerColor,
             width: 2,
           ),
         ),
@@ -324,9 +317,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
     if (mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => const GameScreen(isBotGame: true),
-        ),
+        MaterialPageRoute(builder: (_) => const GameScreen(isBotGame: true)),
       );
     }
   }

@@ -1,0 +1,459 @@
+KUNLIK TURNIR VA RATING TIZIMI LOYIHASI
+=========================================
+
+1. ASOSIY TIZIMLAR
+==================
+
+1.1 RATING TIZIMI (ELO)
+-----------------------
+- Har bir o'yindan keyin avtomatik hisoblangan
+- Standart ELO formula: K-factor = 32 (yangi o'yinchilar uchun), 16 (tajribali)
+- Faqat reytingli o'yinlar (ranked matches) da ishlaydi
+- Har bir o'yindan keyin:
+  * G'olib: +rating (raqibning reytingiga bog'liq)
+  * Yutqazgan: -rating
+  * Durrang: kichik o'zgarish
+
+1.2 STAR TIZIMI (Turnir ball)
+-----------------------------
+- Faqat turnirlardan yutiladigan mukofot
+- Rating tizimidan mustaqil
+- Profile da alohida ko'rsatiladigan (masalan: "⭐ 350 Stars")
+- Oylik top 3 ni aniqlash uchun ishlatiladi
+- Stars bn shop dan premium features sotib olish mumkin (keyinroq)
+
+2. KUNLIK TURNIR TIZIMI
+========================
+
+2.1 TURNIR KATEGORIYALARI (ELO bo'yicha)
+----------------------------------------
+Kategoriya A: 1200-1500 ELO
+  - 1/8 finalgachiqqanlar: 5 star
+  - 1/4 finalga chiqqanlar: 15 star
+  - 1-o'rin: 80 star
+  - 2-o'rin: 50 star
+  - 3-o'rin: 30 star
+
+Kategoriya B: 1500-1800 ELO
+  - 1/8 finalgachiqqanlar: 7 star
+  - 1/4 finalga chiqqanlar: 20 star
+  - 1-o'rin: 100 star
+  - 2-o'rin: 65 star
+  - 3-o'rin: 40 star
+
+Kategoriya C: 1800-2000 ELO
+  - 1/8 finalgachiqqanlar: 10 star
+  - 1/4 finalga chiqqanlar: 25 star
+  - 1-o'rin: 120 star
+  - 2-o'rin: 80 star
+  - 3-o'rin: 50 star
+
+Kategoriya D: 2000+ ELO (Masters)
+  - 1/8 finalgachiqqanlar: 15 star
+  - 1/4 finalga chiqqanlar: 35 star
+  - 1-o'rin: 150 star
+  - 2-o'rin: 100 star
+  - 3-o'rin: 65 star
+
+2.2 TURNIR FORMATI
+------------------
+- 16 kishilik Single Elimination Bracket
+- Agar 16 dan kam ishtirokchi bo'lsa:
+  * Random "BYE" (bo'sh) qo'yish
+  * Yoki botlar bilan to'ldirish
+- Har bir bosqich:
+  * Round 1 (1/8 final): 16 → 8 kishi
+  * Round 2 (1/4 final): 8 → 4 kishi
+  * Round 3 (Yarim final): 4 → 2 kishi
+  * Round 4 (Final): 2 → 1 g'olib
+
+2.3 O'YIN SOZLAMALARI
+---------------------
+- Vaqt kontroli: 10 + 0 (10 minut, inkrement yo'q)
+- Agar durrang bo'lsa:
+  * 3-oyinga qo'yiladi (Armageddon)
+  * Oq: 5 min, durrang bo'lsa yutqazadi
+  * Qora: 4 min, durrang bo'lsa yutadi
+- Har bir match:
+  * 1-o'yin: Random ravishda oq/qora
+  * 2-o'yin: Ranglar almashtiriladi
+  * Agar 1-1 bo'lsa → 3-o'yin (Armageddon)
+
+2.4 TURNIR JADVALI
+------------------
+Har kuni soat 10:00 dan 11:00 gacha (UZB vaqti):
+- 09:00-09:45: Ro'yxatdan o'tish (Registration)
+- 09:45-10:00: Bracket yaratish va tayyorgarlik
+- 10:00: Turnir boshlanadi
+- 10:00-10:20: Round 1 (1/8 final)
+- 10:20-10:40: Round 2 (1/4 final)
+- 10:40-11:00: Round 3 (Yarim final)
+- 11:00-11:20: Final
+- 11:20-11:30: Natijalar e'lon qilish
+
+Qo'shimcha turnirlar:
+- Kuniga 2-3 ta turli vaqtlarda (masalan 14:00, 18:00, 21:00)
+- Dam olish kunlari ko'proq turnirlar
+
+2.5 ISHTIROK ETISH SHARTLARI
+----------------------------
+- Verified email
+- Minimum 10 ta o'yin o'ynagan bo'lish
+- Rating stabilize bo'lgan (kamida 5 kun)
+- Hech qanday ban yoki warning yo'q
+
+3. OYLIK MUKOFOTLAR
+===================
+
+3.1 TOP 3 ANIQLASH
+------------------
+- Har oyning oxirida eng ko'p star to'plagan 3 ta o'yinchi
+- Har bir kategoriya uchun alohida top 3:
+  * Kategoriya A top 3
+  * Kategoriya B top 3
+  * Kategoriya C top 3
+  * Kategoriya D top 3
+
+3.2 MUKOFOTLAR
+--------------
+Kategoriya A (1200-1500):
+  - 1-o'rin: 500 bonus star + "Monthly Champion A" badge
+  - 2-o'rin: 300 bonus star + "Runner-up A" badge
+  - 3-o'rin: 200 bonus star + "3rd Place A" badge
+
+Kategoriya B (1500-1800):
+  - 1-o'rin: 750 bonus star + "Monthly Champion B" badge
+  - 2-o'rin: 450 bonus star + "Runner-up B" badge
+  - 3-o'rin: 300 bonus star + "3rd Place B" badge
+
+Kategoriya C (1800-2000):
+  - 1-o'rin: 1000 bonus star + "Monthly Champion C" badge
+  - 2-o'rin: 600 bonus star + "Runner-up C" badge
+  - 3-o'rin: 400 bonus star + "3rd Place C" badge
+
+Kategoriya D (2000+):
+  - 1-o'rin: 1500 bonus star + "Monthly Champion D" badge + "Grandmaster" title
+  - 2-o'rin: 900 bonus star + "Runner-up D" badge
+  - 3-o'rin: 600 bonus star + "3rd Place D" badge
+
+4. FIREBASE/FIRESTORE STRUKTURA
+================================
+
+4.1 COLLECTIONS
+---------------
+
+tournaments/
+  {tournamentId}/
+    - id: string
+    - category: "A" | "B" | "C" | "D"
+    - minElo: number
+    - maxElo: number
+    - scheduledTime: timestamp
+    - status: "pending" | "registration" | "in_progress" | "completed"
+    - maxPlayers: 16
+    - currentPlayers: number
+    - createdAt: timestamp
+    - startedAt: timestamp
+    - completedAt: timestamp
+    - winnerId: string
+    - runnerUpId: string
+    - thirdPlaceId: string
+    
+    participants/
+      {userId}/
+        - userId: string
+        - displayName: string
+        - elo: number
+        - seed: number (1-16)
+        - joinedAt: timestamp
+        - isActive: boolean
+        - currentRound: number
+        - eliminated: boolean
+        - stars_earned: number
+    
+    brackets/
+      {roundId}/
+        - round: number (1=1/8, 2=1/4, 3=Semi, 4=Final)
+        - matches: [
+            {
+              matchId: string
+              player1Id: string
+              player2Id: string
+              player1Score: number (0, 1, or 2)
+              player2Score: number (0, 1, or 2)
+              winnerId: string
+              status: "pending" | "in_progress" | "completed"
+              games: [
+                { gameId, result, color }
+              ]
+            }
+          ]
+
+tournament_history/
+  {userId}/
+    tournaments: [
+      {
+        tournamentId: string
+        date: timestamp
+        category: string
+        placement: number (1, 2, 3, or elimination round)
+        stars_earned: number
+        matchesWon: number
+        matchesLost: number
+      }
+    ]
+    totalStars: number
+    totalTournaments: number
+    wins: number
+    losses: number
+
+monthly_leaderboard/
+  {year}-{month}/
+    category_A/
+      {userId}: {
+        displayName: string
+        totalStars: number
+        tournamentsPlayed: number
+        wins: number
+        rank: number
+      }
+    category_B/
+      ...
+    category_C/
+      ...
+    category_D/
+      ...
+
+users/
+  {userId}/
+    - rating: number (ELO)
+    - stars: number (Tournament points)
+    - tournamentsPlayed: number
+    - tournamentsWon: number
+    - badges: [string]
+    - currentCategory: "A" | "B" | "C" | "D"
+    - monthlyStars: number (resets har oyda)
+
+5. FLUTTER IMPLEMENTATION
+==========================
+
+5.1 YANGI MODELS
+----------------
+lib/models/
+  - tournament_model.dart
+  - tournament_match_model.dart
+  - tournament_participant_model.dart
+  - leaderboard_entry_model.dart
+  - badge_model.dart
+
+5.2 YANGI PROVIDERS
+-------------------
+lib/providers/
+  - tournament_provider.dart
+    * Turnirga ro'yxatdan o'tish
+    * Bracket ko'rish
+    * Live updates
+  
+  - leaderboard_provider.dart
+    * Kunlik va oylik leaderboard
+    * Kategoriya bo'yicha filterlash
+  
+  - star_provider.dart
+    * Star balansini ko'rsatish
+    * Star history
+
+5.3 YANGI SERVICES
+------------------
+lib/services/
+  - tournament_service.dart
+    * createTournament()
+    * joinTournament()
+    * generateBracket()
+    * startMatch()
+    * updateMatchResult()
+    * calculateStars()
+    * distributePrizes()
+  
+  - rating_service.dart
+    * calculateEloChange()
+    * updateUserRating()
+    * getCategoryByElo()
+  
+  - leaderboard_service.dart
+    * getMonthlyLeaderboard()
+    * getDailyTop()
+    * calculateMonthlyWinners()
+
+5.4 YANGI SCREENS
+-----------------
+lib/screens/
+  - tournaments_screen.dart
+    * Hozirgi va kelgusi turnirlar ro'yxati
+    * Kategoriya bo'yicha filtr
+    * Ro'yxatdan o'tish tugmasi
+  
+  - tournament_detail_screen.dart
+    * Bracket vizualizatsiyasi
+    * Ishtirokchilar ro'yxati
+    * Live natijalar
+  
+  - tournament_bracket_screen.dart
+    * Interactive bracket tree
+    * Match detallari
+  
+  - leaderboard_screen.dart (yangilash kerak)
+    * Kunlik/Oylik toggle
+    * Kategoriya tabs
+    * Top 3 highlight
+  
+  - star_shop_screen.dart (keyinroq)
+    * Premium features
+    * Custom boards/pieces
+    * Badges
+
+5.5 YANGI WIDGETS
+-----------------
+lib/widgets/
+  - tournament_card.dart
+  - bracket_view.dart
+  - match_tile.dart
+  - star_display.dart
+  - badge_display.dart
+  - category_badge.dart
+  - leaderboard_podium.dart
+
+6. CLOUD FUNCTIONS
+==================
+
+functions/src/
+  - tournament.ts
+    * scheduleDailyTournaments()
+      - Har kuni belgilangan vaqtda 4 ta turnir yaratish (har bir kategoriya)
+    
+    * autoStartTournament()
+      - Vaqti bo'lgan turnirlarni avtomatik boshlash
+    
+    * generateBracket()
+      - 16 kishilik bracket yaratish
+      - Seed qilish (ELO bo'yicha)
+      - BYE qo'yish (agar kam bo'lsa)
+    
+    * createMatch()
+      - Bracket'dagi har bir match uchun game yaratish
+    
+    * handleMatchComplete()
+      - Match tugagandan keyin keyingi roundga o'tkazish
+      - Stars berish
+    
+    * calculateMonthlyWinners()
+      - Har oy oxirida ishlaydigan
+      - Top 3 ni aniqlash
+      - Mukofotlarni tarqatish
+      - Oylik stars'ni reset qilish
+  
+  - rating.ts
+    * updateEloRating()
+      - Har bir o'yindan keyin ELO hisoblash
+      - K-factor: 32 (< 30 o'yin), 24 (30-100), 16 (100+)
+    
+    * recalculateCategory()
+      - Rating o'zgarganda kategoriyani yangilash
+
+7. IMPLEMENTATION BOSQICHLARI
+==============================
+
+PHASE 1: Asosiy Struktura (1 hafta)
+------------------------------------
+- Models va Firestore schema yaratish
+- Tournament service asoslari
+- Rating calculation service
+- Star tizimi integration
+
+PHASE 2: Turnir Logikasi (1.5 hafta)
+------------------------------------
+- Bracket generation algorithm
+- Match pairing system
+- Turnir status management
+- Live updates (streams)
+
+PHASE 3: UI/UX (1 hafta)
+------------------------
+- Tournament screens
+- Bracket visualization
+- Leaderboard screens
+- Star display
+
+PHASE 4: Cloud Functions (1 hafta)
+----------------------------------
+- Scheduled tournament creation
+- Auto-start tournaments
+- Match automation
+- Monthly calculations
+
+PHASE 5: Testing va Optimization (1 hafta)
+------------------------------------------
+- Edge cases
+- Performance optimization
+- Bug fixes
+- Beta testing
+
+PHASE 6: Oylik Mukofotlar (3 kun)
+---------------------------------
+- Monthly leaderboard finalization
+- Prize distribution
+- Badge system
+- Notifications
+
+8. QOIDALAR VA CHEKLOVLAR
+==========================
+
+8.1 ANTI-CHEAT MEASURES
+-----------------------
+- Har bir o'yinchi kuniga maksimum 5 ta turnirda ishtirok etishi mumkin
+- Bir xil kategoriyada ketma-ket 2 ta turnirda ishtirok eta olmaydi (30 min kutish)
+- Suspicious moves uchun auto-detection
+- Report system
+
+8.2 FAIR PLAY
+-------------
+- Tournament'da disconnect bo'lsa:
+  * 1-marta: 2 minut qayta ulanish vaqti
+  * 2-marta: Avtomatik yutqazish
+- Intentional draw'lar kuzatiladigan
+- Time wasting penalizatsiya
+
+8.3 KATEGORIYA O'ZGARTIRISH
+---------------------------
+- Rating o'zgarganda avtomatik yangi kategoriyaga o'tkazish
+- Faqat keyingi kundan boshlab yangi kategoriyada o'ynaydi
+- Joriy turnir eski kategoriyada tugaydi
+
+9. KELAJAKDAGI XUSUSIYATLAR
+============================
+- Weekly Tournaments (katta mukofotlar)
+- Seasonal Championships
+- Team Tournaments
+- Custom Tournament creation
+- Sponsorlar va real prizes
+- Live streaming integration
+- Spectator mode
+- Tournament chat
+
+10. TEXNIK REQUIREMENTS
+=======================
+- Firebase Cloud Functions 2nd gen
+- Firestore indexes:
+  * tournaments: (category, scheduledTime)
+  * monthly_leaderboard: (category, totalStars DESC)
+- Cloud Scheduler (har kuni 09:00 da ishga tushadi)
+- Push notifications (turnir boshlanganda)
+- Real-time listeners (bracket updates)
+
+===========================================
+MUHIM ESLATMALAR:
+===========================================
+1. Rating va Stars - bu ikki xil tizim
+2. Rating - har bir o'yindan, Stars - faqat turnirdan
+3. Har bir kategoriyada alohida turnirlar
+4. Oylik leaderboard - Stars bo'yicha
+5. Kategoriya o'zgarishi avtomatik

@@ -1,5 +1,5 @@
 import { onSchedule } from "firebase-functions/v2/scheduler";
-import { onDocumentCreated, onDocumentUpdated } from "firebase-functions/v2/firestore";
+import { onDocumentUpdated } from "firebase-functions/v2/firestore";
 import admin from "firebase-admin";
 
 const db = admin.firestore();
@@ -337,7 +337,6 @@ export const onMatchComplete = onDocumentUpdated(
   "tournaments/{tournamentId}/brackets/{roundId}",
   async (event) => {
     const tournamentId = event.params.tournamentId;
-    const roundId = event.params.roundId;
     const after = event.data?.after.data();
 
     if (!after) return;
