@@ -41,6 +41,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // Bot description
               GlassPanel(
