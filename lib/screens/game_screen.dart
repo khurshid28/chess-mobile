@@ -19,6 +19,7 @@ import 'package:dartchess/dartchess.dart' as dartchess;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chess_park/services/game_repository.dart';
 import 'package:chess_park/screens/game_detail_screen.dart';
+import 'package:chess_park/screens/bot_game_view.dart';
 
 
 class GameScreen extends StatelessWidget {
@@ -33,9 +34,9 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // If it's a bot game, use BotGameProvider which is already created
+    // If it's a bot game, use BotGameView
     if (isBotGame) {
-      return GameView(gameId: null, isBotGame: true);
+      return const BotGameView();
     }
 
     // For online games, create GameProvider as before
@@ -82,7 +83,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
+      if (mounted && !widget.isBotGame) {
         _setupGameListeners();
         if (widget.gameId != null) {
           context.read<GameProvider>().listenToGame(widget.gameId!);
