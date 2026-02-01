@@ -5,12 +5,12 @@ import admin from "firebase-admin";
 
 import { Chess, Move, Square } from "chess.js";
 
+admin.initializeApp();
+const db = admin.firestore();
+
 // Export tournament functions
 export * from "./tournament";
 export * from "./rating";
-
-admin.initializeApp();
-const db = admin.firestore();
 interface PendingPromotion {
   from: string;
   to: string;
