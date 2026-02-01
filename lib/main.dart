@@ -3,6 +3,7 @@ import 'package:chess_park/providers/connectivity_provider.dart';
 import 'package:chess_park/providers/live_game_provider.dart';
 import 'package:chess_park/providers/server_time_provider.dart';
 import 'package:chess_park/providers/settings_provider.dart';
+import 'package:chess_park/providers/bot_game_provider.dart';
 import 'package:chess_park/screens/verify_email_screen.dart';
 import 'package:chess_park/services/game_repository.dart';
 import 'package:chess_park/services/firestore_services.dart';
@@ -94,6 +95,7 @@ class ChessPark extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider(settingsProvider: settingsProvider)),
         ChangeNotifierProvider(create: (_) => LiveGamesProvider(firestoreService: firestoreService)),
         ChangeNotifierProvider<ConnectivityProvider>.value(value: connectivityProvider),
+        ChangeNotifierProvider(create: (_) => BotGameProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

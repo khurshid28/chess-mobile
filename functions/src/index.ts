@@ -5,6 +5,10 @@ import admin from "firebase-admin";
 
 import { Chess, Move, Square } from "chess.js";
 
+// Export tournament functions
+export * from "./tournament";
+export * from "./rating";
+
 admin.initializeApp();
 const db = admin.firestore();
 interface PendingPromotion {
@@ -98,6 +102,9 @@ async function createMatch(
     blackTimeLeft: timeControl,
     lastMoveTimestamp: admin.firestore.FieldValue.serverTimestamp(),
     eloCalculated: false,
+    isRanked: true,
+    tournamentId: null,
+    tournamentMatchId: null,
     pendingPromotion: null,
     playerWhiteDisconnectedAt: null,
     playerBlackDisconnectedAt: null,

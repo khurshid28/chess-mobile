@@ -18,15 +18,27 @@ import 'package:chess_park/chess/export.dart';
 import 'package:dartchess/dartchess.dart' as dartchess;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chess_park/services/game_repository.dart';
+import 'package:chess_park/screens/game_detail_screen.dart';
 
 
 class GameScreen extends StatelessWidget {
-  final String gameId;
-  const GameScreen({super.key, required this.gameId});
+  final String? gameId;
+  final bool isBotGame;
+  
+  const GameScreen({
+    super.key,
+    this.gameId,
+    this.isBotGame = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // If it's a bot game, use BotGameProvider which is already created
+    if (isBotGame) {
+      return GameView(gameId: null, isBotGame: true);
+    }
 
+    // For online games, create GameProvider as before
     final userId = context.read<AuthProvider>().userModel?.id;
     final gameRepository = context.read<GameRepository>();
     final connectivityProvider = context.read<ConnectivityProvider>();
@@ -39,14 +51,20 @@ class GameScreen extends StatelessWidget {
         gameRepository: gameRepository,
         connectivityProvider: connectivityProvider,
       ),
-      child: GameView(gameId: gameId),
+      child: GameView(gameId: gameId!, isBotGame: false),
     );
   }
 }
 
 class GameView extends StatefulWidget {
-  final String gameId;
-  const GameView({super.key, required this.gameId});
+  final String? gameId;
+  final bool isBotGame;
+  
+  const GameView({
+    super.key,
+    required this.gameId,
+    required this.isBotGame,
+  });
 
   @override
   State<GameView> createState() => _GameViewState();
@@ -66,7 +84,9 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _setupGameListeners();
-        context.read<GameProvider>().listenToGame(widget.gameId);
+        if (widget.gameId != null) {
+          context.read<GameProvider>().listenToGame(widget.gameId!);
+        }
         final currentState = WidgetsBinding.instance.lifecycleState;
         context.read<GameProvider>().setAppForegroundState(currentState == AppLifecycleState.resumed);
       }
@@ -728,6 +748,23 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
                 title: Text(title),
                 content: Text(content),
                 actions: <Widget>[
+                  // View Game button
+                  TextButton(
+                    style: TextButton.styleFrom(foregroundColor: AppTheme.kColorAccent),
+                    child: const Text('View Game'),
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                      Navigator.push(
+                        gameViewContext,
+                        MaterialPageRoute(
+                          builder: (context) => GameDetailScreen(
+                            game: latestGame,
+                            currentUserId: userId ?? '',
+                          ),
+                        ),
+                      );
+                    },
+                  ),
 
                   TextButton(
                     style: TextButton.styleFrom(foregroundColor: AppTheme.kColorTextSecondary),

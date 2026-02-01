@@ -2,6 +2,7 @@ import 'package:chess_park/providers/auth_provider.dart';
 import 'package:chess_park/providers/puzzle_lobby_provider.dart';
 import 'package:chess_park/screens/online_games_screen.dart';
 import 'package:chess_park/screens/puzzle_lobby_screen.dart';
+import 'package:chess_park/screens/bot_selection_screen.dart';
 import 'package:chess_park/screens/puzzle_screen.dart';
 import 'package:chess_park/services/puzzle_service.dart';
 import 'package:chess_park/theme/app_theme.dart';
@@ -59,6 +60,19 @@ class _ActionButtonsSection extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
+            Expanded(
+              child: _ActionButton(
+                icon: Icons.smart_toy,
+                text: 'Play\nComputer',
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const BotSelectionScreen())),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
             Expanded(
               child: _ActionButton(
                 icon: Icons.lightbulb_outline,

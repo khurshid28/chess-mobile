@@ -53,6 +53,68 @@
       "order": "DESCENDING"
     }
   ]
+},
+{
+  "collectionGroup": "tournaments",
+  "queryScope": "COLLECTION",
+  "fields": [
+    {
+      "fieldPath": "category",
+      "order": "ASCENDING"
+    },
+    {
+      "fieldPath": "scheduledTime",
+      "order": "ASCENDING"
+    }
+  ]
+},
+{
+  "collectionGroup": "tournaments",
+  "queryScope": "COLLECTION",
+  "fields": [
+    {
+      "fieldPath": "status",
+      "order": "ASCENDING"
+    },
+    {
+      "fieldPath": "scheduledTime",
+      "order": "ASCENDING"
+    }
+  ]
+},
+{
+  "collectionGroup": "tournaments",
+  "queryScope": "COLLECTION",
+  "fields": [
+    {
+      "fieldPath": "status",
+      "order": "ASCENDING"
+    },
+    {
+      "fieldPath": "startedAt",
+      "order": "DESCENDING"
+    }
+  ]
+},
+{
+  "collectionGroup": "participants",
+  "queryScope": "COLLECTION_GROUP",
+  "fields": [
+    {
+      "fieldPath": "seed",
+      "order": "ASCENDING"
+    }
+  ]
+},
+{
+  "collectionGroup": "users",
+  "queryScope": "COLLECTION",
+  "fields": [
+    {
+      "fieldPath": "monthlyStars",
+      "order": "DESCENDING"
+    }
+  ]
 }
   ],
   "fieldOverrides": []

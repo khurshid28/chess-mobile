@@ -50,6 +50,14 @@ class GameModel {
   final Timestamp? completedAt;
   final Timestamp? playerWhiteDisconnectedAt;
   final Timestamp? playerBlackDisconnectedAt;
+  // Bot game fields
+  final String gameType; // 'online' or 'computer'
+  final String? botPersonalityId;
+  final String? botDifficulty; // 'easy', 'medium', 'hard', 'maximum'
+  // Tournament and ranking fields
+  final bool isRanked; // Whether the game affects ELO rating
+  final String? tournamentId; // ID of tournament if this is a tournament game
+  final String? tournamentMatchId; // ID of specific match in tournament bracket
 
   GameModel({
     required this.id,
@@ -84,7 +92,15 @@ class GameModel {
     this.completedAt,
     this.playerWhiteDisconnectedAt,
     this.playerBlackDisconnectedAt,
+    this.gameType = 'online',
+    this.botPersonalityId,
+    this.botDifficulty,
+    this.isRanked = true,
+    this.tournamentId,
+    this.tournamentMatchId,
   });
+
+  bool get isBotGame => gameType == 'computer';
 
   factory GameModel.fromSnapshot(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -138,6 +154,12 @@ class GameModel {
       completedAt: data['completedAt'],
       playerWhiteDisconnectedAt: data['playerWhiteDisconnectedAt'],
       playerBlackDisconnectedAt: data['playerBlackDisconnectedAt'],
+      gameType: data['gameType'] ?? 'online',
+      botPersonalityId: data['botPersonalityId'],
+      botDifficulty: data['botDifficulty'],
+      isRanked: data['isRanked'] ?? true,
+      tournamentId: data['tournamentId'],
+      tournamentMatchId: data['tournamentMatchId'],
     );
   }
 }

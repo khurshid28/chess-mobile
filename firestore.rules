@@ -34,6 +34,12 @@ service cloud.firestore {
       allow create: if isOwner(userId) && isValidNewUser(request.resource.data);
       // Allow updates if the user owns the document AND is only updating allowed fields.
       allow update: if isOwner(userId) && isValidUserUpdate();
+      
+      // User badges subcollection
+      match /badges/{badgeId} {
+        allow read: if isSignedIn();
+        allow write: if false; // Only cloud functions can write badges
+      }
     }
 
     function isValidNewUser(data) {
@@ -49,6 +55,52 @@ service cloud.firestore {
     function isValidUserUpdate() {
       let allowedFields = ['preferences', 'profileImage', 'displayName', 'countryCode'];
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowedFields);
+    }
+
+    // --- Tournaments Collection ---
+    match /tournaments/{tournamentId} {
+      // Anyone signed in can read tournaments
+      allow read: if isSignedIn();
+      // Only cloud functions can write tournaments
+      allow write: if false;
+      
+      // Participants subcollection
+      match /participants/{userId} {
+        allow read: if isSignedIn();
+        // Users can create their own participant entry (join tournament)
+        allow create: if isOwner(userId) && isValidTournamentJoin();
+        // Only cloud functions can update/delete participants
+        allow update, delete: if false;
+      }
+      
+      // Brackets subcollection
+      match /brackets/{roundId} {
+        allow read: if isSignedIn();
+        allow write: if false; // Only cloud functions
+      }
+    }
+    
+    function isValidTournamentJoin() {
+      // Validate participant data has required fields
+      return request.resource.data.keys().hasAll(['userId', 'displayName', 'elo', 'joinedAt']) &&
+             request.resource.data.userId == request.auth.uid;
+    }
+
+    // --- Tournament History Collection ---
+    match /tournament_history/{userId} {
+      allow read: if isSignedIn();
+      allow write: if false; // Only cloud functions
+    }
+
+    // --- Monthly Leaderboard Collection ---
+    match /monthly_leaderboard/{monthYear} {
+      allow read: if isSignedIn();
+      allow write: if false; // Only cloud functions
+      
+      match /{categoryKey}/{userId} {
+        allow read: if isSignedIn();
+        allow write: if false; // Only cloud functions
+      }
     }
 
     // --- Matchmaking Queue Collection ---
