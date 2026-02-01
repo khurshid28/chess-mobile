@@ -88,29 +88,30 @@ class _BotGameViewState extends State<BotGameView> {
                 LayoutBuilder(
                   builder: (context, constraints) {
                     final boardSize = constraints.maxWidth;
-                    return SizedBox(
-                      width: boardSize,
-                      height: boardSize,
-                      child: ChessBoard(
-                        size: boardSize,
-                        settings: BoardSettings(
-                          pieceAssets: settingsProvider.pieceSet,
-                          colorScheme: settingsProvider.boardTheme,
-                          enableCoordinates: true,
-                          animationDuration: const Duration(milliseconds: 250),
-                        ),
-                        data: BoardData(
-                          interactableSide: isUserTurn && !isThinking
-                              ? InteractableSide.both
-                              : InteractableSide.none,
-                          orientation: playerOrientation,
-                          fen: botGameProvider.fen,
-                          lastMove: botGameProvider.moveHistory.isNotEmpty
-                              ? _parseLastMove(botGameProvider.moveHistory.last)
-                              : null,
-                          onMove: (move, {isDrop}) =>
-                              _handleMove(context, move),
-                        ),
+                    
+                    // Determine player side for interaction
+                    PlayerSide playerSide = PlayerSide.none;
+                    if (isUserTurn && !isThinking) {
+                      playerSide = playerOrientation == dartchess.Side.white
+                          ? PlayerSide.white
+                          : PlayerSide.black;
+                    }
+                    
+                    return Chessboard(
+                      size: boardSize,
+                      orientation: playerOrientation,
+                      fen: botGameProvider.fen,
+                      settings: ChessboardSettings(
+                        colorScheme: settingsProvider.currentBoardTheme,
+                        pieceAssets: settingsProvider.currentPieceAssets,
+                        showValidMoves: true,
+                        animationDuration: const Duration(milliseconds: 250),
+                      ),
+                      game: GameData(
+                        playerSide: playerSide,
+                        sideToMove: botGameProvider.position.turn,
+                        isCheck: botGameProvider.position.isCheck,
+                        onMove: (move, {isDrop}) => _handleMove(context, move),
                       ),
                     );
                   },
@@ -331,14 +332,6 @@ class _BotGameViewState extends State<BotGameView> {
     // Check if game is over
     if (provider.isGameOver && mounted) {
       _showGameOverDialog(context);
-    }
-  }
-
-  Move? _parseLastMove(String uci) {
-    try {
-      return dartchess.Move.parse(uci);
-    } catch (e) {
-      return null;
     }
   }
 
