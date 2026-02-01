@@ -1,0 +1,42 @@
+name: Flutter Build APK (Release)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # MUHIM QISM 👇
+      - name: Set up Flutter (Dart 3.8+)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: master
+
+      - name: Check Flutter & Dart
+        run: |
+          flutter --version
+          dart --version
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: Build APK (release)
+        run: flutter build apk --release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
