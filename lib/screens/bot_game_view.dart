@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:dartchess/dartchess.dart' as dartchess;
 import 'package:chess_park/providers/bot_game_provider.dart';
 import 'package:chess_park/providers/settings_provider.dart';
+import 'package:chess_park/providers/auth_provider.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/chess/export.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
@@ -19,6 +21,7 @@ class _BotGameViewState extends State<BotGameView> {
   Widget build(BuildContext context) {
     final botGameProvider = context.watch<BotGameProvider>();
     final settingsProvider = context.watch<SettingsProvider>();
+    final authProvider = context.watch<AuthProvider>();
 
     // Check if game has been initialized
     if (botGameProvider.currentBot == null) {
@@ -45,7 +48,9 @@ class _BotGameViewState extends State<BotGameView> {
       botGameProvider.botDisplayRating,
     );
 
-    final userPlayerWidget = _buildUserPlayerInfo('You', 1500); // TODO: Get actual user rating
+    final userRating = authProvider.userModel?.elo ?? 1200;
+    final userName = authProvider.userModel?.displayName ?? 'You';
+    final userPlayerWidget = _buildUserPlayerInfo(userName, userRating);
 
     if (playerOrientation == dartchess.Side.white) {
       topPlayerWidget = botPlayerWidget;
@@ -440,13 +445,16 @@ class _BotGameViewState extends State<BotGameView> {
               ListTile(
                 leading: const Icon(Icons.content_copy),
                 title: const Text('Copy PGN'),
-                onTap: () {
+                onTap: () async {
                   final provider = context.read<BotGameProvider>();
-                  // TODO: Implement copy to clipboard
+                  final pgn = provider.getPgn();
+                  await Clipboard.setData(ClipboardData(text: pgn));
                   Navigator.pop(ctx);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('PGN copied')),
-                  );
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('PGN copied to clipboard')),
+                    );
+                  }
                 },
               ),
               ListTile(
