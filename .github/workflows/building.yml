@@ -1,0 +1,55 @@
+name: Flutter Build APK (Release)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Repo clone
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # 2. Java (Android build uchun)
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # 3. Flutter (Dart 3.8+ uchun MASTER)
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: master
+
+      # 4. Flutter & Dart tekshir
+      - name: Flutter info
+        run: |
+          flutter --version
+          dart --version
+
+      # 5. 🔐 google-services.json ni Secret’dan yaratish
+      - name: Create google-services.json
+        run: |
+          mkdir -p android/app
+          echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+
+      # 6. Dependency’lar
+      - name: Flutter pub get
+        run: flutter pub get
+
+      # 7. Release APK build
+      - name: Build APK (release)
+        run: flutter build apk --release
+
+      # 8. APK’ni yuklab olish uchun
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
