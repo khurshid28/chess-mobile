@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:dartchess/dartchess.dart';
 import '../models/bot_personality_model.dart';
+import 'logger_service.dart';
 
 class BotEngine {
   static const int _infinity = 100000;
@@ -88,24 +89,53 @@ class BotEngine {
     Position position,
     BotDifficulty difficulty,
   ) async {
+    AppLogger().debug('🤖 Bot engine: searching for move. Depth: ${difficulty.searchDepth}, Error rate: ${difficulty.errorRate}');
+    
+    final legalMovesCount = position.legalMoves.length;
+    AppLogger().debug('📊 Legal moves available: $legalMovesCount');
+    
+    if (legalMovesCount == 0) {
+      AppLogger().warning('⚠️ No legal moves available!');
+      return null;
+    }
+    
     // Occasionally make a weaker move based on error rate (for realism)
     if (difficulty.errorRate > 0 &&
         _random.nextDouble() < difficulty.errorRate) {
+      AppLogger().debug('🎲 Making weaker move (error rate triggered)');
       return _makeWeakerMove(position, difficulty.searchDepth - 1);
     }
 
     // Find the best move using minimax
-    return _searchBestMove(position, difficulty);
+    final bestMove = _searchBestMove(position, difficulty);
+    
+    if (bestMove != null) {
+      AppLogger().debug('✅ Bot engine found move: ${bestMove.uci}');
+    } else {
+      AppLogger().error('❌ Bot engine returned null move!');
+    }
+    
+    return bestMove;
   }
 
   /// Search for the best move using minimax algorithm
   Move? _searchBestMove(Position position, BotDifficulty difficulty) {
     final legalMoves = position.legalMoves;
-    if (legalMoves.isEmpty) return null;
+    if (legalMoves.isEmpty) {
+      AppLogger().warning('⚠️ _searchBestMove: no legal moves');
+      return null;
+    }
 
     Move? bestMove;
     int bestScore = -_infinity;
     final isWhite = position.turn == Side.white;
+    int movesEvaluated = 0;
+    
+    // Limit search depth to prevent crashes
+    final safeDepth = difficulty.searchDepth.clamp(1, 4);
+    if (safeDepth != difficulty.searchDepth) {
+      AppLogger().warning('⚠️ Search depth limited from ${difficulty.searchDepth} to $safeDepth');
+    }
 
     // legalMoves is IMap<Square, SquareSet> - from square to destination squares
     for (final entry in legalMoves.entries) {
@@ -115,23 +145,32 @@ class BotEngine {
         final to = Square(toInt);
         final move = Move.parse('${from.name}${to.name}')!;
         
-        final newPos = position.playUnchecked(move);
-        final score = _minimax(
-          newPos,
-          difficulty.searchDepth - 1,
-          -_infinity,
-          _infinity,
-          !isWhite,
-          difficulty.usePieceSquareTables,
-        );
+        try {
+          final newPos = position.playUnchecked(move);
+          final score = _minimax(
+            newPos,
+            safeDepth - 1,
+            -_infinity,
+            _infinity,
+            !isWhite,
+            difficulty.usePieceSquareTables,
+          );
 
-        if (score > bestScore) {
-          bestScore = score;
-          bestMove = move;
+          movesEvaluated++;
+          
+          if (score > bestScore) {
+            bestScore = score;
+            bestMove = move;
+            AppLogger().debug('  New best: ${move.uci} (score: $score)');
+          }
+        } catch (e, stackTrace) {
+          AppLogger().error('❌ Error evaluating move ${move.uci}', e, stackTrace);
+          continue;
         }
       }
     }
 
+    AppLogger().debug('📈 Evaluated $movesEvaluated moves. Best score: $bestScore');
     return bestMove;
   }
 

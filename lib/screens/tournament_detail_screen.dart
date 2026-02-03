@@ -4,7 +4,6 @@ import '../models/tournament_model.dart';
 import '../providers/tournament_provider.dart';
 import '../widgets/category_badge.dart';
 import '../widgets/bracket_view.dart';
-import '../widgets/match_tile.dart';
 
 class TournamentDetailScreen extends StatefulWidget {
   final String tournamentId;

@@ -5,8 +5,7 @@ import '../theme/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../chess/widgets/board.dart';
-import '../chess/board_settings.dart';
+import 'game_review_screen.dart';
 
 class GameDetailScreen extends StatefulWidget {
   final GameModel game;
@@ -38,9 +37,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       return;
     }
 
-    // Parse moves from FEN changes
-    // For now, just use empty history - this is a display-only screen
-    _moveHistory = [];
+    // Parse moves from PGN
+    final movePattern = RegExp(r'\d+\.');
+    final resultPattern = RegExp(r'(1-0|0-1|1/2-1/2|\*)\s*$');
+    
+    String movesText = widget.game.pgn.replaceAll(movePattern, '').replaceAll(resultPattern, '').trim();
+    _moveHistory = movesText.split(RegExp(r'\s+')).where((m) => m.isNotEmpty).toList();
     
     // Start at the end position
     _currentMoveIndex = _moveHistory.length - 1;
@@ -121,10 +123,63 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                   
                   // Game info
                   _buildGameInfoCard(),
+                  const SizedBox(height: 16),
+                  
+                  // Review button
+                  if (_moveHistory.isNotEmpty)
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: _openReview,
+                        icon: const Icon(Icons.analytics),
+                        label: const Text('O\'yinni tahlil qilish'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.kColorAccent,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  void _openReview() {
+    final isUserWhite = widget.game.playerWhiteId == widget.currentUserId;
+    final playerName = isUserWhite 
+        ? (widget.game.playerWhiteName ?? 'You')
+        : (widget.game.playerBlackName ?? 'You');
+    final opponentName = isUserWhite 
+        ? (widget.game.playerBlackName ?? 'Opponent')
+        : (widget.game.playerWhiteName ?? 'Opponent');
+    
+    String result;
+    if (widget.game.winner == 'draw') {
+      result = 'Draw';
+    } else if ((widget.game.winner == 'white' && isUserWhite) || 
+               (widget.game.winner == 'black' && !isUserWhite)) {
+      result = 'Win';
+    } else {
+      result = 'Loss';
+    }
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameReviewScreen(
+          moveHistory: _moveHistory,
+          playerName: playerName,
+          opponentName: opponentName,
+          result: result,
+          resultReason: widget.game.outcome ?? 'Game ended',
         ),
       ),
     );

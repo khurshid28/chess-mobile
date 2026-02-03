@@ -32,9 +32,9 @@ class BotSelectionScreen extends StatelessWidget {
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.85,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
                   ),
                   itemCount: BotCategories.all.length,
                   itemBuilder: (context, index) {
@@ -64,7 +64,7 @@ class BotSelectionScreen extends StatelessWidget {
       },
       child: GlassPanel(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -73,14 +73,14 @@ class BotSelectionScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: CachedNetworkImage(
                   imageUrl: category.imageUrl,
-                  width: 80,
-                  height: 80,
+                  width: 70,
+                  height: 70,
                   fit: BoxFit.cover,
                   fadeInDuration: const Duration(milliseconds: 300),
                   fadeOutDuration: const Duration(milliseconds: 100),
                   placeholder: (context, url) => Container(
-                    width: 80,
-                    height: 80,
+                    width: 70,
+                    height: 70,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -99,53 +99,53 @@ class BotSelectionScreen extends StatelessWidget {
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
-                    width: 80,
-                    height: 80,
+                    width: 70,
+                    height: 70,
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.sports_esports, size: 40),
+                    child: const Icon(Icons.sports_esports, size: 35),
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
 
               // Category name
               Text(
                 category.nameUz,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
 
               // Bot count badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   '${category.botCount} ta bot',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: theme.colorScheme.secondary,
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
+              const Spacer(),
 
               // Arrow indicator
               Icon(
                 Icons.arrow_forward_ios,
-                size: 16,
+                size: 14,
                 color: theme.colorScheme.primary,
               ),
             ],

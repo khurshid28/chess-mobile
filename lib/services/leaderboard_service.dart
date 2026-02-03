@@ -296,9 +296,6 @@ class LeaderboardService {
   Stream<List<LeaderboardEntryModel>> getDailyTopPerformers({
     int limit = 10,
   }) {
-    final today = DateTime.now();
-    final startOfDay = DateTime(today.year, today.month, today.day);
-
     return _firestore
         .collection('users')
         .orderBy('monthlyStars', descending: true)

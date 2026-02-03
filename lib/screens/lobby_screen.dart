@@ -17,25 +17,36 @@ import 'package:provider/provider.dart';
 class LobbyScreen extends StatelessWidget {
   const LobbyScreen({super.key});
 
+  Future<void> _refreshData(BuildContext context) async {
+    final authProvider = context.read<AuthProvider>();
+    await authProvider.refreshUser();
+    await Future.delayed(const Duration(milliseconds: 200));
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthProvider>().userModel;
     final topPadding = MediaQuery.of(context).padding.top + 70;
 
 
-    return ChangeNotifierProvider(
-      create: (_) => PuzzleLobbyProvider(PuzzleService())..loadPuzzles(),
-      child: ListView(
-        padding: EdgeInsets.fromLTRB(24.0, topPadding, 24.0, 120.0),
-        children: [
-          if (user != null) UserHeader(user: user),
-          const SizedBox(height: 24),
-          const _ActionButtonsSection(),
-          const SizedBox(height: 24),
-          const LiveTopPlayersWidget(),
-          const SizedBox(height: 24),
-          if (user != null) RecentGames(userId: user.id),
-        ],
+    return RefreshIndicator(
+      onRefresh: () => _refreshData(context),
+      color: AppTheme.kColorAccent,
+      backgroundColor: Colors.grey[900],
+      child: ChangeNotifierProvider(
+        create: (_) => PuzzleLobbyProvider(PuzzleService())..loadPuzzles(),
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(24.0, topPadding, 24.0, 120.0),
+          children: [
+            if (user != null) UserHeader(user: user),
+            const SizedBox(height: 24),
+            const _ActionButtonsSection(),
+            const SizedBox(height: 24),
+            if (user != null) RecentGames(userId: user.id),
+            const SizedBox(height: 24),
+            const LiveTopPlayersWidget(),
+          ],
+        ),
       ),
     );
   }
@@ -71,6 +82,7 @@ class _ActionButtonsSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
+        // Puzzles section - two buttons in one row
         Row(
           children: [
             Expanded(
@@ -81,11 +93,12 @@ class _ActionButtonsSection extends StatelessWidget {
                     builder: (_) => const PuzzleLobbyScreen())),
               ),
             ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: const _DailyPuzzleButton(),
+            ),
           ],
         ),
-        const SizedBox(height: 16),
-
-        const _DailyPuzzleButton(),
       ],
     );
   }
@@ -144,22 +157,15 @@ class _DailyPuzzleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final puzzleProvider = context.watch<PuzzleLobbyProvider>();
 
-    String text = 'Daily Puzzle';
+    String text = 'Daily\nPuzzle';
     IconData icon = Icons.calendar_today_outlined;
     VoidCallback? onTap;
-    Widget? leadingWidget;
+    bool isLoading = false;
 
     switch (puzzleProvider.state) {
       case LobbyState.loading:
-        text = 'Loading Puzzle...';
-        leadingWidget = const SizedBox(
-          width: 18,
-          height: 18,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: AppTheme.kColorTextPrimary,
-          ),
-        );
+        text = 'Loading...';
+        isLoading = true;
         onTap = null;
         break;
       case LobbyState.loaded:
@@ -172,36 +178,55 @@ class _DailyPuzzleButton extends StatelessWidget {
             ));
           };
         } else {
-          text = 'Puzzle Unavailable';
+          text = 'Tap to\nRetry';
           icon = Icons.refresh;
           onTap = () => puzzleProvider.refreshPuzzles();
         }
         break;
       case LobbyState.error:
-        text = 'Tap to Retry';
+        text = 'Tap to\nRetry';
         icon = Icons.refresh;
         onTap = () => puzzleProvider.refreshPuzzles();
         break;
     }
 
     return GestureDetector(
-      onTap: onTap,
-      child: GlassPanel(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            leadingWidget ?? Icon(icon, color: AppTheme.kColorTextPrimary),
-            const SizedBox(width: 12),
-            Text(
-              text,
-              style: const TextStyle(
-                fontSize: 18,
-                color: AppTheme.kColorTextPrimary,
-                fontWeight: FontWeight.w600,
+      onTap: () {
+        if (onTap != null) {
+          HapticFeedback.lightImpact();
+          onTap();
+        }
+      },
+      child: AspectRatio(
+        aspectRatio: 1.0,
+        child: GlassPanel(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isLoading)
+                const SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: AppTheme.kColorTextPrimary,
+                  ),
+                )
+              else
+                Icon(icon, color: AppTheme.kColorTextPrimary, size: 48),
+              const SizedBox(height: 16),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: AppTheme.kColorTextPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

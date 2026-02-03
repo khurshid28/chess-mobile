@@ -18,12 +18,8 @@ import 'package:chess_park/providers/auth_provider.dart';
 import 'package:chess_park/screens/auth_screen.dart';
 import 'package:chess_park/screens/home_screen.dart';
 import 'package:chess_park/theme/app_theme.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +32,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
  );}
 
+  // Set Firebase Auth language code to prevent null locale warning
+  FirebaseAuth.instance.setLanguageCode('en');
+
+  // Temporarily disabled for real device testing
+  // Enable this only when testing on emulator
+  /*
   if (kDebugMode) {
     try {
        final String host = (!kIsWeb && Platform.isAndroid) ? '10.0.2.2' : 'localhost';
@@ -48,7 +50,20 @@ void main() async {
     } catch (e) {
       print("Failed to connect to emulators: $e");
     }
+  } else {
+    // Only activate App Check in production (not in emulator mode)
+    try {
+      await FirebaseAppCheck.instance.activate(
+        androidProvider: AndroidProvider.playIntegrity,
+        appleProvider: AppleProvider.appAttest,
+        webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+      );
+      print("Firebase App Check activated.");
+    } catch (e) {
+      print("Failed to activate App Check: $e");
+    }
   }
+  */
 
   final settingsProvider = SettingsProvider();
   final serverTimeProvider = ServerTimeProvider();

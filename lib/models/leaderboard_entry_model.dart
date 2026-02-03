@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class LeaderboardEntryModel {
   final String userId;
   final String displayName;

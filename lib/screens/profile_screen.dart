@@ -4,7 +4,6 @@ import 'package:chess_park/models/user_model.dart';
 import 'package:chess_park/providers/auth_provider.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
-import 'package:chess_park/widgets/recent_games.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
           _kVerticalSpacer,
           _StatsGrid(user: user),
           _kVerticalSpacer,
-          RecentGames(userId: user.id),
+          _LogoutButton(),
         ],
       ),
     );
@@ -151,7 +150,76 @@ class _ProfileHeader extends StatelessWidget {
     );
   }
 }
+class _LogoutButton extends StatelessWidget {
+  const _LogoutButton();
 
+  @override
+  Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    return GlassPanel(
+      padding: const EdgeInsets.all(16.0),
+      child: InkWell(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Colors.grey[900],
+                title: const Text(
+                  'Chiqish',
+                  style: TextStyle(color: AppTheme.kColorTextPrimary),
+                ),
+                content: const Text(
+                  'Haqiqatan ham chiqmoqchimisiz?',
+                  style: TextStyle(color: AppTheme.kColorTextSecondary),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'Yo\'q',
+                      style: TextStyle(color: AppTheme.kColorTextSecondary),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      authProvider.signOut();
+                    },
+                    child: const Text(
+                      'Ha',
+                      style: TextStyle(color: AppTheme.kColorAccent),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.logout,
+              color: Colors.redAccent,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Chiqish',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class _StatsGrid extends StatelessWidget {
   const _StatsGrid({required this.user});

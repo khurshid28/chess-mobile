@@ -243,6 +243,8 @@ class AuthProvider with ChangeNotifier {
       return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
+    } catch (e) {
+      return "An unexpected error occurred during sign-in.";
     }
   }
 

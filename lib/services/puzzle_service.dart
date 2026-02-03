@@ -4,6 +4,8 @@ import 'package:chess_park/models/puzzle_model.dart';
 
 class PuzzleService {
     final String _baseUrl = 'https://lichess.org/api/puzzle';
+    DateTime? _lastRequestTime;
+    static const _requestDelay = Duration(milliseconds: 700);
 
   
   Future<PuzzleModel> getDailyPuzzle() async {
@@ -13,7 +15,17 @@ class PuzzleService {
 
   
   Future<PuzzleModel> getRandomPuzzle() async {
-    return _fetchPuzzle('$_baseUrl/next');
+    // Rate limiting - wait between requests
+    if (_lastRequestTime != null) {
+      final elapsed = DateTime.now().difference(_lastRequestTime!);
+      if (elapsed < _requestDelay) {
+        await Future.delayed(_requestDelay - elapsed);
+      }
+    }
+    
+    final result = await _fetchPuzzle('$_baseUrl/next');
+    _lastRequestTime = DateTime.now();
+    return result;
   }
 
   
@@ -23,7 +35,7 @@ class PuzzleService {
       final response = await http.get(
         Uri.parse(url),
         headers: {'Accept': 'application/json'},
-      );
+      ).timeout(const Duration(seconds: 20));
 
       if (response.statusCode == 200) {
         String responseBody = response.body;
@@ -34,13 +46,16 @@ class PuzzleService {
 
         final data = json.decode(responseBody);
         return PuzzleModel.fromJson(data);
+      } else if (response.statusCode == 429) {
+        // Rate limited - throw specific error
+        throw Exception('Juda ko\'p so\'rov. Iltimos bir oz kuting.');
       } else {
         
-        throw Exception('Failed to load puzzle (Status: ${response.statusCode})');
+        throw Exception('Puzzle yuklashda xatolik (Status: ${response.statusCode})');
       }
     } catch (e) {
       
-      throw Exception('Error fetching puzzle: $e');
+      throw Exception('Puzzle yuklashda xatolik: $e');
     }
   }
 }

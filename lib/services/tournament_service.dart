@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/tournament_model.dart';
 import '../models/tournament_participant_model.dart';
@@ -228,7 +227,6 @@ class TournamentService {
 
       // If less than 16 players, add byes
       final totalPlayers = participants.length;
-      final byes = 16 - totalPlayers;
 
       // Standard bracket pairing: 1 vs 16, 2 vs 15, 3 vs 14, etc.
       final pairings = [

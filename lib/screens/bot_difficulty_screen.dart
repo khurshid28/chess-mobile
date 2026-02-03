@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:dartchess/dartchess.dart';
 import '../models/bot_personality_model.dart';
 import '../providers/bot_game_provider.dart';
+import '../providers/auth_provider.dart';
 import '../widgets/glass_panel.dart';
+import '../services/logger_service.dart';
 import 'game_screen.dart';
 
 class BotDifficultyScreen extends StatefulWidget {
@@ -39,7 +41,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 32.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -308,18 +310,40 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
     if (_selectedDifficulty == null) return;
 
     final provider = context.read<BotGameProvider>();
+    final authProvider = context.read<AuthProvider>();
+    
+    AppLogger().info('🎮 Starting bot game from difficulty screen');
+    
+    // Check if user is logged in
+    if (authProvider.userModel == null) {
+      AppLogger().warning('⚠️ User not logged in');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Iltimos, tizimga kiring')),
+        );
+      }
+      return;
+    }
+    
+    AppLogger().debug('Creating bot game with difficulty: $_selectedDifficulty, userId: ${authProvider.userModel!.id}');
+    
     await provider.createBotGame(
       bot: widget.bot,
       difficulty: _selectedDifficulty!,
       timeControl: _selectedTimeMinutes * 60,
       userSide: _selectedSide,
+      userId: authProvider.userModel!.id,
     );
+
+    AppLogger().info('✅ Bot game created, navigating to GameScreen');
 
     if (mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const GameScreen(isBotGame: true)),
       );
+      
+      AppLogger().debug('Navigation completed to GameScreen');
     }
   }
 }

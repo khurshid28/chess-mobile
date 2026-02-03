@@ -241,17 +241,6 @@ class _QuickActionsSheet extends StatelessWidget {
                 },
               ),
               _QuickActionButton(
-                icon: Icons.archive,
-                label: 'Archive',
-                onTap: () {
-                  Navigator.pop(context);
-                  if (user != null) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => GameHistoryScreen(userId: user.id)));
-                  }
-                },
-              ),
-              _QuickActionButton(
                 icon: Icons.leaderboard,
                 label: 'Leaderboard',
                 onTap: () {

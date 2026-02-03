@@ -12,27 +12,48 @@ class PuzzleLobbyProvider with ChangeNotifier {
   LobbyState _state = LobbyState.loading;
   List<PuzzleModel> _puzzles = [];
   String? _errorMessage;
+  bool _isDisposed = false;
+  DateTime? _lastFetchTime;
+  static const _fetchCooldown = Duration(seconds: 10);
 
   LobbyState get state => _state;
   List<PuzzleModel> get puzzles => _puzzles;
   String? get errorMessage => _errorMessage;
 
-  
-  final int _randomPuzzleCount = 20;
-
-  
-
   Future<void> loadPuzzles() async {
+    if (_isDisposed) return;
     
     if (_state == LobbyState.loaded && _puzzles.isNotEmpty) return;
+
+    // Check cooldown to prevent rate limiting
+    if (_lastFetchTime != null && 
+        DateTime.now().difference(_lastFetchTime!) < _fetchCooldown) {
+      debugPrint('Puzzle fetch cooldown active, skipping...');
+      return;
+    }
 
     await _fetchPuzzles();
   }
 
   Future<void> refreshPuzzles() async {
+    if (_isDisposed) return;
+    
+    // Check cooldown
+    if (_lastFetchTime != null && 
+        DateTime.now().difference(_lastFetchTime!) < _fetchCooldown) {
+      debugPrint('Please wait before refreshing puzzles again');
+      return;
+    }
+    
     _state = LobbyState.loading;
-    notifyListeners();
+    _safeNotifyListeners();
     await _fetchPuzzles();
+  }
+
+  void _safeNotifyListeners() {
+    if (!_isDisposed) {
+      notifyListeners();
+    }
   }
 
   
@@ -48,21 +69,34 @@ class PuzzleLobbyProvider with ChangeNotifier {
   }
 
   Future<void> _fetchPuzzles() async {
+    if (_isDisposed) return;
+    
     _errorMessage = null;
+    _lastFetchTime = DateTime.now();
 
-    
-    List<Future<PuzzleModel?>> futures = [];
+    List<PuzzleModel?> results = [];
 
+    // Load daily puzzle first
+    final dailyPuzzle = await _fetchSafely(_puzzleService.getDailyPuzzle, "daily");
+    results.add(dailyPuzzle);
     
-    futures.add(_fetchSafely(_puzzleService.getDailyPuzzle, "daily"));
+    if (_isDisposed) return;
 
-    
-    for (int i = 0; i < _randomPuzzleCount; i++) {
-      futures.add(_fetchSafely(_puzzleService.getRandomPuzzle, "random"));
+    // Load random puzzles one by one with delays to avoid rate limiting
+    final puzzleCount = 3; // Load only 3 random puzzles
+    for (int i = 0; i < puzzleCount; i++) {
+      if (_isDisposed) return;
+      
+      // Wait before each request
+      await Future.delayed(const Duration(milliseconds: 800));
+      
+      final puzzle = await _fetchSafely(_puzzleService.getRandomPuzzle, "random");
+      if (puzzle != null) {
+        results.add(puzzle);
+      }
     }
-
     
-    final results = await Future.wait(futures);
+    if (_isDisposed) return;
     
     var loadedPuzzles = results.whereType<PuzzleModel>().toList();
 
@@ -94,11 +128,17 @@ class PuzzleLobbyProvider with ChangeNotifier {
 
     if (_puzzles.isEmpty) {
       _state = LobbyState.error;
-      _errorMessage = "Could not load any puzzles. Please check your connection.";
+      _errorMessage = "Puzzlelarni yuklashda xatolik. Internetni tekshiring.";
     } else {
       _state = LobbyState.loaded;
     }
 
-    notifyListeners();
+    _safeNotifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 }
