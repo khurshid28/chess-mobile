@@ -131,11 +131,14 @@ class BotEngine {
     final isWhite = position.turn == Side.white;
     int movesEvaluated = 0;
     
-    // Limit search depth to prevent crashes
-    final safeDepth = difficulty.searchDepth.clamp(1, 4);
+    // Limit search depth to prevent crashes and freezing
+    // Depth 5 = ~3.2M positions, Depth 6 = ~64M, Depth 7 = ~1.28B
+    final safeDepth = difficulty.searchDepth.clamp(1, 5);
     if (safeDepth != difficulty.searchDepth) {
       AppLogger().warning('⚠️ Search depth limited from ${difficulty.searchDepth} to $safeDepth');
     }
+    
+    AppLogger().debug('🔍 Starting minimax search with depth $safeDepth');
 
     // legalMoves is IMap<Square, SquareSet> - from square to destination squares
     for (final entry in legalMoves.entries) {
@@ -158,10 +161,15 @@ class BotEngine {
 
           movesEvaluated++;
           
+          // Progress logging every 5 moves
+          if (movesEvaluated % 5 == 0) {
+            AppLogger().debug('  Evaluated $movesEvaluated moves so far...');
+          }
+          
           if (score > bestScore) {
             bestScore = score;
             bestMove = move;
-            AppLogger().debug('  New best: ${move.uci} (score: $score)');
+            AppLogger().debug('  ✨ New best: ${move.uci} (score: $score)');
           }
         } catch (e, stackTrace) {
           AppLogger().error('❌ Error evaluating move ${move.uci}', e, stackTrace);

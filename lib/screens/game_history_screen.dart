@@ -8,6 +8,7 @@ import 'package:chess_park/widgets/game_history_tile.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:chess_park/screens/game_review_screen.dart';
+import 'package:dartchess/dartchess.dart' as dartchess;
 
 class GameHistoryScreen extends StatelessWidget {
   final String userId;
@@ -164,6 +165,7 @@ class _BotGameHistoryTile extends StatelessWidget {
               opponentAccuracy: 75.0,
               playerRating: null,
               opponentRating: game.botRating,
+              userSide: game.userSide == 'white' ? dartchess.Side.white : dartchess.Side.black,
             ),
           ),
         );

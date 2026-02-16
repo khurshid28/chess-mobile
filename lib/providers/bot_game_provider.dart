@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:dartchess/dartchess.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/bot_personality_model.dart';
 import '../models/bot_game_history_model.dart';
 import '../services/bot_engine.dart';
@@ -21,6 +22,7 @@ class BotGameProvider extends ChangeNotifier {
   String? _gameResult;
   String? _gameResultReason;
   List<String> _moveHistory = [];
+  List<String> _positionHistory = []; // FEN history for threefold repetition
   int _timeControlSeconds = 0;
   bool _isGameOver = false;
   String? _userId;
@@ -97,6 +99,7 @@ class BotGameProvider extends ChangeNotifier {
     _userId = userId;
     _position = Chess.initial;
     _moveHistory = [];
+    _positionHistory = [Chess.initial.fen]; // Start with initial position
     _gameResult = null;
     _gameResultReason = null;
     _isGameOver = false;
@@ -111,6 +114,10 @@ class BotGameProvider extends ChangeNotifier {
     // If bot has white (user has black), bot moves first
     if (_userSide == Side.black) {
       AppLogger().info('🤖 Bot has white, making first move...');
+      // Wait 4-5 seconds before bot's first move
+      final initialDelay = 4000 + _random.nextInt(1000); // 4-5 seconds
+      AppLogger().info('⏳ Waiting ${initialDelay}ms before bot\'s first move...');
+      await Future.delayed(Duration(milliseconds: initialDelay));
       await _makeBotMove();
     } else {
       AppLogger().info('✅ Game created. User has white and moves first.');
@@ -177,17 +184,33 @@ class BotGameProvider extends ChangeNotifier {
 
   /// Make a user move
   Future<bool> makeUserMove(Move move) async {
-    if (_isGameOver) return false;
-    if (_position.turn != _userSide) return false;
+    AppLogger().info('🎮 makeUserMove called: ${move.uci}');
+    AppLogger().info('🎮 Is game over: $_isGameOver');
+    AppLogger().info('🎮 Current turn: ${_position.turn}, User side: $_userSide');
+    
+    if (_isGameOver) {
+      AppLogger().warning('⚠️ Game is already over');
+      return false;
+    }
+    if (_position.turn != _userSide) {
+      AppLogger().warning('⚠️ Not user\'s turn');
+      return false;
+    }
     
     // Check if move is legal - legalMoves is IMap<Square, SquareSet>
     final legalMoves = _position.legalMoves;
     bool moveExists = false;
+    
+    // Get base UCI (first 4 characters for from-to)
+    final baseUci = move.uci.substring(0, 4);
+    
     for (final entry in legalMoves.entries) {
       final from = Square(entry.key);
       for (final toInt in entry.value.squares) {
         final to = Square(toInt);
-        if ('${from.name}${to.name}' == move.uci) {
+        final checkUci = '${from.name}${to.name}';
+        // Check if base move matches (ignore promotion piece for now)
+        if (checkUci == baseUci) {
           moveExists = true;
           break;
         }
@@ -195,21 +218,28 @@ class BotGameProvider extends ChangeNotifier {
       if (moveExists) break;
     }
     
-    if (!moveExists) return false;
+    if (!moveExists) {
+      AppLogger().warning('⚠️ Move ${move.uci} is not legal');
+      return false;
+    }
 
     // Apply the move
     AppLogger().info('👤 User: ${move.uci}');
     _position = _position.playUnchecked(move);
     _moveHistory.add(move.uci);
+    _positionHistory.add(_position.fen); // Track position for repetition
     notifyListeners();
 
     // Check game over after user move
     if (_checkGameOver()) {
+      AppLogger().info('🏁 Game over after user move');
       return true;
     }
 
     // Bot's turn
+    AppLogger().info('🤖 Calling _makeBotMove...');
     await _makeBotMove();
+    AppLogger().info('✅ _makeBotMove completed');
     return true;
   }
 
@@ -227,23 +257,37 @@ class BotGameProvider extends ChangeNotifier {
 
   /// Make a bot move
   Future<void> _makeBotMove() async {
-    if (_isGameOver) return;
-    if (_position.turn == _userSide) return;
+    AppLogger().info('🤖 _makeBotMove started');
+    
+    if (_isGameOver) {
+      AppLogger().warning('⚠️ Bot move cancelled: game is over');
+      return;
+    }
+    if (_position.turn == _userSide) {
+      AppLogger().warning('⚠️ Bot move cancelled: not bot\'s turn');
+      return;
+    }
 
     _isThinking = true;
     notifyListeners();
+    AppLogger().info('🎯 Bot is thinking...');
 
     // Calculate thinking time based on difficulty
     final thinkTime = _calculateThinkTime();
+    AppLogger().debug('⏱️ Bot think time: ${thinkTime}ms');
     await Future.delayed(Duration(milliseconds: thinkTime));
 
     try {
+      AppLogger().info('🔍 Calling bot engine...');
       final botMove = await _botEngine.getBestMove(_position, _currentDifficulty!);
+      AppLogger().info('📬 Bot engine returned: ${botMove?.uci ?? "null"}');
       
       if (botMove != null) {
         AppLogger().info('🤖 Bot played: ${botMove.uci}');
         _position = _position.playUnchecked(botMove);
         _moveHistory.add(botMove.uci);
+        _positionHistory.add(_position.fen); // Track position for repetition
+        AppLogger().info('✅ Bot move applied successfully');
       } else {
         AppLogger().warning('⚠️ Bot move is null - no valid moves?');
       }
@@ -253,10 +297,11 @@ class BotGameProvider extends ChangeNotifier {
 
     _isThinking = false;
     notifyListeners();
+    AppLogger().info('🏁 Bot thinking finished');
 
     final isOver = _checkGameOver();
     if (isOver) {
-      AppLogger().info('🏁 Game over');
+      AppLogger().info('🏁 Game over after bot move');
     }
   }
 
@@ -302,7 +347,7 @@ class BotGameProvider extends ChangeNotifier {
     if (position.isInsufficientMaterial) {
       _isGameOver = true;
       _gameResult = '1/2-1/2';
-      _gameResultReason = 'Draw';
+      _gameResultReason = 'Draw - Insufficient Material';
       _timer?.cancel();
       AppLogger().info('🤝 Draw - insufficient material. Timer cancelled.');
       _saveGameHistory();
@@ -310,6 +355,41 @@ class BotGameProvider extends ChangeNotifier {
       return true;
     }
 
+    // Check for threefold repetition
+    if (_checkThreefoldRepetition()) {
+      _isGameOver = true;
+      _gameResult = '1/2-1/2';
+      _gameResultReason = 'Draw - Threefold Repetition';
+      _timer?.cancel();
+      AppLogger().info('🔁 Draw - threefold repetition. Timer cancelled.');
+      _saveGameHistory();
+      notifyListeners();
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Check for threefold repetition
+  bool _checkThreefoldRepetition() {
+    if (_positionHistory.isEmpty) return false;
+
+    final currentFen = _position.fen;
+    // Count how many times current position appeared
+    int count = 0;
+    for (final fen in _positionHistory) {
+      // Compare only position part of FEN (ignore move counters)
+      final currentPosition = currentFen.split(' ').take(4).join(' ');
+      final historyPosition = fen.split(' ').take(4).join(' ');
+      if (currentPosition == historyPosition) {
+        count++;
+      }
+    }
+
+    if (count >= 3) {
+      AppLogger().info('🔁 Threefold repetition detected! Count: $count');
+      return true;
+    }
     return false;
   }
 
@@ -357,6 +437,27 @@ class BotGameProvider extends ChangeNotifier {
 
       // Save to SQLite database
       await BotGameDatabase.instance.insertGame(gameHistory);
+      
+      // Update user's Elo in Firestore
+      if (ratingChange != 0) {
+        try {
+          final userRef = FirebaseFirestore.instance.collection('users').doc(_userId!);
+          await FirebaseFirestore.instance.runTransaction((transaction) async {
+            final userDoc = await transaction.get(userRef);
+            if (userDoc.exists) {
+              final currentElo = userDoc.data()?['elo'] ?? 1200;
+              final newElo = max(100, currentElo + ratingChange);
+              transaction.update(userRef, {
+                'elo': newElo,
+                'gamesPlayed': FieldValue.increment(1),
+              });
+              AppLogger().info('✅ User Elo updated: $currentElo → $newElo (change: $ratingChange)');
+            }
+          });
+        } catch (e, stackTrace) {
+          AppLogger().error('❌ Error updating user Elo in Firestore', e, stackTrace);
+        }
+      }
       
       AppLogger().info('✅ Bot game saved successfully to database');
     } catch (e, stackTrace) {

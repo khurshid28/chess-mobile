@@ -185,8 +185,8 @@ class _BotGameViewState extends State<BotGameView> {
                     Flexible(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
-                          minHeight: 40,
-                          maxHeight: 55,
+                          minHeight: 50,
+                          maxHeight: 70,
                         ),
                         child: _buildMoveHistory(botGameProvider),
                       ),
@@ -264,6 +264,7 @@ class _BotGameViewState extends State<BotGameView> {
           : ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              physics: const BouncingScrollPhysics(),
               itemCount: moves.length,
               itemBuilder: (context, index) {
                 final isLastMove = index == lastMoveIndex;
@@ -313,8 +314,8 @@ class _BotGameViewState extends State<BotGameView> {
   Widget _buildBotPlayerInfo(String name, int rating) {
     final botGameProvider = context.watch<BotGameProvider>();
     final timeLeft = botGameProvider.botTimeLeft;
-    final minutes = timeLeft ~/ 60;
-    final seconds = timeLeft % 60;
+    final minutes = (timeLeft ~/ 60).toString().padLeft(2, '0');
+    final seconds = (timeLeft % 60).toString().padLeft(2, '0');
     final isBotTurn = !botGameProvider.isUserTurn;
     
     return GlassPanel(
@@ -358,39 +359,24 @@ class _BotGameViewState extends State<BotGameView> {
                 ],
               ),
             ),
-            // Turn indicator
-            if (isBotTurn && !botGameProvider.isGameOver)
-              Container(
-                margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: Colors.orange, width: 2),
-                ),
-                child: const Icon(
-                  Icons.circle,
-                  color: Colors.orange,
-                  size: 12,
-                ),
-              ),
-            // Timer display with border when it's bot's turn
+            // Timer display with border
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: timeLeft < 60 
-                    ? Colors.red.withOpacity(0.3)
-                    : Colors.white.withOpacity(0.1),
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
-                border: isBotTurn && !botGameProvider.isGameOver
-                    ? Border.all(color: Colors.orange, width: 3)
-                    : null,
+                border: Border.all(
+                  color: isBotTurn && !botGameProvider.isGameOver 
+                      ? Colors.orange 
+                      : (timeLeft < 60 ? Colors.red : Colors.white.withOpacity(0.5)),
+                  width: 2,
+                ),
               ),
               child: Text(
-                '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                '$minutes:$seconds',
                 style: TextStyle(
                   color: timeLeft < 60 ? Colors.red : Colors.white,
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   fontFeatures: const [FontFeature.tabularFigures()],
                 ),
@@ -405,8 +391,8 @@ class _BotGameViewState extends State<BotGameView> {
   Widget _buildUserPlayerInfo(String name, int rating) {
     final botGameProvider = context.watch<BotGameProvider>();
     final timeLeft = botGameProvider.userTimeLeft;
-    final minutes = timeLeft ~/ 60;
-    final seconds = timeLeft % 60;
+    final minutes = (timeLeft ~/ 60).toString().padLeft(2, '0');
+    final seconds = (timeLeft % 60).toString().padLeft(2, '0');
     final isUserTurn = botGameProvider.isUserTurn;
     
     return GlassPanel(
@@ -450,39 +436,24 @@ class _BotGameViewState extends State<BotGameView> {
                 ],
               ),
             ),
-            // Turn indicator
-            if (isUserTurn && !botGameProvider.isGameOver)
-              Container(
-                margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: Colors.green, width: 2),
-                ),
-                child: const Icon(
-                  Icons.circle,
-                  color: Colors.green,
-                  size: 12,
-                ),
-              ),
-            // Timer display with border when it's user's turn
+            // Timer display with border
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: timeLeft < 60 
-                    ? Colors.red.withOpacity(0.3)
-                    : Colors.white.withOpacity(0.1),
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
-                border: isUserTurn && !botGameProvider.isGameOver
-                    ? Border.all(color: Colors.green, width: 3)
-                    : null,
+                border: Border.all(
+                  color: isUserTurn && !botGameProvider.isGameOver 
+                      ? Colors.green 
+                      : (timeLeft < 60 ? Colors.red : Colors.white.withOpacity(0.5)),
+                  width: 2,
+                ),
               ),
               child: Text(
-                '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                '$minutes:$seconds',
                 style: TextStyle(
                   color: timeLeft < 60 ? Colors.red : Colors.white,
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   fontFeatures: const [FontFeature.tabularFigures()],
                 ),
@@ -533,6 +504,16 @@ class _BotGameViewState extends State<BotGameView> {
   void _handleMove(BuildContext context, dartchess.NormalMove move) async {
     final provider = context.read<BotGameProvider>();
     
+    print('🎯 _handleMove called with: ${move.uci}');
+    print('🎯 Is user turn: ${provider.isUserTurn}');
+    print('🎯 Is game over: ${provider.isGameOver}');
+    
+    // Don't allow moves if not user's turn or game is over
+    if (!provider.isUserTurn || provider.isGameOver) {
+      print('❌ Cannot move: not user turn or game over');
+      return;
+    }
+    
     // Check if this is a pawn promotion move
     final from = dartchess.Square(move.from);
     final to = dartchess.Square(move.to);
@@ -548,14 +529,20 @@ class _BotGameViewState extends State<BotGameView> {
     }
     
     if (isPromotion) {
+      print('👑 Promotion move detected');
       // Show promotion dialog
       final selectedRole = await _showPromotionDialog(context);
-      if (selectedRole == null) return; // User cancelled
+      if (selectedRole == null) {
+        print('❌ Promotion cancelled');
+        return;
+      }
       
       // Create promotion move with the selected role
       final promotionMove = dartchess.Move.parse('${move.uci}${_roleToChar(selectedRole)}');
       if (promotionMove != null) {
+        print('✅ Making promotion move: ${promotionMove.uci}');
         final success = await provider.makeUserMove(promotionMove);
+        print('📊 Promotion move result: $success');
         if (!success && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -575,7 +562,9 @@ class _BotGameViewState extends State<BotGameView> {
         );
       }
     } else {
+      print('♟️ Normal move');
       final success = await provider.makeUserMove(move);
+      print('📊 Move result: $success');
       
       if (!success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -585,6 +574,8 @@ class _BotGameViewState extends State<BotGameView> {
             backgroundColor: Colors.red,
           ),
         );
+      } else {
+        print('✅ User move successful, bot should move next');
       }
     }
   }
@@ -875,6 +866,7 @@ class _BotGameViewState extends State<BotGameView> {
                     opponentAccuracy: botAccuracy,
                     playerRating: authProvider.userModel?.elo ?? 1200,
                     opponentRating: provider.botDisplayRating,
+                    userSide: provider.userSide, // Pass user's playing color
                   ),
                 ),
               );

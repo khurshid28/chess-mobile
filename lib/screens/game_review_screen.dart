@@ -17,6 +17,7 @@ class GameReviewScreen extends StatefulWidget {
   final double? opponentAccuracy;
   final int? playerRating;
   final int? opponentRating;
+  final dartchess.Side? userSide; // User's playing color
 
   const GameReviewScreen({
     super.key,
@@ -29,6 +30,7 @@ class GameReviewScreen extends StatefulWidget {
     this.opponentAccuracy,
     this.playerRating,
     this.opponentRating,
+    this.userSide, // Defaults to white if not provided
   });
 
   @override
@@ -39,6 +41,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
   int _currentMoveIndex = 0;
   late dartchess.Position _currentPosition;
   final List<dartchess.Position> _positions = [];
+  final ScrollController _moveScrollController = ScrollController();
   
   // Move evaluation counters for each player
   final Map<String, int> _playerMoveStats = {
@@ -66,6 +69,12 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
     super.initState();
     _buildPositions();
     _calculateMoveEvaluations();
+  }
+
+  @override
+  void dispose() {
+    _moveScrollController.dispose();
+    super.dispose();
   }
 
   void _buildPositions() {
@@ -106,6 +115,42 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       setState(() {
         _currentMoveIndex = index;
         _currentPosition = _positions[index];
+      });
+      
+      // Auto-scroll to current move in the horizontal list
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_moveScrollController.hasClients) return;
+        
+        if (index == 0) {
+          // Scroll to start when at initial position
+          _moveScrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        } else if (index <= widget.moveHistory.length) {
+          // index-1 because moveHistory ListView uses 0-based indexing
+          // and index 0 in ListView = moveIndex 1
+          final listViewIndex = index - 1;
+          
+          // Calculate approximate position
+          // Each item is roughly 75-85px wide (move text + padding + margins)
+          final itemWidth = 80.0;
+          final targetPosition = listViewIndex * itemWidth;
+          
+          // Get max scroll to handle last items properly
+          final maxScroll = _moveScrollController.position.maxScrollExtent;
+          
+          // For last few items, scroll to end to ensure full visibility
+          final isNearEnd = listViewIndex >= widget.moveHistory.length - 3;
+          final scrollPosition = isNearEnd ? maxScroll : targetPosition.clamp(0.0, maxScroll);
+          
+          _moveScrollController.animateTo(
+            scrollPosition,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        }
       });
     }
   }
@@ -155,7 +200,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                         height: screenWidth,
                         child: Chessboard(
                           size: screenWidth,
-                          orientation: dartchess.Side.white,
+                          orientation: widget.userSide ?? dartchess.Side.white,
                           fen: _currentPosition.fen,
                           settings: ChessboardSettings(
                             colorScheme: settingsProvider.currentBoardTheme,
@@ -232,23 +277,23 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
           ),
           const SizedBox(height: 12),
           
-          // Player cards with accuracy
+          // Player cards with accuracy (positioned based on board orientation)
           Row(
             children: [
               Expanded(
                 child: _buildPlayerCard(
-                  name: widget.playerName,
-                  rating: widget.playerRating,
-                  accuracy: widget.playerAccuracy,
+                  name: widget.userSide == dartchess.Side.black ? widget.opponentName : widget.playerName,
+                  rating: widget.userSide == dartchess.Side.black ? widget.opponentRating : widget.playerRating,
+                  accuracy: widget.userSide == dartchess.Side.black ? widget.opponentAccuracy : widget.playerAccuracy,
                   isLeft: true,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: _buildPlayerCard(
-                  name: widget.opponentName,
-                  rating: widget.opponentRating,
-                  accuracy: widget.opponentAccuracy,
+                  name: widget.userSide == dartchess.Side.black ? widget.playerName : widget.opponentName,
+                  rating: widget.userSide == dartchess.Side.black ? widget.playerRating : widget.opponentRating,
+                  accuracy: widget.userSide == dartchess.Side.black ? widget.playerAccuracy : widget.opponentAccuracy,
                   isLeft: false,
                 ),
               ),
@@ -360,14 +405,14 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
           const Divider(height: 1, color: Colors.white24, thickness: 1),
           Expanded(
             child: ListView.builder(
+              controller: _moveScrollController,
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               itemCount: widget.moveHistory.length,
+              physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 final moveIndex = index + 1;
                 final move = widget.moveHistory[index];
-                final isWhiteMove = index % 2 == 0;
-                final moveNum = (index ~/ 2) + 1;
                 
                 // Simple move evaluation based on position change
                 final evaluation = _evaluateMove(index);
@@ -392,19 +437,18 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Move text
+                        // Move text with sequential numbering
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (isWhiteMove)
-                              Text(
-                                '$moveNum. ',
-                                style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            Text(
+                              '$moveIndex. ',
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
                               ),
+                            ),
                             Text(
                               move,
                               style: const TextStyle(

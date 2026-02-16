@@ -180,6 +180,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           opponentName: opponentName,
           result: result,
           resultReason: widget.game.outcome ?? 'Game ended',
+          userSide: isUserWhite ? Side.white : Side.black,
         ),
       ),
     );
