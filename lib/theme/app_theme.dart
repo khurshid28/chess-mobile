@@ -144,7 +144,7 @@ class AppTheme {
   static const double kBorderRadius = 10.0;
 
 
-  static const Color kColorAccent = Color(0xFFF0B90B);
+  static const Color kColorAccent = Color(0xFF628141);
   static const Color kColorTextPrimary = Colors.white;
   static const Color kColorTextSecondary = Color.fromRGBO(255, 255, 255, 0.75);
   static const Color kColorWin = kColorAccent;
