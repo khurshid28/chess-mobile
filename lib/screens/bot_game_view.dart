@@ -59,7 +59,7 @@ class _BotGameViewState extends State<BotGameView> {
         body: Container(
           decoration: AppTheme.backgroundDecoration,
           child: const Center(
-            child: CircularProgressIndicator(color: AppTheme.kColorAccent),
+            child: CircularProgressIndicator(color: Colors.white),
           ),
         ),
       );

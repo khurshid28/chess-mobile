@@ -324,7 +324,7 @@ class _OnlineGamesViewState extends State<OnlineGamesView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(color: AppTheme.kColorAccent),
+              const CircularProgressIndicator(color: Colors.white),
               const SizedBox(height: 24),
               const Text("Searching for opponent...", style: TextStyle(fontSize: 18, color: AppTheme.kColorTextPrimary)),
               const SizedBox(height: 8),

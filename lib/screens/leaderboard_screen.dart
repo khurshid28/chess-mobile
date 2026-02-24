@@ -43,7 +43,7 @@ class _LeaderboardList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(color: AppTheme.kColorAccent),
+            child: CircularProgressIndicator(color: Colors.white),
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {

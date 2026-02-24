@@ -271,7 +271,7 @@ class _TournamentsScreenState extends State<TournamentsScreen>
       context: context,
       barrierDismissible: false,
       builder: (context) => const Center(
-        child: CircularProgressIndicator(color: AppTheme.kColorAccent),
+        child: CircularProgressIndicator(color: Colors.white),
       ),
     );
 

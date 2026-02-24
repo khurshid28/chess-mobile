@@ -190,7 +190,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
       return Scaffold(
         body: Container(
           decoration: AppTheme.backgroundDecoration,
-          child: const Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent,))
+          child: const Center(child: CircularProgressIndicator(color: Colors.white,))
         ),
       );
     }
@@ -739,7 +739,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
                       },
 
                       child: isPending
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.0, color: AppTheme.kColorAccent,))
+                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.0, color: Colors.white,))
                           : const Text('Rematch'),
                     );
                   }
@@ -1080,7 +1080,7 @@ class _DisconnectionOverlayState extends State<DisconnectionOverlay> {
                 if (_isClaiming) ...[
                    const Text('Claiming victory...', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
                    const SizedBox(height: 10),
-                   const CircularProgressIndicator(color: AppTheme.kColorAccent),
+                   const CircularProgressIndicator(color: Colors.white),
                 ]
                 else if (!_canClaim) ...[
                    const Text('Claim victory in:', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),

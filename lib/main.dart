@@ -136,7 +136,7 @@ class AuthWrapper extends StatelessWidget {
     const loadingView = Scaffold(
       body: DecoratedBox(
         decoration: AppTheme.backgroundDecoration,
-        child: Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent))
+        child: Center(child: CircularProgressIndicator(color: Colors.white))
       )
     );
 

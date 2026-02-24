@@ -46,7 +46,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     if (provider.isLoading || tournament == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Loading...')),
-        body: const Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent)),
+        body: const Center(child: CircularProgressIndicator(color: Colors.white)),
       );
     }
 

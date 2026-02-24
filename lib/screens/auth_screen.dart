@@ -238,7 +238,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         const SizedBox(height: 24),
                         if (_isLoading)
-                          const CircularProgressIndicator(color: AppTheme.kColorAccent)
+                          const CircularProgressIndicator(color: Colors.white)
                         else
                           SizedBox(
                             width: double.infinity,

@@ -96,7 +96,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 30),
-              const CircularProgressIndicator(color: AppTheme.kColorAccent),
+              const CircularProgressIndicator(color: Colors.white),
               const SizedBox(height: 40),
               ElevatedButton.icon(
                 icon: const Icon(Icons.send),

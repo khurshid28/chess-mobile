@@ -64,7 +64,7 @@ class PuzzleLobbyView extends StatelessWidget {
   Widget _buildBody(BuildContext context, PuzzleLobbyProvider provider) {
     switch (provider.state) {
       case LobbyState.loading:
-        return const Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent));
+        return const Center(child: CircularProgressIndicator(color: Colors.white));
       case LobbyState.error:
 
         return Center(
