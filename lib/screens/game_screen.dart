@@ -721,7 +721,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
                       },
                       child: isPending
 
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.0, color: Colors.black,))
+                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.0, color: Colors.white,))
                           : const Text('Accept Rematch'),
                     );
                   } else if (offerFromId == userId) {

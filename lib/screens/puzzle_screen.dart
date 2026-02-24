@@ -194,9 +194,9 @@ class PuzzleView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.check_circle, color: Colors.black),
+                Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
-                Text("Puzzle Solved!", style: TextStyle(color: Colors.black, fontSize: 18)),
+                Text("Puzzle Solved!", style: TextStyle(color: Colors.white, fontSize: 18)),
               ],
             ),
           ),

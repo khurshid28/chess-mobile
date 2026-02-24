@@ -5,6 +5,7 @@ import '../providers/tournament_provider.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/tournament_card.dart';
 import '../widgets/star_display.dart';
+import '../theme/app_theme.dart';
 import 'tournament_detail_screen.dart';
 
 class TournamentsScreen extends StatefulWidget {

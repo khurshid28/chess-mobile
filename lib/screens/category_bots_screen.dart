@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../models/bot_category_model.dart';
 import '../models/bot_personality_model.dart';
 import '../widgets/glass_panel.dart';
+import '../theme/app_theme.dart';
 import 'bot_difficulty_screen.dart';
 
 class CategoryBotsScreen extends StatelessWidget {

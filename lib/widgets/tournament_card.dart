@@ -72,17 +72,17 @@ class TournamentCard extends StatelessWidget {
                   Text(
                     _getTimeDisplay(timeUntilStart),
                     style: TextStyle(
-                      color: isStartingSoon ? Colors.orange : Colors.grey[700],
+                      color: isStartingSoon ? Colors.orange : Colors.white70,
                       fontWeight: isStartingSoon ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                   const Spacer(),
-                  Icon(Icons.people, size: 16, color: Colors.grey[700]),
+                  Icon(Icons.people, size: 16, color: Colors.white70),
                   const SizedBox(width: 4),
                   Text(
                     '${tournament.currentPlayers}/${tournament.maxPlayers}',
-                    style: TextStyle(
-                      color: Colors.grey[700],
+                    style: const TextStyle(
+                      color: Colors.white70,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

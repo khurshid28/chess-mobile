@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/bot_category_model.dart';
 import '../widgets/glass_panel.dart';
+import '../theme/app_theme.dart';
 import 'category_bots_screen.dart';
 
 class BotSelectionScreen extends StatelessWidget {
