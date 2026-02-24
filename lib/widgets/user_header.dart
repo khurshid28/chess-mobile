@@ -24,7 +24,7 @@ class UserHeader extends StatelessWidget {
 
           CircleAvatar(
             radius: 24,
-            backgroundColor: AppTheme.kColorTextPrimary.withAlpha(77),
+            backgroundColor: Colors.white24,
             backgroundImage: user.profileImage != null
                 ? CachedNetworkImageProvider(user.profileImage!)
                 : null,
@@ -96,7 +96,7 @@ class UserHeader extends StatelessWidget {
                   child: LinearProgressIndicator(
                     value: ratingProgress,
                     minHeight: 6,
-                    backgroundColor: AppTheme.kColorTextPrimary.withAlpha(102),
+                    backgroundColor: Colors.white30,
                     valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.kColorAccent),
                   ),
                 ),

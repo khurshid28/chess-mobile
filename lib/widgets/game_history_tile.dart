@@ -56,7 +56,7 @@ class GameHistoryTile extends StatelessWidget {
       },
       leading: CircleAvatar(
         radius: 22,
-        backgroundColor: AppTheme.kColorTextPrimary.withAlpha(77),
+        backgroundColor: Colors.white24,
         backgroundImage: opponentImage != null
             ? CachedNetworkImageProvider(opponentImage)
             : null,

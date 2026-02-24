@@ -38,7 +38,7 @@ class CategoryBadge extends StatelessWidget {
           Text(
             category.name.toUpperCase(),
             style: TextStyle(
-              color: AppTheme.kColorTextPrimary,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: size * 0.4,
             ),
@@ -48,7 +48,7 @@ class CategoryBadge extends StatelessWidget {
             Text(
               _getCategoryRange(),
               style: TextStyle(
-                color: AppTheme.kColorTextPrimary.withOpacity(0.9),
+                color: Colors.white.withOpacity(0.9),
                 fontSize: size * 0.3,
               ),
             ),

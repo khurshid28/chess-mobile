@@ -83,7 +83,7 @@ class StarCounter extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.kColorTextPrimary,
+                  color: Colors.white,
                 ),
               ),
             ],
@@ -93,7 +93,7 @@ class StarCounter extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: AppTheme.kColorTextPrimary.withOpacity(0.9),
+              color: Colors.white.withOpacity(0.9),
             ),
           ),
         ],

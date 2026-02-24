@@ -162,7 +162,7 @@ class RecentGames extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: games.length,
-                separatorBuilder: (context, index) => Divider(color: AppTheme.kColorTextPrimary.withAlpha(50), height: 1),
+                separatorBuilder: (context, index) => Divider(color: Colors.white.withAlpha(50), height: 1),
                 itemBuilder: (context, index) {
                   return _buildGameTile(context, games[index]);
                 },

@@ -150,7 +150,7 @@ class LeaderboardPodium extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.kColorTextPrimary,
+                color: Colors.white,
               ),
             ),
           ),

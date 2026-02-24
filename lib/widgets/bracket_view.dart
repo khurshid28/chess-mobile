@@ -47,7 +47,7 @@ class BracketView extends StatelessWidget {
           child: Text(
             round.roundName,
             style: const TextStyle(
-              color: AppTheme.kColorTextPrimary,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
@@ -65,7 +65,7 @@ class BracketView extends StatelessWidget {
       width: 200,
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: AppTheme.kBgColor1.withAlpha(242),
+        color: Colors.white.withAlpha(26),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: match.isCompleted ? Colors.green : Colors.grey[300]!,
@@ -170,7 +170,7 @@ class BracketView extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
-                  color: isWinner ? AppTheme.kColorTextPrimary : Colors.black,
+                  color: isWinner ? Colors.white : Colors.black,
                 ),
               ),
             ),

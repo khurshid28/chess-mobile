@@ -1075,7 +1075,7 @@ class _DisconnectionOverlayState extends State<DisconnectionOverlay> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Opponent Disconnected', style: TextStyle(fontSize: 24, color: AppTheme.kColorTextPrimary)),
+                const Text('Opponent Disconnected', style: TextStyle(fontSize: 24, color: Colors.white)),
                 const SizedBox(height: 20),
                 if (_isClaiming) ...[
                    const Text('Claiming victory...', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
@@ -1085,7 +1085,7 @@ class _DisconnectionOverlayState extends State<DisconnectionOverlay> {
                 else if (!_canClaim) ...[
                    const Text('Claim victory in:', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
 
-                   Text('$_secondsRemaining', style: TextStyle(fontSize: 48, color: AppTheme.kColorTextPrimary, fontWeight: FontWeight.bold)),
+                   Text('$_secondsRemaining', style: TextStyle(fontSize: 48, color: Colors.white, fontWeight: FontWeight.bold)),
                 ] else ...[
                    const Text('Opponent failed to reconnect.', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
                    const SizedBox(height: 20),

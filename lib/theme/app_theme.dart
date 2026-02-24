@@ -145,15 +145,15 @@ class AppTheme {
 
 
   static const Color kColorAccent = Color(0xFF628141);
-  static const Color kColorTextPrimary = Color(0xFF1A1A1A);
-  static const Color kColorTextSecondary = Color.fromRGBO(26, 26, 26, 0.75);
+  static const Color kColorTextPrimary = Colors.white;
+  static const Color kColorTextSecondary = Color.fromRGBO(255, 255, 255, 0.75);
   static const Color kColorWin = kColorAccent;
   static const Color kColorLoss = Color(0xFFF44336);
 
 
-  static const Color kBgColor1 = Color(0xFFB8C9A8);
-  static const Color kBgColor2 = Color(0xFFC5D0B8);
-  static const Color kBgColor3 = Color(0xFFAABB99);
+  static const Color kBgColor1 = Color(0xFF1A1A1A);
+  static const Color kBgColor2 = Color(0xFF222222);
+  static const Color kBgColor3 = Color(0xFF0F0F0F);
 
 
   static const BoxDecoration backgroundDecoration = BoxDecoration(
@@ -184,16 +184,16 @@ class AppTheme {
 
       scaffoldBackgroundColor: kBgColor2,
 
-      cardColor: Colors.white.withAlpha(242),
-     dividerColor: Colors.black.withAlpha(128),
+      cardColor: Colors.white.withAlpha(26),
+     dividerColor: Colors.white.withAlpha(38),
       colorScheme: const ColorScheme.dark(
         primary: kColorAccent,
         secondary: kColorAccent,
 
 
        surface: kBgColor2,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
+        onPrimary: Colors.black,
+        onSecondary: Colors.black,
         onSurface: kColorTextPrimary,
         error: kColorLoss,
         onError: Colors.white,
@@ -217,7 +217,7 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: kColorAccent,
-          foregroundColor: Colors.white,
+          foregroundColor: Colors.black,
           shape: RoundedRectangleBorder(
 
             borderRadius: BorderRadius.circular(kBorderRadius),
@@ -246,7 +246,7 @@ class AppTheme {
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-       fillColor: Colors.white.withAlpha(242),
+       fillColor: Colors.white.withAlpha(26),
 
         border: OutlineInputBorder(
 
