@@ -25,7 +25,7 @@ class CategoryBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(size * 0.2),
         boxShadow: [
           BoxShadow(
-            color: _getCategoryColor().withOpacity(0.3),
+            color: _getCategoryColor().withOpacity(0.12),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

@@ -353,7 +353,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.08),
             blurRadius: 10,
             spreadRadius: 2,
           ),

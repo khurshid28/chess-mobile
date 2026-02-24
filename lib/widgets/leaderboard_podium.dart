@@ -88,7 +88,7 @@ class LeaderboardPodium extends StatelessWidget {
             color: color,
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.4),
+                color: color.withOpacity(0.15),
                 blurRadius: 8,
                 spreadRadius: 2,
               ),
@@ -137,7 +137,7 @@ class LeaderboardPodium extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withOpacity(0.08),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

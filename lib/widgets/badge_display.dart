@@ -23,7 +23,7 @@ class BadgeDisplay extends StatelessWidget {
           gradient: _getBadgeGradient(),
           boxShadow: [
             BoxShadow(
-              color: _getBadgeColor().withOpacity(0.4),
+              color: _getBadgeColor().withOpacity(0.15),
               blurRadius: 8,
               spreadRadius: 2,
             ),
