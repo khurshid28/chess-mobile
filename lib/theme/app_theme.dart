@@ -151,9 +151,9 @@ class AppTheme {
   static const Color kColorLoss = Color(0xFFF44336);
 
 
-  static const Color kBgColor1 = Color(0xFF1A1A1A);
-  static const Color kBgColor2 = Color(0xFF222222);
-  static const Color kBgColor3 = Color(0xFF0F0F0F);
+  static const Color kBgColor1 = Color(0xFF2a3123);
+  static const Color kBgColor2 = Color(0xFF232a1c);
+  static const Color kBgColor3 = Color(0xFF1a2113);
 
 
   static const BoxDecoration backgroundDecoration = BoxDecoration(
