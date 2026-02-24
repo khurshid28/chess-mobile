@@ -209,6 +209,7 @@ class _DailyPuzzleButton extends StatelessWidget {
                   width: 32,
                   height: 32,
                   child: CircularProgressIndicator(
+                    color: AppTheme.kColorAccent,
                     strokeWidth: 3,
                     color: AppTheme.kColorTextPrimary,
                   ),

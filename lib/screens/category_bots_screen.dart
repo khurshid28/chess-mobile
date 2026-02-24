@@ -58,7 +58,7 @@ class CategoryBotsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Center(
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.kColorAccent),
                             ),
                           ),
                           errorWidget: (context, url, error) => Container(

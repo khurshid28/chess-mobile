@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/tournament_model.dart';
-import '../theme/app_theme.dart';
 
 class CategoryBadge extends StatelessWidget {
   final TournamentCategory category;
@@ -26,7 +25,7 @@ class CategoryBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(size * 0.2),
         boxShadow: [
           BoxShadow(
-            color: _getCategoryColor().withOpacity(0.12),
+            color: _getCategoryColor().withOpacity(0.4),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

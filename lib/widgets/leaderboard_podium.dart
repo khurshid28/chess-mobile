@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/leaderboard_entry_model.dart';
 import 'star_display.dart';
-import '../theme/app_theme.dart';
 
 class LeaderboardPodium extends StatelessWidget {
   final List<LeaderboardEntryModel> topThree;
@@ -89,7 +88,7 @@ class LeaderboardPodium extends StatelessWidget {
             color: color,
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.15),
+                color: color.withOpacity(0.5),
                 blurRadius: 8,
                 spreadRadius: 2,
               ),
@@ -138,7 +137,7 @@ class LeaderboardPodium extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withOpacity(0.4),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

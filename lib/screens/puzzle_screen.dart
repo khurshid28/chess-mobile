@@ -56,7 +56,7 @@ class PuzzleView extends StatelessWidget {
   Widget _buildBody(BuildContext context, PuzzleProvider provider, SettingsProvider settingsProvider) {
 
     if (provider.state == PuzzleState.loading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent));
     }
 
 

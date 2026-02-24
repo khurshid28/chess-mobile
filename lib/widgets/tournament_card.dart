@@ -93,7 +93,7 @@ class TournamentCard extends StatelessWidget {
               // Progress bar
               LinearProgressIndicator(
                 value: tournament.currentPlayers / tournament.maxPlayers,
-                backgroundColor: Colors.grey[300],
+                backgroundColor: Colors.white12,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   tournament.isFull ? Colors.green : theme.primaryColor,
                 ),

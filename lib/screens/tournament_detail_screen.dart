@@ -4,7 +4,6 @@ import '../models/tournament_model.dart';
 import '../providers/tournament_provider.dart';
 import '../widgets/category_badge.dart';
 import '../widgets/bracket_view.dart';
-import '../theme/app_theme.dart';
 
 class TournamentDetailScreen extends StatefulWidget {
   final String tournamentId;
@@ -46,7 +45,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     if (provider.isLoading || tournament == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Loading...')),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent)),
       );
     }
 
