@@ -65,7 +65,7 @@ class BracketView extends StatelessWidget {
       width: 200,
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.kBgColor1.withAlpha(242),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: match.isCompleted ? Colors.green : Colors.grey[300]!,

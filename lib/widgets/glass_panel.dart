@@ -29,7 +29,7 @@ class GlassPanel extends StatelessWidget {
         borderRadius: radius,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(230),
+            color: Colors.black.withAlpha(25),
             blurRadius: 30.0,
             spreadRadius: -5.0,
           ),
@@ -88,7 +88,7 @@ class GlassPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final BorderRadius radius = BorderRadius.circular(borderRadius);
 
-    final Color baseTint = backgroundColor ?? Colors.white;
+    final Color baseTint = backgroundColor ?? AppTheme.kBgColor1;
 
     return Container(
 
@@ -96,7 +96,7 @@ class GlassPanel extends StatelessWidget {
         borderRadius: radius,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(64),
+            color: Colors.black.withAlpha(20),
             blurRadius: 30.0,
             spreadRadius: -5.0,
           ),
@@ -113,7 +113,7 @@ class GlassPanel extends StatelessWidget {
               borderRadius: radius,
 
               border: Border.all(
-                color: Colors.white.withAlpha(38),
+                color: AppTheme.kColorTextPrimary.withAlpha(77),
                 width: 1.0,
               ),
 

@@ -152,7 +152,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.kBgColor1,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -176,7 +176,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: AppTheme.kBgColor1.withOpacity(0.6),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
