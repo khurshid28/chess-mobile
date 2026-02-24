@@ -184,8 +184,8 @@ class AppTheme {
 
       scaffoldBackgroundColor: kBgColor2,
 
-      cardColor: Colors.white.withAlpha(204),
-     dividerColor: Colors.black.withAlpha(77),
+      cardColor: Colors.white.withAlpha(242),
+     dividerColor: Colors.black.withAlpha(128),
       colorScheme: const ColorScheme.dark(
         primary: kColorAccent,
         secondary: kColorAccent,
@@ -246,7 +246,7 @@ class AppTheme {
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-       fillColor: Colors.white.withAlpha(178),
+       fillColor: Colors.white.withAlpha(242),
 
         border: OutlineInputBorder(
 
