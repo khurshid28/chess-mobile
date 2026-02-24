@@ -212,9 +212,9 @@ class PuzzleView extends StatelessWidget {
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.cancel, color: Colors.white),
+                    Icon(Icons.cancel, color: AppTheme.kColorTextPrimary),
                     SizedBox(width: 10),
-                    Text("Wrong Move!", style: TextStyle(color: Colors.white, fontSize: 18)),
+                    Text("Wrong Move!", style: TextStyle(color: AppTheme.kColorTextPrimary, fontSize: 18)),
                   ],
                 ),
                 ElevatedButton(

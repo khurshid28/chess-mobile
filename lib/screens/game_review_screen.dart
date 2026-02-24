@@ -256,7 +256,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                icon: const Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
                 onPressed: () => Navigator.pop(context),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -321,7 +321,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
             Text(
               name,
               style: const TextStyle(
-                color: Colors.white,
+                color: AppTheme.kColorTextPrimary,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),
@@ -334,7 +334,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
               Text(
                 'Рейтинг: $rating',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
+                  color: AppTheme.kColorTextPrimary.withOpacity(0.7),
                   fontSize: 11,
                 ),
               ),
@@ -356,7 +356,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                     Text(
                       'Точность:',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: AppTheme.kColorTextPrimary.withOpacity(0.8),
                         fontSize: 10,
                       ),
                     ),
@@ -402,7 +402,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
               ),
             ),
           ),
-          const Divider(height: 1, color: Colors.white24, thickness: 1),
+          const Divider(height: 1, color: AppTheme.kColorTextPrimary, thickness: 1),
           Expanded(
             child: ListView.builder(
               controller: _moveScrollController,

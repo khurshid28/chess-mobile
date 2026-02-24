@@ -66,7 +66,7 @@ class _LeaderboardList extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: players.length,
             separatorBuilder: (context, index) =>
-                Divider(color: Colors.white.withAlpha(30), height: 1),
+                Divider(color: AppTheme.kColorTextPrimary.withAlpha(30), height: 1),
             itemBuilder: (context, index) {
               final player = players[index];
               return _PlayerTile(player: player, rank: index + 1);

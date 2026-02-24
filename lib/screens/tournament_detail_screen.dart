@@ -181,12 +181,12 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: Colors.white),
+          Icon(icon, size: 16, color: AppTheme.kColorTextPrimary),
           const SizedBox(width: 4),
           Text(
             text,
             style: const TextStyle(
-              color: Colors.white,
+              color: AppTheme.kColorTextPrimary,
               fontWeight: FontWeight.bold,
             ),
           ),

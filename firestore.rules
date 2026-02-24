@@ -53,7 +53,7 @@ service cloud.firestore {
     }
 
     function isValidUserUpdate() {
-      let allowedFields = ['preferences', 'profileImage', 'displayName', 'countryCode'];
+      let allowedFields = ['preferences', 'profileImage', 'displayName', 'countryCode', 'elo', 'stats', 'gamesPlayed'];
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowedFields);
     }
 

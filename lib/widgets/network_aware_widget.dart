@@ -32,12 +32,12 @@ class NetworkAwareWidget extends StatelessWidget {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.wifi_off, color: Colors.white, size: 18),
+                      Icon(Icons.wifi_off, color: AppTheme.kColorTextPrimary, size: 18),
                       SizedBox(width: 12),
                       Text(
                         'No Internet Connection',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppTheme.kColorTextPrimary,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),

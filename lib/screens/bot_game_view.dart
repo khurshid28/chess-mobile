@@ -181,15 +181,10 @@ class _BotGameViewState extends State<BotGameView> {
                       ),
                       child: bottomPlayerWidget,
                     ),
-                    // Move history at bottom - flexible height
-                    Flexible(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          minHeight: 50,
-                          maxHeight: 70,
-                        ),
-                        child: _buildMoveHistory(botGameProvider),
-                      ),
+                    // Move history at bottom - fixed height for visibility
+                    SizedBox(
+                      height: 80,
+                      child: _buildMoveHistory(botGameProvider),
                     ),
                     if (!botGameProvider.isGameOver)
                       _buildActionButtons(context, botGameProvider),
@@ -251,6 +246,7 @@ class _BotGameViewState extends State<BotGameView> {
     final lastMoveIndex = moves.length - 1;
     
     return GlassPanel(
+      padding: const EdgeInsets.all(8),
       child: moves.isEmpty
           ? const Center(
               child: Text(
@@ -263,7 +259,7 @@ class _BotGameViewState extends State<BotGameView> {
             )
           : ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               physics: const BouncingScrollPhysics(),
               itemCount: moves.length,
               itemBuilder: (context, index) {

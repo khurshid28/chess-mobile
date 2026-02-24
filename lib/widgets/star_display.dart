@@ -73,7 +73,7 @@ class StarCounter extends StatelessWidget {
             children: [
               const Icon(
                 Icons.star,
-                color: Colors.white,
+                color: AppTheme.kColorTextPrimary,
                 size: 32,
               ),
               const SizedBox(width: 8),
@@ -82,7 +82,7 @@ class StarCounter extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppTheme.kColorTextPrimary,
                 ),
               ),
             ],
@@ -92,7 +92,7 @@ class StarCounter extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.white.withOpacity(0.9),
+              color: AppTheme.kColorTextPrimary.withOpacity(0.9),
             ),
           ),
         ],
