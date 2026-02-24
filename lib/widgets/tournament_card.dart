@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/tournament_model.dart';
+import '../theme/app_theme.dart';
 
 class TournamentCard extends StatelessWidget {
   final TournamentModel tournament;

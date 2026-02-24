@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/tournament_match_model.dart';
+import '../theme/app_theme.dart';
 
 class BracketView extends StatelessWidget {
   final List<TournamentRoundModel> rounds;

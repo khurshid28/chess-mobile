@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:chess_park/providers/auth_provider.dart';
-import 'package:chess_park/screens/game_history_screen.dart';
 import 'package:chess_park/screens/leaderboard_screen.dart';
 import 'package:chess_park/screens/lobby_screen.dart';
 import 'package:chess_park/screens/profile_screen.dart';
@@ -189,8 +188,6 @@ class _QuickActionsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthProvider>().userModel;
-
     return Container(
       decoration: const BoxDecoration(
         color: Color.fromRGBO(65, 67, 69, 0.8),

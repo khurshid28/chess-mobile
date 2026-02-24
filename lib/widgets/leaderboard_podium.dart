@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/leaderboard_entry_model.dart';
 import 'star_display.dart';
+import '../theme/app_theme.dart';
 
 class LeaderboardPodium extends StatelessWidget {
   final List<LeaderboardEntryModel> topThree;
