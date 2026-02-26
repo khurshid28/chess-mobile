@@ -1,5 +1,6 @@
 
 import 'package:chess_park/models/game_model.dart';
+import 'package:chess_park/models/bot_personality_model.dart';
 import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/services/bot_game_database.dart';
 import 'package:chess_park/models/bot_game_history_model.dart';
@@ -138,15 +139,15 @@ class _BotGameHistoryTile extends StatelessWidget {
     IconData resultIcon;
     
     if (game.isDraw) {
-      result = 'Durang';
+      result = 'Draw';
       resultColor = Colors.orange;
       resultIcon = Icons.handshake;
     } else if (game.isWin) {
-      result = 'G\'alaba';
+      result = 'Win';
       resultColor = Colors.green;
       resultIcon = Icons.emoji_events;
     } else {
-      result = 'Mag\'lubiyat';
+      result = 'Loss';
       resultColor = Colors.red;
       resultIcon = Icons.close;
     }
@@ -173,15 +174,28 @@ class _BotGameHistoryTile extends StatelessWidget {
       },
       leading: CircleAvatar(
         backgroundColor: Colors.grey[800],
-        child: const Icon(Icons.smart_toy, color: Colors.white),
+        child: Text(
+          _getBotAvatar(game.botId),
+          style: const TextStyle(fontSize: 24),
+        ),
       ),
       title: Text(
         game.botName,
         style: const TextStyle(color: AppTheme.kColorTextPrimary),
       ),
-      subtitle: Text(
-        '${game.botRating} • ${game.movesPlayed} yurish • ${DateFormat('dd.MM.yyyy HH:mm').format(game.createdAt)}',
-        style: const TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 12),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${game.botRating} • ${game.movesPlayed} yurish',
+            style: const TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 12),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            DateFormat('dd.MM.yyyy HH:mm').format(game.createdAt),
+            style: const TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 11),
+          ),
+        ],
       ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -212,5 +226,14 @@ class _BotGameHistoryTile extends StatelessWidget {
         ],
       ),
     );
+  }
+  
+  String _getBotAvatar(String botId) {
+    try {
+      final bot = BotPersonalities.all.firstWhere((b) => b.id == botId);
+      return bot.avatar;
+    } catch (e) {
+      return '🤖';
+    }
   }
 }

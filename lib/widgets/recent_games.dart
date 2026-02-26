@@ -1,6 +1,7 @@
 
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
+import 'package:chess_park/models/bot_personality_model.dart';
 import 'package:flutter/material.dart';
 import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/services/bot_game_database.dart';
@@ -13,6 +14,7 @@ class UnifiedGameItem {
   final String id;
   final String opponentName;
   final int opponentRating;
+  final String? botId;
   final String? opponentImage;
   final String result; // 'win', 'loss', 'draw'
   final DateTime createdAt;
@@ -26,6 +28,7 @@ class UnifiedGameItem {
     required this.id,
     required this.opponentName,
     required this.opponentRating,
+    this.botId,
     this.opponentImage,
     required this.result,
     required this.createdAt,
@@ -129,6 +132,7 @@ class _RecentGamesState extends State<RecentGames> {
           id: botGame.id,
           opponentName: botGame.botName,
           opponentRating: botGame.botRating,
+          botId: botGame.botId,
           opponentImage: null,
           result: result,
           createdAt: botGame.createdAt,
@@ -147,6 +151,16 @@ class _RecentGamesState extends State<RecentGames> {
     // Sort by date and return top 5
     allGames.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return allGames.take(5).toList();
+  }
+
+  String _getBotAvatar(String? botId) {
+    if (botId == null) return '🤖';
+    try {
+      final bot = BotPersonalities.all.firstWhere((b) => b.id == botId);
+      return bot.avatar;
+    } catch (e) {
+      return '🤖';
+    }
   }
 
   @override
@@ -239,11 +253,16 @@ class _RecentGamesState extends State<RecentGames> {
       leading: CircleAvatar(
         radius: 20,
         backgroundColor: game.isBotGame ? Colors.purple.withOpacity(0.3) : Colors.blue.withOpacity(0.3),
-        child: Icon(
-          game.isBotGame ? Icons.smart_toy : Icons.public,
-          size: 20,
-          color: game.isBotGame ? Colors.purple : Colors.blue,
-        ),
+        child: game.isBotGame
+            ? Text(
+                _getBotAvatar(game.botId),
+                style: const TextStyle(fontSize: 22),
+              )
+            : Icon(
+                Icons.public,
+                size: 20,
+                color: Colors.blue,
+              ),
       ),
       title: Row(
         children: [
@@ -267,8 +286,42 @@ class _RecentGamesState extends State<RecentGames> {
           ),
         ],
       ),
-      subtitle: Row(
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            children: [
+              if (game.accuracy != null) ...[
+                const Icon(Icons.analytics, size: 12, color: Colors.blue),
+                const SizedBox(width: 2),
+                Text(
+                  '${game.accuracy}%',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+              if (game.ratingChange != null && game.ratingChange != 0) ...[
+                if (game.accuracy != null) const SizedBox(width: 8),
+                Icon(
+                  game.ratingChange! > 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                  size: 12,
+                  color: game.ratingChange! > 0 ? Colors.green : Colors.red,
+                ),
+                Text(
+                  '${game.ratingChange! > 0 ? '+' : ''}${game.ratingChange}',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: game.ratingChange! > 0 ? Colors.green : Colors.red,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: 2),
           Text(
             dateStr,
             style: const TextStyle(
@@ -276,35 +329,6 @@ class _RecentGamesState extends State<RecentGames> {
               color: AppTheme.kColorTextSecondary,
             ),
           ),
-          if (game.accuracy != null) ...[
-            const SizedBox(width: 8),
-            const Icon(Icons.analytics, size: 12, color: Colors.blue),
-            const SizedBox(width: 2),
-            Text(
-              '${game.accuracy}%',
-              style: const TextStyle(
-                fontSize: 11,
-                color: Colors.blue,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-          if (game.ratingChange != null && game.ratingChange != 0) ...[
-            const SizedBox(width: 8),
-            Icon(
-              game.ratingChange! > 0 ? Icons.arrow_upward : Icons.arrow_downward,
-              size: 12,
-              color: game.ratingChange! > 0 ? Colors.green : Colors.red,
-            ),
-            Text(
-              '${game.ratingChange! > 0 ? '+' : ''}${game.ratingChange}',
-              style: TextStyle(
-                fontSize: 11,
-                color: game.ratingChange! > 0 ? Colors.green : Colors.red,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
         ],
       ),
       trailing: Text(
