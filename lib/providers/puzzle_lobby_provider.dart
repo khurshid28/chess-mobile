@@ -128,7 +128,7 @@ class PuzzleLobbyProvider with ChangeNotifier {
 
     if (_puzzles.isEmpty) {
       _state = LobbyState.error;
-      _errorMessage = "Puzzlelarni yuklashda xatolik. Internetni tekshiring.";
+      _errorMessage = "Error loading puzzles. Check your connection.";
     } else {
       _state = LobbyState.loaded;
     }

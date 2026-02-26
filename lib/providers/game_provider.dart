@@ -52,6 +52,8 @@ class GameProvider with ChangeNotifier {
   Chess _optimisticChess = Chess.initial;
   NormalMove? _localPromotionMove;
   NormalMove? _currentPremove;
+  NormalMove? _lastMove;
+  String _previousFen = '';
   bool _isDisposed = false;
   bool _isMovePending = false;
   bool _isGameOverHandled = false;
@@ -65,6 +67,7 @@ class GameProvider with ChangeNotifier {
   bool get isRematchPending => _isRematchPending;
   bool get isMovePending => _isMovePending;
   NormalMove? get currentPremove => _currentPremove;
+  NormalMove? get lastMove => _lastMove;
 
   void _onConnectivityChange() {
     if (_isDisposed) return;
@@ -144,6 +147,33 @@ class GameProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void _updateLastMoveFromPgn(String pgn) {
+    if (pgn.isEmpty) {
+      _lastMove = null;
+      return;
+    }
+    
+    try {
+      // Parse moves from PGN - moves are in UCI format (e.g., "e2e4")
+      final movePattern = RegExp(r'\d+\.');
+      final resultPattern = RegExp(r'(1-0|0-1|1/2-1/2|\*)\s*$');
+      
+      String movesText = pgn.replaceAll(movePattern, '').replaceAll(resultPattern, '').trim();
+      final moves = movesText.split(RegExp(r'\s+')).where((m) => m.isNotEmpty).toList();
+      
+      if (moves.isNotEmpty) {
+        final lastMoveStr = moves.last;
+        final parsedMove = Move.parse(lastMoveStr);
+        if (parsedMove is NormalMove) {
+          _lastMove = parsedMove;
+        }
+      }
+    } catch (e) {
+      debugPrint('Error parsing last move from PGN: $e');
+    }
+  }
+
   void listenToGame(String gameId) {
     _updateCompositeStatus();
 
@@ -157,6 +187,9 @@ class GameProvider with ChangeNotifier {
       final GameModel? oldGameModel = _gameModel;
       final GameModel newGameModel = GameModel.fromSnapshot(snapshot);
       _gameModel = newGameModel;
+
+      // Update last move from PGN
+      _updateLastMoveFromPgn(newGameModel.pgn);
 
       try {
 
@@ -394,6 +427,7 @@ class GameProvider with ChangeNotifier {
 
         if (newChessState is Chess) {
           _optimisticChess = newChessState;
+          _lastMove = normalizedMove;
         } else {
           throw Exception("Game state resulted in an unsupported variant.");
         }

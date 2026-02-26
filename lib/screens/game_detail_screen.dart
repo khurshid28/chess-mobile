@@ -132,7 +132,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                       child: ElevatedButton.icon(
                         onPressed: _openReview,
                         icon: const Icon(Icons.analytics),
-                        label: const Text('O\'yinni tahlil qilish'),
+                        label: const Text('Analyze Game'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.kColorAccent,
                           foregroundColor: Colors.white,

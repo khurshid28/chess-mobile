@@ -84,19 +84,37 @@ class BotEngine {
     20, 30, 10, 0, 0, 10, 30, 20
   ];
 
+  // Common opening moves for quick first-move response
+  static const List<String> _openingMoves = [
+    'e2e4', 'd2d4', 'g1f3', 'c2c4', 'e2e3', 'd2d3', 'b1c3', 'g2g3',
+  ];
+
   /// Get the best move for the bot
   Future<Move?> getBestMove(
     Position position,
     BotDifficulty difficulty,
   ) async {
+    print('🤖 Bot engine: searching for move. Depth: ${difficulty.searchDepth}');
     AppLogger().debug('🤖 Bot engine: searching for move. Depth: ${difficulty.searchDepth}, Error rate: ${difficulty.errorRate}');
     
     final legalMovesCount = position.legalMoves.length;
+    print('📊 Legal moves available: $legalMovesCount');
     AppLogger().debug('📊 Legal moves available: $legalMovesCount');
     
     if (legalMovesCount == 0) {
+      print('⚠️ No legal moves available!');
       AppLogger().warning('⚠️ No legal moves available!');
       return null;
+    }
+    
+    // Use opening book for first move (much faster, no calculation needed)
+    if (position.fen == Chess.initial.fen) {
+      final openingMove = _openingMoves[_random.nextInt(_openingMoves.length)];
+      final move = Move.parse(openingMove);
+      if (move != null) {
+        AppLogger().debug('📖 Using opening book move: $openingMove');
+        return move;
+      }
     }
     
     // Occasionally make a weaker move based on error rate (for realism)
@@ -121,64 +139,78 @@ class BotEngine {
   /// Search for the best move using minimax algorithm
   Move? _searchBestMove(Position position, BotDifficulty difficulty) {
     final legalMoves = position.legalMoves;
+    print('🔍 _searchBestMove: legalMoves.length = ${legalMoves.length}');
     if (legalMoves.isEmpty) {
+      print('⚠️ _searchBestMove: no legal moves');
       AppLogger().warning('⚠️ _searchBestMove: no legal moves');
       return null;
     }
 
-    Move? bestMove;
-    int bestScore = -_infinity;
-    final isWhite = position.turn == Side.white;
-    int movesEvaluated = 0;
-    
-    // Limit search depth to prevent crashes and freezing
-    // Depth 5 = ~3.2M positions, Depth 6 = ~64M, Depth 7 = ~1.28B
-    final safeDepth = difficulty.searchDepth.clamp(1, 5);
-    if (safeDepth != difficulty.searchDepth) {
-      AppLogger().warning('⚠️ Search depth limited from ${difficulty.searchDepth} to $safeDepth');
-    }
-    
-    AppLogger().debug('🔍 Starting minimax search with depth $safeDepth');
-
-    // legalMoves is IMap<Square, SquareSet> - from square to destination squares
+    // Collect all legal moves first
+    final allMoves = <Move>[];
     for (final entry in legalMoves.entries) {
       final from = Square(entry.key);
-      // entry.value is SquareSet - iterate destination squares
       for (final toInt in entry.value.squares) {
         final to = Square(toInt);
-        final move = Move.parse('${from.name}${to.name}')!;
-        
-        try {
-          final newPos = position.playUnchecked(move);
-          final score = _minimax(
-            newPos,
-            safeDepth - 1,
-            -_infinity,
-            _infinity,
-            !isWhite,
-            difficulty.usePieceSquareTables,
-          );
-
-          movesEvaluated++;
-          
-          // Progress logging every 5 moves
-          if (movesEvaluated % 5 == 0) {
-            AppLogger().debug('  Evaluated $movesEvaluated moves so far...');
-          }
-          
-          if (score > bestScore) {
-            bestScore = score;
-            bestMove = move;
-            AppLogger().debug('  ✨ New best: ${move.uci} (score: $score)');
-          }
-        } catch (e, stackTrace) {
-          AppLogger().error('❌ Error evaluating move ${move.uci}', e, stackTrace);
-          continue;
+        final move = Move.parse('${from.name}${to.name}');
+        if (move != null) {
+          allMoves.add(move);
         }
       }
     }
 
-    AppLogger().debug('📈 Evaluated $movesEvaluated moves. Best score: $bestScore');
+    if (allMoves.isEmpty) {
+      print('⚠️ No moves collected');
+      return null;
+    }
+
+    // For speed: just use simple evaluation without deep search
+    Move? bestMove;
+    int bestScore = -_infinity;
+    final isWhite = position.turn == Side.white;
+    
+    print('🔍 Evaluating ${allMoves.length} moves...');
+    
+    final stopwatch = Stopwatch()..start();
+    const maxTimeMs = 500; // Maximum 500ms for search
+    
+    for (final move in allMoves) {
+      // Timeout check
+      if (stopwatch.elapsedMilliseconds > maxTimeMs) {
+        print('⏰ Search timeout after ${stopwatch.elapsedMilliseconds}ms');
+        break;
+      }
+      
+      try {
+        final newPos = position.playUnchecked(move);
+        
+        // Simple 1-ply evaluation for speed
+        int score = _evaluatePosition(newPos, difficulty.usePieceSquareTables);
+        
+        // Flip score for black
+        if (!isWhite) {
+          score = -score;
+        }
+        
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = move;
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+    
+    stopwatch.stop();
+
+    // If no best move found, return random
+    if (bestMove == null && allMoves.isNotEmpty) {
+      bestMove = allMoves[_random.nextInt(allMoves.length)];
+      print('🎲 Returning random move: ${bestMove.uci}');
+    }
+
+    print('📈 Evaluated in ${stopwatch.elapsedMilliseconds}ms. Best move: ${bestMove?.uci ?? "null"}, score: $bestScore');
+    AppLogger().debug('📈 Evaluated in ${stopwatch.elapsedMilliseconds}ms. Best score: $bestScore');
     return bestMove;
   }
 
@@ -187,31 +219,21 @@ class BotEngine {
     final legalMoves = position.legalMoves;
     if (legalMoves.isEmpty) return null;
 
-    if (depth <= 0 || _random.nextDouble() < 0.3) {
-      // Random move - convert Square pairs to Moves
-      final moves = <Move>[];
-      for (final entry in legalMoves.entries) {
-        final from = Square(entry.key);
-        for (final toInt in entry.value.squares) {
-          final to = Square(toInt);
-          final move = Move.parse('${from.name}${to.name}')!;
+    // Always make random move for weaker bots - faster and simpler
+    final moves = <Move>[];
+    for (final entry in legalMoves.entries) {
+      final from = Square(entry.key);
+      for (final toInt in entry.value.squares) {
+        final to = Square(toInt);
+        final move = Move.parse('${from.name}${to.name}');
+        if (move != null) {
           moves.add(move);
         }
       }
-      return moves[_random.nextInt(moves.length)];
     }
-
-    // Use reduced depth search
-    return _searchBestMove(
-      position,
-      BotDifficulty(
-        level: 'weak',
-        minRating: 400,
-        maxRating: 600,
-        searchDepth: depth,
-        errorRate: 0,
-      ),
-    );
+    
+    if (moves.isEmpty) return null;
+    return moves[_random.nextInt(moves.length)];
   }
 
   /// Minimax algorithm with alpha-beta pruning

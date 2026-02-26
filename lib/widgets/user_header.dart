@@ -13,44 +13,42 @@ class UserHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final double ratingProgress = (user.elo % 100) / 100.0;
-
     return GlassPanel(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           CircleAvatar(
-            radius: 24,
-            backgroundColor: Colors.white24,
+            radius: 26,
+            backgroundColor: AppTheme.kColorAccent.withOpacity(0.2),
             backgroundImage: user.profileImage != null
                 ? CachedNetworkImageProvider(user.profileImage!)
                 : null,
             child: user.profileImage == null
                 ? const Icon(
-                    Icons.person_outline,
+                    Icons.person_rounded,
                     size: 28,
-                    color: AppTheme.kColorTextSecondary,
+                    color: AppTheme.kColorAccent,
                   )
                 : null,
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Hello, ${user.displayName}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.kColorTextPrimary,
+                    Flexible(
+                      child: Text(
+                        user.displayName,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.kColorTextPrimary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     if (user.countryCode != null)
@@ -67,37 +65,35 @@ class UserHeader extends StatelessWidget {
                       ),
                   ],
                 ),
-                const SizedBox(height: 8),
-
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Rating: ',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.kColorTextSecondary,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      user.elo.toString(),
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: AppTheme.kColorTextPrimary,
-                          fontWeight: FontWeight.bold),
-                    ),
-
-                  ],
+                const SizedBox(height: 4),
+                Text(
+                  user.email,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppTheme.kColorTextSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 12),
-
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: LinearProgressIndicator(
-                    value: ratingProgress,
-                    minHeight: 6,
-                    backgroundColor: Colors.white30,
-                    valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.kColorAccent),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.kColorAccent.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.star_rounded, color: AppTheme.kColorAccent, size: 18),
+                const SizedBox(width: 4),
+                Text(
+                  user.elo.toString(),
+                  style: const TextStyle(
+                    color: AppTheme.kColorAccent,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

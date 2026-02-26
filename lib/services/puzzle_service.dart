@@ -48,14 +48,14 @@ class PuzzleService {
         return PuzzleModel.fromJson(data);
       } else if (response.statusCode == 429) {
         // Rate limited - throw specific error
-        throw Exception('Juda ko\'p so\'rov. Iltimos bir oz kuting.');
+        throw Exception('Too many requests. Please wait a moment.');
       } else {
         
-        throw Exception('Puzzle yuklashda xatolik (Status: ${response.statusCode})');
+        throw Exception('Error loading puzzle (Status: ${response.statusCode})');
       }
     } catch (e) {
       
-      throw Exception('Puzzle yuklashda xatolik: $e');
+      throw Exception('Error loading puzzle: $e');
     }
   }
 }

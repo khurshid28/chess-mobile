@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:dartchess/dartchess.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/bot_personality_model.dart';
 import '../models/bot_game_history_model.dart';
 import '../services/bot_engine.dart';
@@ -50,13 +49,13 @@ class BotGameProvider extends ChangeNotifier {
     if (_currentBot == null || _currentDifficulty == null) return 'Computer';
 
     final levelNames = {
-      'easy': 'Oson',
-      'medium': 'O\'rtacha',
-      'hard': 'Qiyin',
-      'maximum': 'Maksimal',
+      'easy': 'Easy',
+      'medium': 'Medium',
+      'hard': 'Hard',
+      'maximum': 'Maximum',
     };
 
-    return '${_currentBot!.nameUz} (${levelNames[_currentDifficulty!.level]})';
+    return '${_currentBot!.name} (${levelNames[_currentDifficulty!.level]})';
   }
 
   int get botDisplayRating {
@@ -114,10 +113,8 @@ class BotGameProvider extends ChangeNotifier {
     // If bot has white (user has black), bot moves first
     if (_userSide == Side.black) {
       AppLogger().info('🤖 Bot has white, making first move...');
-      // Wait 4-5 seconds before bot's first move
-      final initialDelay = 4000 + _random.nextInt(1000); // 4-5 seconds
-      AppLogger().info('⏳ Waiting ${initialDelay}ms before bot\'s first move...');
-      await Future.delayed(Duration(milliseconds: initialDelay));
+      // Shorter delay for first move since we use opening book
+      await Future.delayed(const Duration(milliseconds: 300));
       await _makeBotMove();
     } else {
       AppLogger().info('✅ Game created. User has white and moves first.');
@@ -160,8 +157,16 @@ class BotGameProvider extends ChangeNotifier {
     
     AppLogger().warning('⏰ Time out! User: $isUser');
     _isGameOver = true;
-    _gameResult = isUser ? '0-1' : '1-0';
-    _gameResultReason = 'Vaqt tugadi';
+    // When user times out, user loses. When bot times out, user wins.
+    if (isUser) {
+      // User lost on time
+      _gameResult = _userSide == Side.white ? '0-1' : '1-0';
+      _gameResultReason = 'You lost on time';
+    } else {
+      // Bot lost on time, user wins
+      _gameResult = _userSide == Side.white ? '1-0' : '0-1';
+      _gameResultReason = 'Bot lost on time';
+    }
     _timer?.cancel();
     AppLogger().info('⏹️ Timer cancelled due to timeout');
     _saveGameHistory();
@@ -224,21 +229,26 @@ class BotGameProvider extends ChangeNotifier {
     }
 
     // Apply the move
+    print('👤 User: ${move.uci}');
     AppLogger().info('👤 User: ${move.uci}');
     _position = _position.playUnchecked(move);
     _moveHistory.add(move.uci);
     _positionHistory.add(_position.fen); // Track position for repetition
+    print('✅ User move applied. New turn: ${_position.turn}, FEN: ${_position.fen}');
     notifyListeners();
 
     // Check game over after user move
     if (_checkGameOver()) {
+      print('🏁 Game over after user move');
       AppLogger().info('🏁 Game over after user move');
       return true;
     }
 
     // Bot's turn
+    print('🤖 About to call _makeBotMove... Current turn: ${_position.turn}, UserSide: $_userSide');
     AppLogger().info('🤖 Calling _makeBotMove...');
     await _makeBotMove();
+    print('✅ _makeBotMove completed');
     AppLogger().info('✅ _makeBotMove completed');
     return true;
   }
@@ -257,46 +267,61 @@ class BotGameProvider extends ChangeNotifier {
 
   /// Make a bot move
   Future<void> _makeBotMove() async {
+    print('🤖 _makeBotMove started');
     AppLogger().info('🤖 _makeBotMove started');
     
     if (_isGameOver) {
+      print('⚠️ Bot move cancelled: game is over');
       AppLogger().warning('⚠️ Bot move cancelled: game is over');
       return;
     }
     if (_position.turn == _userSide) {
+      print('⚠️ Bot move cancelled: not bot\'s turn (position.turn=${_position.turn}, userSide=$_userSide)');
       AppLogger().warning('⚠️ Bot move cancelled: not bot\'s turn');
       return;
     }
 
     _isThinking = true;
     notifyListeners();
+    print('🎯 Bot is thinking...');
     AppLogger().info('🎯 Bot is thinking...');
 
-    // Calculate thinking time based on difficulty
-    final thinkTime = _calculateThinkTime();
-    AppLogger().debug('⏱️ Bot think time: ${thinkTime}ms');
+    // Check if it's the opening position (uses opening book - faster)
+    final isOpeningPosition = _moveHistory.isEmpty;
+    
+    // Calculate thinking time based on difficulty (shorter for opening book)
+    final thinkTime = isOpeningPosition ? 100 : _calculateThinkTime();
+    print('⏱️ Bot think time: ${thinkTime}ms');
+    AppLogger().debug('⏱️ Bot think time: ${thinkTime}ms (opening: $isOpeningPosition)');
     await Future.delayed(Duration(milliseconds: thinkTime));
 
     try {
+      print('🔍 Calling bot engine...');
       AppLogger().info('🔍 Calling bot engine...');
       final botMove = await _botEngine.getBestMove(_position, _currentDifficulty!);
+      print('📬 Bot engine returned: ${botMove?.uci ?? "null"}');
       AppLogger().info('📬 Bot engine returned: ${botMove?.uci ?? "null"}');
       
       if (botMove != null) {
+        print('🤖 Bot played: ${botMove.uci}');
         AppLogger().info('🤖 Bot played: ${botMove.uci}');
         _position = _position.playUnchecked(botMove);
         _moveHistory.add(botMove.uci);
         _positionHistory.add(_position.fen); // Track position for repetition
+        print('✅ Bot move applied successfully. New FEN: ${_position.fen}');
         AppLogger().info('✅ Bot move applied successfully');
       } else {
+        print('⚠️ Bot move is null - no valid moves?');
         AppLogger().warning('⚠️ Bot move is null - no valid moves?');
       }
     } catch (e, stackTrace) {
+      print('❌ Bot move error: $e');
       AppLogger().error('❌ Bot move error', e, stackTrace);
     }
 
     _isThinking = false;
     notifyListeners();
+    print('🏁 Bot thinking finished');
     AppLogger().info('🏁 Bot thinking finished');
 
     final isOver = _checkGameOver();
@@ -307,16 +332,16 @@ class BotGameProvider extends ChangeNotifier {
 
   /// Calculate bot thinking time (for realistic appearance)
   int _calculateThinkTime() {
-    if (_currentDifficulty == null) return 500;
+    if (_currentDifficulty == null) return 200;
 
-    // Base time increases with search depth
-    final base = _currentDifficulty!.searchDepth * 250;
+    // Base time increases with search depth (reduced for faster play)
+    final base = _currentDifficulty!.searchDepth * 100;
     
     // Add random variation
-    final random = _random.nextInt(300);
+    final random = _random.nextInt(150);
     
-    // Minimum 200ms, maximum 3000ms
-    return (base + random).clamp(200, 3000);
+    // Minimum 100ms, maximum 800ms
+    return (base + random).clamp(100, 800);
   }
 
   /// Check if game is over
@@ -435,29 +460,8 @@ class BotGameProvider extends ChangeNotifier {
 
       AppLogger().debug('📊 Game stats - Moves: $totalMoves, Accuracy: $accuracy, Rating change: $ratingChange');
 
-      // Save to SQLite database
+      // Save to SQLite database (local history only - bot games don't affect online rating)
       await BotGameDatabase.instance.insertGame(gameHistory);
-      
-      // Update user's Elo in Firestore
-      if (ratingChange != 0) {
-        try {
-          final userRef = FirebaseFirestore.instance.collection('users').doc(_userId!);
-          await FirebaseFirestore.instance.runTransaction((transaction) async {
-            final userDoc = await transaction.get(userRef);
-            if (userDoc.exists) {
-              final currentElo = userDoc.data()?['elo'] ?? 1200;
-              final newElo = max(100, currentElo + ratingChange);
-              transaction.update(userRef, {
-                'elo': newElo,
-                'gamesPlayed': FieldValue.increment(1),
-              });
-              AppLogger().info('✅ User Elo updated: $currentElo → $newElo (change: $ratingChange)');
-            }
-          });
-        } catch (e, stackTrace) {
-          AppLogger().error('❌ Error updating user Elo in Firestore', e, stackTrace);
-        }
-      }
       
       AppLogger().info('✅ Bot game saved successfully to database');
     } catch (e, stackTrace) {

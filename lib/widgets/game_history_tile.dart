@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:chess_park/models/game_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chess_park/screens/game_detail_screen.dart';
+import 'package:intl/intl.dart';
 
 class GameHistoryTile extends StatelessWidget {
   final GameModel game;
@@ -39,6 +40,12 @@ class GameHistoryTile extends StatelessWidget {
     }
 
     final String opponentDisplay = "${opponentName ?? 'Opponent'} (${opponentRating ?? '...'})";
+    
+    // Format date and time
+    final gameDate = game.completedAt?.toDate() ?? game.lastMoveTimestamp?.toDate();
+    final dateTimeStr = gameDate != null 
+        ? DateFormat('dd.MM.yyyy HH:mm').format(gameDate)
+        : '';
 
 
     return ListTile(
@@ -77,8 +84,19 @@ class GameHistoryTile extends StatelessWidget {
         ),
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: isTournament
-          ? Row(
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (dateTimeStr.isNotEmpty)
+            Text(
+              dateTimeStr,
+              style: TextStyle(
+                fontSize: 12,
+                color: AppTheme.kColorTextSecondary,
+              ),
+            ),
+          if (isTournament)
+            Row(
               children: [
                 Icon(
                   Icons.emoji_events,
@@ -95,8 +113,9 @@ class GameHistoryTile extends StatelessWidget {
                   ),
                 ),
               ],
-            )
-          : null,
+            ),
+        ],
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

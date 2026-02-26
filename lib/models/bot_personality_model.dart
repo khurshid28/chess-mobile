@@ -54,7 +54,7 @@ class BotPersonalities {
       id: 'rustam',
       name: 'Rustam',
       nameUz: 'Rustam',
-      description: 'Yangi o\'rganayotgan o\'yinchi, ba\'zan xato qiladi',
+      description: 'Beginner player, makes occasional mistakes',
       avatar: '🧑',
       style: 'beginner',
       difficulties: {
@@ -102,7 +102,7 @@ class BotPersonalities {
       id: 'nodira',
       name: 'Nodira',
       nameUz: 'Nodira',
-      description: 'Maktab o\'quvchisi, strategiya o\'rganyapti',
+      description: 'School student, learning strategy',
       avatar: '👧',
       style: 'learning',
       difficulties: {
@@ -150,7 +150,7 @@ class BotPersonalities {
       id: 'jahongir',
       name: 'Jahongir',
       nameUz: 'Jahongir',
-      description: 'Mahalliy klub o\'yinchisi, taktika yaxshi biladi',
+      description: 'Local club player, knows tactics well',
       avatar: '🧔',
       style: 'balanced',
       difficulties: {
@@ -198,7 +198,7 @@ class BotPersonalities {
       id: 'dilshod',
       name: 'Dilshod',
       nameUz: 'Dilshod',
-      description: 'Turnir o\'yinchisi, strategik fikrlaydi',
+      description: 'Tournament player, strategic thinker',
       avatar: '👨‍💼',
       style: 'positional',
       difficulties: {
@@ -246,7 +246,7 @@ class BotPersonalities {
       id: 'sarvar',
       name: 'Sarvar',
       nameUz: 'Sarvar',
-      description: 'Tajribali ustoz, pozitsion o\'yin',
+      description: 'Experienced master, positional play',
       avatar: '🎓',
       style: 'expert',
       difficulties: {
@@ -294,7 +294,7 @@ class BotPersonalities {
       id: 'shohzoda',
       name: 'Shohzoda',
       nameUz: 'Shohzoda',
-      description: 'Master darajasi, juda kuchli o\'ynaydi',
+      description: 'Master level, plays very strong',
       avatar: '👑',
       style: 'master',
       difficulties: {

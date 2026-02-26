@@ -37,9 +37,28 @@ class UnifiedGameItem {
   });
 }
 
-class RecentGames extends StatelessWidget {
+class RecentGames extends StatefulWidget {
   final String userId;
   const RecentGames({super.key, required this.userId});
+
+  @override
+  State<RecentGames> createState() => _RecentGamesState();
+}
+
+class _RecentGamesState extends State<RecentGames> {
+  late Future<List<UnifiedGameItem>> _gamesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _gamesFuture = _fetchAllGames();
+  }
+
+  void refresh() {
+    setState(() {
+      _gamesFuture = _fetchAllGames();
+    });
+  }
 
   List<String> _pgnToMoveHistory(String pgn) {
     if (pgn.isEmpty) return [];
@@ -62,9 +81,9 @@ class RecentGames extends StatelessWidget {
     
     // Fetch online games
     try {
-      final onlineGames = await FirestoreService().getUserGames(userId, limit: 10);
+      final onlineGames = await FirestoreService().getUserGames(widget.userId, limit: 10);
       for (final game in onlineGames) {
-        final isUserWhite = game.playerWhiteId == userId;
+        final isUserWhite = game.playerWhiteId == widget.userId;
         String result;
         if (game.winner == 'draw') {
           result = 'draw';
@@ -92,7 +111,7 @@ class RecentGames extends StatelessWidget {
     
     // Fetch bot games from database
     try {
-      final botGames = await BotGameDatabase.instance.getGamesByUser(userId, limit: 10);
+      final botGames = await BotGameDatabase.instance.getGamesByUser(widget.userId, limit: 10);
       print('🎮 Bot games fetched: ${botGames.length}');
       
       for (final botGame in botGames) {
@@ -133,7 +152,7 @@ class RecentGames extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<UnifiedGameItem>>(
-      future: _fetchAllGames(),
+      future: _gamesFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox.shrink();
@@ -211,7 +230,7 @@ class RecentGames extends StatelessWidget {
                 playerName: game.playerName,
                 opponentName: game.opponentName,
                 result: resultText,
-                resultReason: game.isBotGame ? 'Bot o\'yin' : 'Online o\'yin',
+                resultReason: game.isBotGame ? 'Bot game' : 'Online game',
               ),
             ),
           );
@@ -300,38 +319,54 @@ class RecentGames extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => GameHistoryScreen(userId: userId),
-          ));
-      },
-      child: const Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.history, color: AppTheme.kColorAccent, size: 22),
-          SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              'Oxirgi o\'yinlar',
-              style: TextStyle(
-                  fontSize: 18,
-                  color: AppTheme.kColorTextPrimary,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          Text(
-            'Hammasini ko\'rish',
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Icon(Icons.history, color: AppTheme.kColorAccent, size: 22),
+        const SizedBox(width: 8),
+        const Expanded(
+          child: Text(
+            'Recent Games',
             style: TextStyle(
-              fontSize: 13,
-              color: AppTheme.kColorAccent,
-              fontWeight: FontWeight.w500,
-            ),
+                fontSize: 18,
+                color: AppTheme.kColorTextPrimary,
+                fontWeight: FontWeight.bold),
           ),
-          SizedBox(width: 4),
-          Icon(Icons.arrow_forward_ios, color: AppTheme.kColorAccent, size: 14),
-        ],
-      ),
+        ),
+        GestureDetector(
+          onTap: refresh,
+          child: Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: AppTheme.kColorAccent.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(Icons.refresh_rounded, color: AppTheme.kColorAccent, size: 18),
+          ),
+        ),
+        const SizedBox(width: 8),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => GameHistoryScreen(userId: widget.userId),
+            ));
+          },
+          child: const Row(
+            children: [
+              Text(
+                'View All',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: AppTheme.kColorAccent,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(width: 4),
+              Icon(Icons.arrow_forward_ios, color: AppTheme.kColorAccent, size: 14),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

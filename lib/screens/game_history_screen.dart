@@ -9,6 +9,7 @@ import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:chess_park/screens/game_review_screen.dart';
 import 'package:dartchess/dartchess.dart' as dartchess;
+import 'package:intl/intl.dart';
 
 class GameHistoryScreen extends StatelessWidget {
   final String userId;
@@ -179,7 +180,7 @@ class _BotGameHistoryTile extends StatelessWidget {
         style: const TextStyle(color: AppTheme.kColorTextPrimary),
       ),
       subtitle: Text(
-        '${game.botRating} • ${game.movesPlayed} yurish',
+        '${game.botRating} • ${game.movesPlayed} yurish • ${DateFormat('dd.MM.yyyy HH:mm').format(game.createdAt)}',
         style: const TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 12),
       ),
       trailing: Column(

@@ -39,6 +39,8 @@ interface Game {
   pendingPromotion?: PendingPromotion | null;
   playerWhiteDisconnectedAt?: admin.firestore.Timestamp | null;
   playerBlackDisconnectedAt?: admin.firestore.Timestamp | null;
+  moves?: string[];
+  pgn?: string;
 }
 
 interface UserData {
@@ -80,6 +82,7 @@ async function createMatch(
   const newGame = {
     fen: INITIAL_FEN,
     pgn: "",
+    moves: [] as string[],
     status: "inprogress" as GameStatus,
     maxElo: maxElo,
     participants: [whitePlayer.id, blackPlayer.id],
@@ -487,6 +490,21 @@ export const makeMove = onCall(async (request) => {
       }
       updates.fen = chess.fen();
       updates.turn = chess.turn();
+
+      // Track moves and generate PGN
+      const currentMoves = gameData.moves || [];
+      const newMoves = [...currentMoves, move.san];
+      updates.moves = newMoves;
+      
+      // Generate PGN string from moves
+      let pgnMoves = "";
+      for (let i = 0; i < newMoves.length; i++) {
+        if (i % 2 === 0) {
+          pgnMoves += `${Math.floor(i / 2) + 1}. `;
+        }
+        pgnMoves += `${newMoves[i]} `;
+      }
+      updates.pgn = pgnMoves.trim();
 
       if (!updates.lastMoveTimestamp) {
         updates.lastMoveTimestamp = now;
@@ -1176,6 +1194,7 @@ export const acceptRematch = onCall(async (request) => {
       const newGame = {
         fen: INITIAL_FEN,
         pgn: "",
+        moves: [] as string[],
         status: "inprogress",
         participants: [whiteDoc.id, blackDoc.id],
         playerWhiteId: whiteDoc.id,

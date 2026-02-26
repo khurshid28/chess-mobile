@@ -109,7 +109,7 @@ class CategoryBotsScreen extends StatelessWidget {
 
               // Bots grid
               const Text(
-                'Botlarni tanlang:',
+                'Select Bot:',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

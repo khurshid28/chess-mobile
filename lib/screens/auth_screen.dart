@@ -150,76 +150,135 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-
-    InputDecoration customInputDecoration(String label) {
+    InputDecoration customInputDecoration(String label, IconData icon) {
       return InputDecoration(
         labelText: label,
+        prefixIcon: Icon(icon, color: Colors.white54, size: 20),
+        labelStyle: const TextStyle(color: Colors.white70),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.08),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       );
     }
 
     return Scaffold(
-
       body: Container(
         decoration: AppTheme.backgroundDecoration,
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  AppConstants.appLogo,
-                  height: 120,
-
-                  color: theme.colorScheme.primary.withAlpha(230),
-                ),
-                const SizedBox(height: 32),
-
-                GlassPanel(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          _isLogin ? 'Welcome Back' : 'Create Account',
-                          style: theme.textTheme.headlineSmall,
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  // Chess pawn logo with glow effect
+                  Container(
+                    width: 100,
+                    height: 100,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          theme.colorScheme.primary.withOpacity(0.3),
+                          theme.colorScheme.primary.withOpacity(0.1),
+                        ],
+                      ),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: theme.colorScheme.primary.withOpacity(0.5),
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.primary.withOpacity(0.3),
+                          blurRadius: 20,
+                          spreadRadius: 2,
                         ),
-                        const SizedBox(height: 24),
-                        if (!_isLogin)
+                      ],
+                    ),
+                    child: Image.asset(
+                      'assets/piece_sets/cburnett/wP.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    AppConstants.appName,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _isLogin ? 'Sign in to continue' : 'Create your account',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.6),
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  // Form
+                  GlassPanel(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Username field (only for sign up)
+                          if (!_isLogin) ...[
+                            TextFormField(
+                              key: const ValueKey('displayName'),
+                              style: const TextStyle(color: Colors.white),
+                              decoration: customInputDecoration('Username', Icons.person_outline),
+                              validator: (value) => (value ?? '').isEmpty ? 'Please enter a username' : null,
+                              onSaved: (value) => _displayName = value ?? '',
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                          // Email field
                           TextFormField(
-                            key: const ValueKey('displayName'),
-                            decoration: customInputDecoration('Username'),
-                            validator: (value) => (value ?? '').isEmpty ? 'Please enter a name' : null,
-                            onSaved: (value) => _displayName = value ?? '',
+                            key: const ValueKey('email'),
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: customInputDecoration('Email Address', Icons.email_outlined),
+                            validator: (value) => !(value ?? '').contains('@') ? 'Enter a valid email' : null,
+                            onSaved: (value) => _email = value ?? '',
                           ),
-                        if (!_isLogin) const SizedBox(height: 16),
-                        TextFormField(
-                          key: const ValueKey('email'),
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: customInputDecoration('Email Address'),
-                          validator: (value) => !(value ?? '').contains('@') ? 'Invalid email' : null,
-                          onSaved: (value) => _email = value ?? '',
-                        ),
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          key: const ValueKey('password'),
-                          obscureText: true,
-                          decoration: customInputDecoration('Password'),
-                          validator: (value) => (value ?? '').length < 6 ? 'Password is too short' : null,
-                          onSaved: (value) => _password = value ?? '',
-                        ),
-                        if (!_isLogin) const SizedBox(height: 20),
-                        if (!_isLogin)
-                          SizedBox(
-                            width: double.infinity,
-
-                            child: OutlinedButton.icon(
-                              icon: const Icon(Icons.flag_outlined, color: AppTheme.kColorTextSecondary),
-                              label: Text(_selectedCountry?.name ?? 'Select Country', style: const TextStyle(color: AppTheme.kColorTextSecondary)),
-                              onPressed: () {
+                          const SizedBox(height: 16),
+                          // Password field
+                          TextFormField(
+                            key: const ValueKey('password'),
+                            obscureText: true,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: customInputDecoration('Password', Icons.lock_outline),
+                            validator: (value) => (value ?? '').length < 6 ? 'Minimum 6 characters' : null,
+                            onSaved: (value) => _password = value ?? '',
+                          ),
+                          // Country selector (only for sign up)
+                          if (!_isLogin) ...[
+                            const SizedBox(height: 16),
+                            InkWell(
+                              onTap: () {
                                 showCountryPicker(
                                   context: context,
                                   onSelect: (Country country) {
@@ -229,43 +288,122 @@ class _AuthScreenState extends State<AuthScreen> {
                                   },
                                 );
                               },
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-
-                                side: BorderSide(color: Colors.white.withAlpha(230)),
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.flag_outlined, color: Colors.white54, size: 20),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        _selectedCountry?.name ?? 'Select Country (Optional)',
+                                        style: TextStyle(
+                                          color: _selectedCountry != null ? Colors.white : Colors.white70,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    if (_selectedCountry != null)
+                                      Text(
+                                        _selectedCountry!.flagEmoji,
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                    const Icon(Icons.keyboard_arrow_down, color: Colors.white54),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        const SizedBox(height: 24),
-                        if (_isLoading)
-                          const CircularProgressIndicator(color: Colors.white)
-                        else
+                          ],
+                          // Forgot password (only for login)
+                          if (_isLogin) ...[
+                            const SizedBox(height: 8),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: _showForgotPasswordDialog,
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: const Size(0, 36),
+                                ),
+                                child: const Text(
+                                  'Forgot Password?',
+                                  style: TextStyle(
+                                    color: AppTheme.kColorAccent,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                          const SizedBox(height: 24),
+                          // Submit button
                           SizedBox(
-                            width: double.infinity,
-
-                            child: ElevatedButton(
-                              onPressed: _submitAuthForm,
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                              ),
-                              child: Text(_isLogin ? 'Login' : 'Sign Up'),
-                            ),
+                            height: 52,
+                            child: _isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  )
+                                : ElevatedButton(
+                                    onPressed: _submitAuthForm,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: theme.colorScheme.primary,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      elevation: 4,
+                                      shadowColor: theme.colorScheme.primary.withOpacity(0.5),
+                                    ),
+                                    child: Text(
+                                      _isLogin ? 'Sign In' : 'Create Account',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ),
                           ),
-                        if (_isLogin)
-                          TextButton(
-                            onPressed: _showForgotPasswordDialog,
-                            child: const Text('Forgot Password?', style: TextStyle(color: AppTheme.kColorTextSecondary)),
-                          ),
-                        const SizedBox(height: 8),
-                        TextButton(
-                          onPressed: _switchAuthMode,
-                          child: Text(_isLogin ? 'Create a new account' : 'I already have an account', style: const TextStyle(color: AppTheme.kColorAccent)),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                  // Switch auth mode
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _isLogin ? "Don't have an account?" : 'Already have an account?',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 14,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: _switchAuthMode,
+                        child: Text(
+                          _isLogin ? 'Sign Up' : 'Sign In',
+                          style: const TextStyle(
+                            color: AppTheme.kColorAccent,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),

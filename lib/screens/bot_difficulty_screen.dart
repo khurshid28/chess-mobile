@@ -60,24 +60,24 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
 
               // Difficulty selection
               const Text(
-                'Qiyinlik darajasi:',
+                'Difficulty:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
 
-              _buildDifficultyButton('easy', widget.bot.easy, '😊', 'OSON'),
+              _buildDifficultyButton('easy', widget.bot.easy, '😊', 'EASY'),
               _buildDifficultyButton(
                 'medium',
                 widget.bot.medium,
                 '😐',
-                'O\'RTACHA',
+                'MEDIUM',
               ),
-              _buildDifficultyButton('hard', widget.bot.hard, '😠', 'QIYIN'),
+              _buildDifficultyButton('hard', widget.bot.hard, '😠', 'HARD'),
               _buildDifficultyButton(
                 'maximum',
                 widget.bot.maximum,
                 '😈',
-                'MAKSIMAL',
+                'MAXIMUM',
               ),
 
               const SizedBox(height: 24),
@@ -94,16 +94,15 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
                     child: _buildSideButton(
                       Side.white,
                       'Oq',
-                      Icons.circle_outlined,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _buildSideButton(null, 'Tasodifiy', Icons.shuffle),
+                    child: _buildSideButton(null, 'Tasodifiy'),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _buildSideButton(Side.black, 'Qora', Icons.circle),
+                    child: _buildSideButton(Side.black, 'Qora'),
                   ),
                 ],
               ),
@@ -112,7 +111,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
 
               // Time control
               const Text(
-                'Vaqt kontroli:',
+                'Time Control:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
@@ -141,7 +140,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
                     ),
                   ),
                   child: const Text(
-                    'O\'YINNI BOSHLASH',
+                    'START GAME',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -220,9 +219,19 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
     );
   }
 
-  Widget _buildSideButton(Side? side, String label, IconData icon) {
+  Widget _buildSideButton(Side? side, String label) {
     final isSelected = _selectedSide == side;
     final theme = Theme.of(context);
+    
+    // Determine icon color based on side
+    Color iconColor;
+    if (side == Side.white) {
+      iconColor = Colors.white;
+    } else if (side == Side.black) {
+      iconColor = Colors.grey[900]!;
+    } else {
+      iconColor = isSelected ? theme.colorScheme.primary : Colors.grey;
+    }
 
     return GestureDetector(
       onTap: () => setState(() => _selectedSide = side),
@@ -241,10 +250,15 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              color: isSelected ? theme.colorScheme.primary : null,
-              size: 32,
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: side == Side.white ? Colors.white : (side == Side.black ? Colors.grey[900] : null),
+                border: Border.all(color: Colors.grey, width: 2),
+              ),
+              child: side == null ? Icon(Icons.shuffle, color: Colors.grey, size: 20) : null,
             ),
             const SizedBox(height: 4),
             Text(
@@ -319,7 +333,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
       AppLogger().warning('⚠️ User not logged in');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Iltimos, tizimga kiring')),
+          const SnackBar(content: Text('Please log in first')),
         );
       }
       return;

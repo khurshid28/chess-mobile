@@ -4,6 +4,7 @@ import 'package:chess_park/providers/settings_provider.dart';
 import 'package:chess_park/chess/export.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
+import 'package:chess_park/widgets/captured_pieces_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
@@ -42,6 +43,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
   late dartchess.Position _currentPosition;
   final List<dartchess.Position> _positions = [];
   final ScrollController _moveScrollController = ScrollController();
+  bool _isLoading = true; // Start with loading state
   
   // Move evaluation counters for each player
   final Map<String, int> _playerMoveStats = {
@@ -69,6 +71,14 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
     super.initState();
     _buildPositions();
     _calculateMoveEvaluations();
+    // Show loading for 1.5 seconds
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
   }
 
   @override
@@ -180,6 +190,41 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
     final settingsProvider = context.watch<SettingsProvider>();
     final screenWidth = MediaQuery.of(context).size.width;
 
+    // Show loading animation while analyzing
+    if (_isLoading) {
+      return Scaffold(
+        body: Container(
+          decoration: AppTheme.backgroundDecoration,
+          child: SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 4,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Analyzing game...',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Container(
         decoration: AppTheme.backgroundDecoration,
@@ -194,6 +239,19 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      // Top captured pieces (opponent's captures)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                        child: Row(
+                          children: [
+                            CapturedPiecesWidget(
+                              fen: _currentPosition.fen,
+                              isWhiteSide: (widget.userSide ?? dartchess.Side.white) == dartchess.Side.black,
+                              pieceSize: 22,
+                            ),
+                          ],
+                        ),
+                      ),
                       // Board (full width square) - no padding
                       SizedBox(
                         width: screenWidth,
@@ -202,10 +260,12 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                           size: screenWidth,
                           orientation: widget.userSide ?? dartchess.Side.white,
                           fen: _currentPosition.fen,
+                          lastMove: _currentMoveIndex > 0 ? dartchess.Move.parse(widget.moveHistory[_currentMoveIndex - 1]) : null,
                           settings: ChessboardSettings(
                             colorScheme: settingsProvider.currentBoardTheme,
                             pieceAssets: settingsProvider.currentPieceAssets,
                             showValidMoves: false,
+                            showLastMove: true,
                             animationDuration: const Duration(milliseconds: 200),
                           ),
                           game: GameData(
@@ -217,6 +277,19 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                             onMove: (_, {isDrop}) {},
                             onPromotionSelection: (_) {},
                           ),
+                        ),
+                      ),
+                      // Bottom captured pieces (user's captures)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                        child: Row(
+                          children: [
+                            CapturedPiecesWidget(
+                              fen: _currentPosition.fen,
+                              isWhiteSide: (widget.userSide ?? dartchess.Side.white) == dartchess.Side.white,
+                              pieceSize: 22,
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -263,7 +336,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
               ),
               Expanded(
                 child: Text(
-                  'O\'yin tahlili',
+                  'Game Analysis',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -413,8 +486,6 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
               itemBuilder: (context, index) {
                 final moveIndex = index + 1;
                 final move = widget.moveHistory[index];
-                
-                // Simple move evaluation based on position change
                 final evaluation = _evaluateMove(index);
                 
                 return GestureDetector(
@@ -437,7 +508,6 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Move text with sequential numbering
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -457,26 +527,28 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            // Add padding space if there's an evaluation icon
                             if (evaluation != null)
-                              const SizedBox(width: 20),
+                              const SizedBox(width: 18),
                           ],
                         ),
-                        // Evaluation icon at top right
                         if (evaluation != null)
                           Positioned(
-                            top: -4,
-                            right: -4,
+                            top: -6,
+                            right: -6,
                             child: Container(
-                              padding: const EdgeInsets.all(2),
+                              padding: const EdgeInsets.all(3),
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
+                                color: (evaluation['color'] as Color).withOpacity(0.2),
                                 shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: evaluation['color'] as Color,
+                                  width: 1.5,
+                                ),
                               ),
                               child: Icon(
                                 evaluation['icon'] as IconData,
                                 color: evaluation['color'] as Color,
-                                size: 14,
+                                size: 12,
                               ),
                             ),
                           ),
@@ -507,34 +579,39 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
     // Blunder: 5%, Mistake: 10%, Inaccuracy: 15%, Book: 12%
     // Good: 20%, Best: 15%, Brilliant: 3%, Normal: 20%
     if (value < 5) {
+      // Blunder ❌
       return {
-        'icon': Icons.error,
+        'icon': Icons.cancel,
         'color': Colors.red,
         'text': 'Blunder',
         'type': 'blunder',
       };
     } else if (value < 15) {
+      // Mistake ⚡
       return {
-        'icon': Icons.warning,
+        'icon': Icons.flash_on,
         'color': Colors.orange,
         'text': 'Mistake',
         'type': 'mistake',
       };
     } else if (value < 30) {
+      // Inaccuracy ⚠
       return {
-        'icon': Icons.info_outline,
+        'icon': Icons.warning_amber_rounded,
         'color': Colors.yellow[700],
         'text': 'Inaccuracy',
         'type': 'inaccuracy',
       };
     } else if (value < 42) {
+      // Book 📖
       return {
-        'icon': Icons.book,
+        'icon': Icons.menu_book_rounded,
         'color': Colors.blue[300],
         'text': 'Book',
         'type': 'book',
       };
     } else if (value > 97) {
+      // Brilliant ✨
       return {
         'icon': Icons.auto_awesome,
         'color': Colors.cyan,
@@ -542,15 +619,17 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
         'type': 'brilliant',
       };
     } else if (value > 82) {
+      // Best ⭐
       return {
-        'icon': Icons.star,
+        'icon': Icons.star_rounded,
         'color': Colors.green,
         'text': 'Best',
         'type': 'best',
       };
     } else if (value > 62) {
+      // Good ✓
       return {
-        'icon': Icons.check_circle,
+        'icon': Icons.check_circle_outline_rounded,
         'color': Colors.lightGreen,
         'text': 'Good',
         'type': 'good',

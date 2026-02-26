@@ -9,6 +9,7 @@ import 'package:chess_park/providers/auth_provider.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/chess/export.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
+import 'package:chess_park/widgets/captured_pieces_widget.dart';
 import 'package:chess_park/screens/game_review_screen.dart';
 
 class BotGameView extends StatefulWidget {
@@ -21,24 +22,26 @@ class BotGameView extends StatefulWidget {
 class _BotGameViewState extends State<BotGameView> {
   dartchess.Role? _pendingPromotionRole;
   bool _gameOverDialogShown = false;
+  BotGameProvider? _botGameProvider;
+  
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _botGameProvider = context.read<BotGameProvider>();
+    _checkGameOver();
+  }
   
   @override
   void dispose() {
     // Stop timer when leaving screen
-    final provider = context.read<BotGameProvider>();
-    provider.pauseTimer();
+    _botGameProvider?.pauseTimer();
     super.dispose();
   }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    
-    // Check if game is over and show dialog
-    final botGameProvider = context.watch<BotGameProvider>();
+  
+  void _checkGameOver() {
+    final botGameProvider = context.read<BotGameProvider>();
     if (botGameProvider.isGameOver && !_gameOverDialogShown) {
       _gameOverDialogShown = true;
-      // Use post frame callback to avoid building during build
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           _showGameOverDialog(context);
@@ -52,6 +55,16 @@ class _BotGameViewState extends State<BotGameView> {
     final botGameProvider = context.watch<BotGameProvider>();
     final settingsProvider = context.watch<SettingsProvider>();
     final authProvider = context.watch<AuthProvider>();
+    
+    // Check game over state
+    if (botGameProvider.isGameOver && !_gameOverDialogShown) {
+      _gameOverDialogShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _showGameOverDialog(context);
+        }
+      });
+    }
 
     // Check if game has been initialized
     if (botGameProvider.currentBot == null) {
@@ -73,11 +86,18 @@ class _BotGameViewState extends State<BotGameView> {
     final botPlayerWidget = _buildBotPlayerInfo(
       botGameProvider.botDisplayName,
       botGameProvider.botDisplayRating,
+      botGameProvider.fen,
+      playerOrientation == dartchess.Side.black, // bot captured pieces (if user is black, show white pieces bot captured)
     );
 
     final userRating = authProvider.userModel?.elo ?? 1200;
     final userName = authProvider.userModel?.displayName ?? 'You';
-    final userPlayerWidget = _buildUserPlayerInfo(userName, userRating);
+    final userPlayerWidget = _buildUserPlayerInfo(
+      userName,
+      userRating,
+      botGameProvider.fen,
+      playerOrientation == dartchess.Side.white, // user captured pieces
+    );
 
     // User ALWAYS at bottom, bot ALWAYS at top
     final topPlayerWidget = botPlayerWidget;
@@ -95,103 +115,119 @@ class _BotGameViewState extends State<BotGameView> {
         body: Container(
           decoration: AppTheme.backgroundDecoration,
           child: SafeArea(
-            child: Column(
-              children: [
-                // Top section
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildAppBar(context),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4.0,
-                      ),
-                      child: topPlayerWidget,
-                    ),
-                  ],
-                ),
-
-                // Chess board - full width and height
-                Expanded(
-                  child: Center(
-                    child: AspectRatio(
-                      aspectRatio: 1.0,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final boardSize = constraints.maxWidth;
-                              
-                              // Determine player side for interaction
-                              PlayerSide playerSide = PlayerSide.none;
-                              if (isUserTurn && !isThinking) {
-                                playerSide = playerOrientation == dartchess.Side.white
-                                    ? PlayerSide.white
-                                    : PlayerSide.black;
-                              }
-                              
-                              // Get last move for highlighting
-                              Move? lastMove;
-                              if (botGameProvider.moveHistory.isNotEmpty) {
-                                final lastMoveUci = botGameProvider.moveHistory.last;
-                                try {
-                                  lastMove = Move.parse(lastMoveUci);
-                                } catch (e) {
-                                  // Invalid move UCI, skip highlighting
-                                  debugPrint('Invalid move UCI: $lastMoveUci');
-                                }
-                              }
-                              
-                              return Chessboard(
-                                size: boardSize,
-                              orientation: playerOrientation,
-                              fen: botGameProvider.fen,
-                              lastMove: lastMove,
-                              settings: ChessboardSettings(
-                                colorScheme: settingsProvider.currentBoardTheme,
-                                pieceAssets: settingsProvider.currentPieceAssets,
-                                showValidMoves: true,
-                                animationDuration: const Duration(milliseconds: 250),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final screenHeight = constraints.maxHeight;
+                final screenWidth = constraints.maxWidth;
+                final boardSize = screenWidth - 32; // 16 padding on each side
+                
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: screenHeight),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Top section
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildAppBar(context),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4.0,
+                                horizontal: 16.0,
                               ),
-                              game: GameData(
-                                playerSide: playerSide,
-                                sideToMove: botGameProvider.position.turn,
-                                isCheck: botGameProvider.position.isCheck,
-                              validMoves: botGameProvider.validMoves,
-                              promotionMove: _pendingPromotionRole != null ? null : null,
-                              onMove: (move, {isDrop}) => _handleMove(context, move),
-                              onPromotionSelection: (role) {
-                                setState(() {
-                                  _pendingPromotionRole = role;
-                                });
+                              child: topPlayerWidget,
+                            ),
+                          ],
+                        ),
+
+                        // Chess board
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: SizedBox(
+                            width: boardSize,
+                            height: boardSize,
+                            child: Builder(
+                              builder: (context) {
+                                // Determine player side for interaction
+                                PlayerSide playerSide = PlayerSide.none;
+                                if (isUserTurn && !isThinking) {
+                                  playerSide = playerOrientation == dartchess.Side.white
+                                      ? PlayerSide.white
+                                      : PlayerSide.black;
+                                }
+                                
+                                // Get last move for highlighting
+                                Move? lastMove;
+                                if (botGameProvider.moveHistory.isNotEmpty) {
+                                  final lastMoveUci = botGameProvider.moveHistory.last;
+                                  try {
+                                    lastMove = Move.parse(lastMoveUci);
+                                  } catch (e) {
+                                    debugPrint('Invalid move UCI: $lastMoveUci');
+                                  }
+                                }
+                                
+                                return Chessboard(
+                                  size: boardSize,
+                                  orientation: playerOrientation,
+                                  fen: botGameProvider.fen,
+                                  lastMove: lastMove,
+                                  settings: ChessboardSettings(
+                                    colorScheme: settingsProvider.currentBoardTheme,
+                                    pieceAssets: settingsProvider.currentPieceAssets,
+                                    showValidMoves: true,
+                                    animationDuration: const Duration(milliseconds: 250),
+                                  ),
+                                  game: GameData(
+                                    playerSide: playerSide,
+                                    sideToMove: botGameProvider.position.turn,
+                                    isCheck: botGameProvider.position.isCheck,
+                                    validMoves: botGameProvider.validMoves,
+                                    promotionMove: _pendingPromotionRole != null ? null : null,
+                                    onMove: (move, {isDrop}) => _handleMove(context, move),
+                                    onPromotionSelection: (role) {
+                                      setState(() {
+                                        _pendingPromotionRole = role;
+                                      });
+                                    },
+                                  ),
+                                );
                               },
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+
+                        // Bottom section
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4.0,
+                                horizontal: 16.0,
+                              ),
+                              child: bottomPlayerWidget,
+                            ),
+                            // Move history at bottom
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: SizedBox(
+                                height: 50,
+                                child: _buildMoveHistory(botGameProvider),
+                              ),
+                            ),
+                            if (!botGameProvider.isGameOver)
+                              _buildActionButtons(context, botGameProvider),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ),
-
-                // Bottom section
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4.0,
-                      ),
-                      child: bottomPlayerWidget,
-                    ),
-                    // Move history at bottom - fixed height for visibility
-                    SizedBox(
-                      height: 80,
-                      child: _buildMoveHistory(botGameProvider),
-                    ),
-                    if (!botGameProvider.isGameOver)
-                      _buildActionButtons(context, botGameProvider),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
+                );
+              },
             ),
           ),
         ),
@@ -246,20 +282,20 @@ class _BotGameViewState extends State<BotGameView> {
     final lastMoveIndex = moves.length - 1;
     
     return GlassPanel(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: moves.isEmpty
           ? const Center(
               child: Text(
-                'Hali yurishlar yo\'q',
+                'No moves yet',
                 style: TextStyle(
                   color: Colors.white54,
-                  fontSize: 14,
+                  fontSize: 13,
                 ),
               ),
             )
           : ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               physics: const BouncingScrollPhysics(),
               itemCount: moves.length,
               itemBuilder: (context, index) {
@@ -269,7 +305,7 @@ class _BotGameViewState extends State<BotGameView> {
                 
                 return Container(
                   margin: const EdgeInsets.only(right: 4),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                   decoration: BoxDecoration(
                     color: isLastMove
                         ? AppTheme.kColorAccent.withOpacity(0.3)
@@ -287,7 +323,7 @@ class _BotGameViewState extends State<BotGameView> {
                           '$moveNumber. ',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.6),
-                            fontSize: 13,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -295,7 +331,7 @@ class _BotGameViewState extends State<BotGameView> {
                         moves[index],
                         style: TextStyle(
                           color: isLastMove ? AppTheme.kColorAccent : Colors.white,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontWeight: isLastMove ? FontWeight.bold : FontWeight.w500,
                         ),
                       ),
@@ -307,7 +343,7 @@ class _BotGameViewState extends State<BotGameView> {
     );
   }
 
-  Widget _buildBotPlayerInfo(String name, int rating) {
+  Widget _buildBotPlayerInfo(String name, int rating, String fen, bool showWhiteCaptured) {
     final botGameProvider = context.watch<BotGameProvider>();
     final timeLeft = botGameProvider.botTimeLeft;
     final minutes = (timeLeft ~/ 60).toString().padLeft(2, '0');
@@ -337,20 +373,34 @@ class _BotGameViewState extends State<BotGameView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '($rating)',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Rating: $rating',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
-                      fontSize: 14,
-                    ),
+                  const SizedBox(height: 2),
+                  CapturedPiecesWidget(
+                    fen: fen,
+                    isWhiteSide: showWhiteCaptured,
+                    pieceSize: 18,
                   ),
                 ],
               ),
@@ -384,7 +434,7 @@ class _BotGameViewState extends State<BotGameView> {
     );
   }
 
-  Widget _buildUserPlayerInfo(String name, int rating) {
+  Widget _buildUserPlayerInfo(String name, int rating, String fen, bool showWhiteCaptured) {
     final botGameProvider = context.watch<BotGameProvider>();
     final timeLeft = botGameProvider.userTimeLeft;
     final minutes = (timeLeft ~/ 60).toString().padLeft(2, '0');
@@ -414,20 +464,34 @@ class _BotGameViewState extends State<BotGameView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '($rating)',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Rating: $rating',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
-                      fontSize: 14,
-                    ),
+                  const SizedBox(height: 2),
+                  CapturedPiecesWidget(
+                    fen: fen,
+                    isWhiteSide: showWhiteCaptured,
+                    pieceSize: 18,
                   ),
                 ],
               ),
@@ -542,7 +606,7 @@ class _BotGameViewState extends State<BotGameView> {
         if (!success && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Noto\'g\'ri yurish'),
+              content: Text('Invalid move'),
               duration: Duration(seconds: 1),
               backgroundColor: Colors.red,
             ),
@@ -551,7 +615,7 @@ class _BotGameViewState extends State<BotGameView> {
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Xatolik yuz berdi'),
+            content: Text('Error occurred'),
             duration: Duration(seconds: 1),
             backgroundColor: Colors.red,
           ),
@@ -565,7 +629,7 @@ class _BotGameViewState extends State<BotGameView> {
       if (!success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Noto\'g\'ri yurish'),
+            content: Text('Invalid move'),
             duration: Duration(seconds: 1),
             backgroundColor: Colors.red,
           ),
@@ -599,10 +663,14 @@ class _BotGameViewState extends State<BotGameView> {
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: AppTheme.kBgColor1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         title: const Text(
-          'Figurani tanlang',
+          'Choose Piece',
           style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
         ),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -624,9 +692,9 @@ class _BotGameViewState extends State<BotGameView> {
         width: 60,
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.grey[800],
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey[600]!, width: 2),
+          color: AppTheme.kColorAccent.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppTheme.kColorAccent.withOpacity(0.3), width: 2),
         ),
         child: Center(
           child: Text(
@@ -645,23 +713,88 @@ class _BotGameViewState extends State<BotGameView> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Taslim bo\'lasizmi?'),
-        content: const Text('O\'yindan chiqsangiz, siz taslim bo\'lgan hisoblanasiz va o\'yin yutqaziladi.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Bekor qilish'),
-          ),
-          TextButton(
-            onPressed: () {
-              final provider = context.read<BotGameProvider>();
-              provider.resign(); // Auto resign on exit
-              Navigator.pop(ctx); // Close dialog
-              Navigator.pop(context); // Exit game
-            },
-            child: const Text('Taslim bo\'lish', style: TextStyle(color: Colors.red)),
-          ),
-        ],
+        backgroundColor: AppTheme.kBgColor1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.orange.withOpacity(0.15),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.flag_rounded,
+                color: Colors.orange,
+                size: 40,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Resign Game?',
+              style: TextStyle(
+                color: AppTheme.kColorTextPrimary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'If you leave now, you will resign and lose the game.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppTheme.kColorTextSecondary,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () => Navigator.pop(ctx),
+                    child: const Text(
+                      'Continue',
+                      style: TextStyle(color: AppTheme.kColorTextPrimary),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      final provider = context.read<BotGameProvider>();
+                      provider.resign();
+                      Navigator.pop(ctx);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Resign'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -670,22 +803,87 @@ class _BotGameViewState extends State<BotGameView> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Resign?'),
-        content: const Text('Are you sure you want to resign?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              final provider = context.read<BotGameProvider>();
-              provider.resign();
-              Navigator.pop(ctx);
-            },
-            child: const Text('Resign', style: TextStyle(color: Colors.red)),
-          ),
-        ],
+        backgroundColor: AppTheme.kBgColor1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.redAccent.withOpacity(0.15),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.flag_rounded,
+                color: Colors.redAccent,
+                size: 40,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Resign?',
+              style: TextStyle(
+                color: AppTheme.kColorTextPrimary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Are you sure you want to resign this game?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppTheme.kColorTextSecondary,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () => Navigator.pop(ctx),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: AppTheme.kColorTextPrimary),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      final provider = context.read<BotGameProvider>();
+                      provider.resign();
+                      Navigator.pop(ctx);
+                    },
+                    child: const Text('Resign'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -694,38 +892,38 @@ class _BotGameViewState extends State<BotGameView> {
     final provider = context.read<BotGameProvider>();
     final authProvider = context.read<AuthProvider>();
     
-    String title = 'O\'yin tugadi';
+    String title = 'Game Over';
     String result = '';
     Color resultColor = Colors.grey;
     IconData resultIcon = Icons.sports_esports;
 
     if (provider.gameResult == '1-0') {
       if (provider.userSide == dartchess.Side.white) {
-        title = '🎉 Siz yutdingiz!';
-        result = 'G\'alaba';
+        title = 'You Won!';
+        result = 'Victory';
         resultColor = Colors.green;
         resultIcon = Icons.emoji_events;
       } else {
-        title = '😔 Bot yutdi';
-        result = 'Mag\'lubiyat';
+        title = 'You Lost';
+        result = 'Defeat';
         resultColor = Colors.red;
         resultIcon = Icons.sentiment_dissatisfied;
       }
     } else if (provider.gameResult == '0-1') {
       if (provider.userSide == dartchess.Side.black) {
-        title = '🎉 Siz yutdingiz!';
-        result = 'G\'alaba';
+        title = 'You Won!';
+        result = 'Victory';
         resultColor = Colors.green;
         resultIcon = Icons.emoji_events;
       } else {
-        title = '😔 Bot yutdi';
-        result = 'Mag\'lubiyat';
+        title = 'You Lost';
+        result = 'Defeat';
         resultColor = Colors.red;
         resultIcon = Icons.sentiment_dissatisfied;
       }
     } else {
-      title = '🤝 Durang';
-      result = 'Durang';
+      title = 'Draw';
+      result = 'Draw';
       resultColor = Colors.orange;
       resultIcon = Icons.handshake;
     }
@@ -736,9 +934,9 @@ class _BotGameViewState extends State<BotGameView> {
     
     // More realistic accuracy calculation (60-80 range) with decimals
     double userAccuracyBase = 70.0;
-    if (result == 'G\'alaba') {
+    if (result == 'Victory') {
       userAccuracyBase = 75.0 + (totalMoves > 40 ? 5.0 : 0.0); // 75-80 for wins
-    } else if (result == 'Mag\'lubiyat') {
+    } else if (result == 'Defeat') {
       userAccuracyBase = 60.0 - (totalMoves < 20 ? 5.0 : 0.0); // 55-60 for losses
     } else {
       userAccuracyBase = 68.0; // 68 for draws
@@ -778,12 +976,12 @@ class _BotGameViewState extends State<BotGameView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatItem('Yurishlar', userMoves.toString(), Icons.timeline),
-                _buildStatItem('Aniqlik', '${accuracy.toStringAsFixed(1)}%', Icons.analytics),
+                _buildStatItem('Moves', userMoves.toString(), Icons.timeline),
+                _buildStatItem('Accuracy', '${accuracy.toStringAsFixed(1)}%', Icons.analytics),
               ],
             ),
             const SizedBox(height: 12),
-            if (result == 'G\'alaba')
+            if (result == 'Victory')
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -807,7 +1005,7 @@ class _BotGameViewState extends State<BotGameView> {
                   ],
                 ),
               )
-            else if (result == 'Mag\'lubiyat')
+            else if (result == 'Defeat')
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -839,7 +1037,7 @@ class _BotGameViewState extends State<BotGameView> {
               Navigator.pop(ctx); // Close dialog
               Navigator.pop(context); // Exit game
             },
-            child: const Text('Chiqish'),
+            child: const Text('Exit'),
           ),
           TextButton(
             onPressed: () {
@@ -854,10 +1052,10 @@ class _BotGameViewState extends State<BotGameView> {
                 MaterialPageRoute(
                   builder: (_) => GameReviewScreen(
                     moveHistory: provider.moveHistory,
-                    playerName: authProvider.userModel?.displayName ?? 'Siz',
+                    playerName: authProvider.userModel?.displayName ?? 'You',
                     opponentName: provider.botDisplayName,
                     result: result,
-                    resultReason: provider.gameResultReason ?? 'O\'yin tugadi',
+                    resultReason: provider.gameResultReason ?? 'Game ended',
                     playerAccuracy: userAccuracy,
                     opponentAccuracy: botAccuracy,
                     playerRating: authProvider.userModel?.elo ?? 1200,
@@ -867,7 +1065,7 @@ class _BotGameViewState extends State<BotGameView> {
                 ),
               );
             },
-            child: const Text('Tahlil'),
+            child: const Text('Analyze'),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -875,7 +1073,7 @@ class _BotGameViewState extends State<BotGameView> {
               await provider.rematch();
               Navigator.pop(ctx);
             },
-            child: const Text('Qayta o\'ynash'),
+            child: const Text('Rematch'),
           ),
         ],
       ),

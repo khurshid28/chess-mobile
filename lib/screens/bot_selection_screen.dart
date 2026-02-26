@@ -22,7 +22,7 @@ class BotSelectionScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Kategoriyani tanlang:',
+                'Select Category:',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

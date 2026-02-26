@@ -7,6 +7,7 @@ import 'package:chess_park/providers/server_time_provider.dart';
 import 'package:chess_park/providers/settings_provider.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
+import 'package:chess_park/widgets/captured_pieces_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -236,11 +237,11 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
 
 
     if (playerOrientation == dartchess.Side.white) {
-      topPlayerWidget = _buildPlayerInfo(blackPlayerDisplay, game.blackTimeLeft, isGameInProgress && game.turn == 'b' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider);
-      bottomPlayerWidget = _buildPlayerInfo(whitePlayerDisplay, game.whiteTimeLeft, isGameInProgress && game.turn == 'w' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider);
+      topPlayerWidget = _buildPlayerInfo(blackPlayerDisplay, game.blackTimeLeft, isGameInProgress && game.turn == 'b' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider, fen: gameProvider.chess.fen, showWhiteCaptured: true);
+      bottomPlayerWidget = _buildPlayerInfo(whitePlayerDisplay, game.whiteTimeLeft, isGameInProgress && game.turn == 'w' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider, fen: gameProvider.chess.fen, showWhiteCaptured: false);
     } else {
-      topPlayerWidget = _buildPlayerInfo(whitePlayerDisplay, game.whiteTimeLeft, isGameInProgress && game.turn == 'w' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider);
-      bottomPlayerWidget = _buildPlayerInfo(blackPlayerDisplay, game.blackTimeLeft, isGameInProgress && game.turn == 'b' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider);
+      topPlayerWidget = _buildPlayerInfo(whitePlayerDisplay, game.whiteTimeLeft, isGameInProgress && game.turn == 'w' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider, fen: gameProvider.chess.fen, showWhiteCaptured: false);
+      bottomPlayerWidget = _buildPlayerInfo(blackPlayerDisplay, game.blackTimeLeft, isGameInProgress && game.turn == 'b' && !isClockPaused, game.lastMoveTimestamp, serverTimeProvider, fen: gameProvider.chess.fen, showWhiteCaptured: true);
     }
 
 
@@ -328,6 +329,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
                         size: boardSize,
                         orientation: playerOrientation,
                         fen: gameProvider.chess.fen,
+                        lastMove: gameProvider.lastMove,
                         settings: ChessboardSettings(
                           colorScheme: settingsProvider.currentBoardTheme,
                           pieceAssets: settingsProvider.currentPieceAssets,
@@ -459,7 +461,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
 
 
 
-  Widget _buildPlayerInfo(PlayerDisplayData playerDisplay, int timeLeft, bool isActive, Timestamp? lastMoveTimestamp, ServerTimeProvider serverTimeProvider) {
+  Widget _buildPlayerInfo(PlayerDisplayData playerDisplay, int timeLeft, bool isActive, Timestamp? lastMoveTimestamp, ServerTimeProvider serverTimeProvider, {required String fen, required bool showWhiteCaptured}) {
 
     return GlassPanel(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -507,11 +509,22 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
                       ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  "${playerDisplay.elo ?? '...'}",
-
-                  style: TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 14),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Text(
+                      "${playerDisplay.elo ?? '...'}",
+                      style: TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 14),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: CapturedPiecesWidget(
+                        fen: fen,
+                        isWhiteSide: showWhiteCaptured,
+                        pieceSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
