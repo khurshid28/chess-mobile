@@ -1,0 +1,297 @@
+===============================================================================
+                    CHESS MOBILE UI/UX REDESIGN PLAN
+                         Version 1.0 - March 2026
+===============================================================================
+
+JAMI: 21 TA VAZIFA, 8 TA PHASE
+
+===============================================================================
+PHASE 1: THEME & COLORS (2 ta vazifa)
+===============================================================================
+
+[1] RANGLARNI YUMSHATISH
+    Fayl: lib/theme/app_theme.dart
+    - Hozirgi accent: #F0B90B (yorqin sariq)
+    - Yangi accent: yumshoq ranglar
+    - Background gradient yumshatish
+    - Text colorlar opacity kamaytirish
+
+[2] 6 TA TEMA QOSHISH
+    Yangi fayllar:
+    - lib/providers/theme_provider.dart
+    - lib/screens/theme_picker_screen.dart
+    
+    Temalar:
+    ┌────────────────┬─────────────┬──────────────────────────┐
+    │ Tema           │ Accent      │ Background Gradient      │
+    ├────────────────┼─────────────┼──────────────────────────┤
+    │ 1. Forest      │ #628141     │ #2a3123 → #1a2113        │
+    │ 2. Ocean       │ #4A90A4     │ #1a2530 → #0f1a20        │
+    │ 3. Sunset      │ #D4854A     │ #2a2520 → #1a1510        │
+    │ 4. Midnight    │ #7C5CBF     │ #201a2a → #15101a        │
+    │ 5. Gold        │ #D4AF37     │ #2a2820 → #1a1810        │
+    │ 6. Rose        │ #C76B8F     │ #2a2025 → #1a1015        │
+    └────────────────┴─────────────┴──────────────────────────┘
+    
+    Har bir tema: accentColor, bgGradient, surfaceColor, glassColor
+    Saqlash: SharedPreferences
+    Kirish: Settings ekranidan
+
+===============================================================================
+PHASE 2: NAVIGATION RESTRUCTURE (3 ta vazifa)
+===============================================================================
+
+[3] SETTINGS → PROFILE GA KOCHIRISH
+    Fayllar:
+    - lib/screens/home_screen.dart (settingsni olib tashlash)
+    - lib/screens/profile_screen.dart (settings tugma qoshish)
+    
+    Settings endi faqat Profile tabdan ochiladi
+
+[4] HISTORY → PROFILE GA KOCHIRISH
+    Fayllar:
+    - lib/screens/lobby_screen.dart (RecentGames olib tashlash)
+    - lib/screens/profile_screen.dart (RecentGames qoshish)
+    
+    Home screen toza, faqat action buttonlar
+
+[5] USER TAP → PROFILE TAB
+    Fayllar:
+    - lib/widgets/user_header.dart
+    - lib/screens/lobby_screen.dart
+    
+    User avatar/name bosganda Profile tabga otish
+
+===============================================================================
+PHASE 3-4: HOME & LEADERBOARD (2 ta vazifa)
+===============================================================================
+
+[6] HOME SCREEN SODDALASH
+    Fayl: lib/screens/lobby_screen.dart
+    
+    Olib tashlash:
+    - RecentGames (profile ga kochdi)
+    
+    Qoldirish:
+    - UserHeader
+    - ActionButtons (Play Online, Play Computer, Puzzles, Daily)
+    - LiveTopPlayersWidget
+
+[7] LEADERBOARD REDESIGN
+    Fayl: lib/screens/leaderboard_screen.dart
+    
+    Ozgarishlar:
+    - Top 3 vizual yaxshilash (podium)
+    - Time period tabs (Daily/Weekly/All-time)
+    - User pozitsiyasini highlight qilish
+    - Loading/empty states yaxshilash
+
+===============================================================================
+PHASE 5: PLAY ONLINE (2 ta vazifa)
+===============================================================================
+
+[8] YANGI TIME CONTROLS QOSHISH
+    Fayl: lib/screens/online_games_screen.dart
+    
+    Hozirgi: 1, 3, 5, 10 minut
+    Yangi: +15 minut (Rapid), +20 minut (Rapid)
+    
+    ┌──────────┬──────────┬──────────┐
+    │ 1 min    │ 3 min    │ 5 min    │
+    │ Bullet   │ Blitz    │ Blitz    │
+    ├──────────┼──────────┼──────────┤
+    │ 10 min   │ 15 min   │ 20 min   │
+    │ Rapid    │ Rapid    │ Rapid    │
+    └──────────┴──────────┴──────────┘
+
+[9] TIME CONTROL KATEGORIYALAR
+    Bullet (1) / Blitz (3, 5) / Rapid (10, 15, 20)
+    Section header yoki vizual ajratish
+
+===============================================================================
+PHASE 6: BOT SYSTEM OVERHAUL (7 ta vazifa)
+===============================================================================
+
+[10] GRID → LIST LAYOUT
+     Fayl: lib/screens/bot_selection_screen.dart
+     
+     Hozirgi: GridView (2 ustun)
+     Yangi: ListView (horizontal card)
+     
+     ┌─────────────────────────────────────────┐
+     │ [IMG] Boshlangich                       │
+     │       5 ta bot • Rating: 400-900        │
+     │                                    →    │
+     └─────────────────────────────────────────┘
+
+[11] +1 YANGI CATEGORY QOSHISH
+     Fayl: lib/models/bot_category_model.dart
+     
+     Yangi category: "Grandmasters" yoki "Random Bots"
+     Mos imageUrl qoshish
+
+[12] MOS RASMLAR
+     Fayl: lib/models/bot_category_model.dart
+     
+     Har bir category uchun mos rasm:
+     - Warriors → jangchi rasmlari
+     - Scientists → olim rasmlari
+     - Legends → shaxmat ustalar rasmlari
+
+[13] ANIQ RATING (INTERVAL YOQ)
+     Fayl: lib/models/bot_personality_model.dart
+     
+     Hozirgi: minRating - maxRating (range)
+     Yangi: bitta aniq rating har bir bot uchun
+     
+     Masalan: Rustam bot = 450 (aniq)
+
+[14] KETMA-KET UNLOCK SYSTEM
+     Yangi fayllar:
+     - lib/services/bot_unlock_service.dart
+     - lib/providers/bot_unlock_provider.dart
+     
+     Qoidalar:
+     - Birinchi bot ochiq
+     - Yutganda keyingi ochiladi
+     - Progress Firestore/local da saqlanadi
+     
+     UI:
+     - 🔒 Qulflangan: padlock, kulrang
+     - 🔓 Ochiq: rangli, play button
+     - ✅ Yutilgan: checkmark, yashil
+
+[15] BOT HISTORY ALOHIDA
+     Yangi fayl: lib/screens/bot_history_screen.dart
+     
+     Bot oyinlar tarixi alohida ekran
+     Online games bilan aralashmaydi
+     Kirish: Bot selection yoki Profile
+
+[16] CATEGORY RATING INTERVAL
+     Fayl: lib/models/bot_category_model.dart
+     
+     Har bir category uchun rating interval:
+     - Boshlangich: 400-900
+     - Ortacha: 900-1500
+     - Murakkab: 1500-2000
+     - Master: 2000-2800
+
+===============================================================================
+PHASE 7: PUZZLES (4 ta vazifa)
+===============================================================================
+
+[17] 50 TA PUZZLE, 3 TA OCHIQ
+     Yangi fayllar:
+     - lib/services/puzzle_cache_service.dart
+     - lib/providers/puzzle_progress_provider.dart
+     
+     API: Lichess API (allaqachon mavjud)
+     
+     Logic:
+     - 50 ta puzzle API dan yuklanadi
+     - Dastlab 3 ta ochiq
+     - Yechganda +1 ochiladi
+     - Progress local/cloud saqlanadi
+
+[18] KETMA-KET UNLOCK
+     Yechish → keyingisi ochiladi
+     Progress tracking
+     Streak counter
+
+[19] CHIROYLI GRID + ICONLAR
+     Fayl: lib/screens/puzzle_lobby_screen.dart
+     
+     50 ta Puzzle Grid:
+     ┌────────────────────────────────────────┐
+     │ Progress: ███████░░░░░░░░░░ 15/50      │
+     ├────────────────────────────────────────┤
+     │ ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐    │
+     │ │✅1 │ │✅2 │ │✅3 │ │🔓4 │ │🔒5 │    │
+     │ │⚔️  │ │📌  │ │🗡️  │ │🔍  │ │🔒  │    │
+     │ └────┘ └────┘ └────┘ └────┘ └────┘    │
+     └────────────────────────────────────────┘
+     
+     Theme Iconlari:
+     ┌──────────────┬──────┬──────────────┬──────┐
+     │ Fork         │ ⚔️   │ Pin          │ 📌   │
+     │ Skewer       │ 🗡️   │ Discovery    │ 🔍   │
+     │ Double Check │ ✌️   │ Back Rank    │ 👑   │
+     │ Smothered    │ 🐴   │ Queen Sac    │ ♛    │
+     │ Deflection   │ 🎯   │ Decoy        │ 🪤   │
+     │ Clearance    │ 🚀   │ X-Ray        │ 👁️   │
+     │ Zwischenzug  │ ⚡   │ Endgame      │ 🏁   │
+     │ Mate in 1    │ 1️⃣   │ Mate in 2    │ 2️⃣   │
+     │ Mate in 3    │ 3️⃣   │ Tactics      │ ♟️   │
+     └──────────────┴──────┴──────────────┴──────┘
+     
+     Holatlar:
+     - 🔒 Qulflangan: blur, padlock, opacity 0.5, dashed border
+     - 🔓 Ochiq: gradient border, glow, pulse animation
+     - ✅ Yechilgan: yashil border, checkmark, vaqt korsatiladi
+     
+     Animatsiyalar:
+     - Confetti (yechilganda)
+     - Unlock animation
+     - Card flip
+
+[20] DAILY PUZZLE ALOHIDA
+     Fayl: lib/screens/puzzle_lobby_screen.dart
+     
+     - Daily puzzle har doim ochiq (unlock systemdan tashqari)
+     - Streak counter
+     - Badges/rewards
+
+===============================================================================
+PHASE 8: INVITE FRIENDS (1 ta vazifa)
+===============================================================================
+
+[21] DOSTLARNI TAKLIF QILISH
+     Yangi fayl: lib/screens/invite_friends_screen.dart
+     
+     Features:
+     - Shareable app link yaratish
+     - Clipboard ga nusxalash
+     - Native share sheet
+     - QR code (optional)
+     
+     Kirish joyi: Home yoki Profile
+
+===============================================================================
+YANGI FAYLLAR ROYXATI
+===============================================================================
+
+providers/
+├── theme_provider.dart
+├── puzzle_progress_provider.dart
+└── bot_unlock_provider.dart
+
+services/
+├── puzzle_cache_service.dart
+└── bot_unlock_service.dart
+
+screens/
+├── theme_picker_screen.dart
+├── bot_history_screen.dart
+└── invite_friends_screen.dart
+
+===============================================================================
+OZGARTIRILADIGAN FAYLLAR
+===============================================================================
+
+lib/theme/app_theme.dart
+lib/screens/home_screen.dart
+lib/screens/lobby_screen.dart
+lib/screens/profile_screen.dart
+lib/screens/leaderboard_screen.dart
+lib/screens/online_games_screen.dart
+lib/screens/bot_selection_screen.dart
+lib/screens/category_bots_screen.dart
+lib/screens/puzzle_lobby_screen.dart
+lib/models/bot_category_model.dart
+lib/models/bot_personality_model.dart
+lib/widgets/user_header.dart
+
+===============================================================================
+                              END OF PLAN
+===============================================================================
