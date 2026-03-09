@@ -42,7 +42,7 @@ class PuzzleLobbyView extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
-                    Text('Boshqotirmalar', style: Theme.of(context).textTheme.titleLarge),
+                    Text('Puzzles', style: Theme.of(context).textTheme.titleLarge),
                     const Spacer(),
                     if (provider.state != PuzzleLoadState.loading)
                       IconButton(
@@ -85,7 +85,7 @@ class PuzzleLobbyView extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '${provider.unlockedCount} ochiq',
+                                  '${provider.unlockedCount} unlocked',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: AppTheme.kColorTextSecondary,
@@ -153,7 +153,7 @@ class PuzzleLobbyView extends StatelessWidget {
               CircularProgressIndicator(color: AppTheme.kColorAccent),
               const SizedBox(height: 16),
               Text(
-                'Yuklanmoqda... ${provider.puzzles.length}/50',
+                'Loading... ${provider.puzzles.length}/50',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppTheme.kColorTextSecondary),
               ),
@@ -172,10 +172,10 @@ class PuzzleLobbyView extends StatelessWidget {
                   children: [
                     const Icon(Icons.error_outline, color: Colors.redAccent, size: 48),
                     const SizedBox(height: 16),
-                    const Text('Xatolik', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text('Error', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     Text(
-                      provider.errorMessage ?? 'Qaytadan urinib ko\'ring',
+                      provider.errorMessage ?? 'Please try again',
                       textAlign: TextAlign.center,
                       style: TextStyle(color: AppTheme.kColorTextSecondary),
                     ),
@@ -183,7 +183,7 @@ class PuzzleLobbyView extends StatelessWidget {
                     ElevatedButton.icon(
                       onPressed: () => provider.refreshPuzzles(),
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Qayta'),
+                      label: const Text('Retry'),
                     ),
                   ],
                 ),
@@ -255,7 +255,7 @@ class PuzzleLobbyView extends StatelessWidget {
         HapticFeedback.lightImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Avval ${index} - boshqotirmani yeching'),
+            content: Text('Solve puzzle #$index first'),
             duration: const Duration(seconds: 2),
             backgroundColor: Colors.orange.shade700,
           ),

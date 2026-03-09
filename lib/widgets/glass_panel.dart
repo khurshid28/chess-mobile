@@ -88,41 +88,34 @@ class GlassPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final BorderRadius radius = BorderRadius.circular(borderRadius);
 
-    final Color baseTint = backgroundColor ?? Colors.white;
+    // Use theme-based color instead of hardcoded white
+    final Color baseTint = backgroundColor ?? AppTheme.kBgColor1;
 
     return Container(
 
       decoration: BoxDecoration(
         borderRadius: radius,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(200),
-            blurRadius: 30.0,
-            spreadRadius: -5.0,
-          ),
-        ],
+        color: baseTint.withOpacity(0.6),
+        border: Border.all(
+          color: AppTheme.kColorAccent.withOpacity(0.2),
+          width: 1.0,
+        ),
       ),
       child: ClipRRect(
         borderRadius: radius,
         child: BackdropFilter(
 
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
           child: Container(
             padding: padding,
             decoration: BoxDecoration(
               borderRadius: radius,
-
-              border: Border.all(
-                color: Colors.white.withAlpha(77),
-                width: 1.0,
-              ),
-
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                baseTint.withAlpha(38),
-               baseTint.withAlpha(13),
+                  baseTint.withOpacity(0.4),
+                  baseTint.withOpacity(0.2),
                 ],
               ),
             ),

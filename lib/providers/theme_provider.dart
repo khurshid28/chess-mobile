@@ -9,6 +9,7 @@ enum AppThemeType {
   midnight,
   gold,
   rose,
+  snow,
 }
 
 /// Theme color scheme data
@@ -119,6 +120,18 @@ class AppThemes {
     glassColor: Color(0xFFC76B8F),
   );
 
+  static const snow = AppThemeColors(
+    name: 'Snow',
+    nameUz: 'Qor',
+    emoji: '❄️',
+    accent: Color(0xFF5B8DEF),
+    bgColor1: Color(0xFF2c3e50),
+    bgColor2: Color(0xFF243447),
+    bgColor3: Color(0xFF1c2a3a),
+    surfaceColor: Color(0xFF2c3e50),
+    glassColor: Color(0xFF5B8DEF),
+  );
+
   static List<AppThemeColors> get all => [
         forest,
         ocean,
@@ -126,6 +139,7 @@ class AppThemes {
         midnight,
         gold,
         rose,
+        snow,
       ];
 
   static AppThemeColors fromType(AppThemeType type) {
@@ -142,6 +156,8 @@ class AppThemes {
         return gold;
       case AppThemeType.rose:
         return rose;
+      case AppThemeType.snow:
+        return snow;
     }
   }
 

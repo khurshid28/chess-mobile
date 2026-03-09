@@ -28,7 +28,7 @@ class ThemePickerScreen extends StatelessWidget {
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text(
-                      'Tema tanlash',
+                      'Theme',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -88,35 +88,51 @@ class _ThemeCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+        transform: Matrix4.identity()..scale(isSelected ? 1.0 : 0.95),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? theme.accent : Colors.transparent,
-            width: 3,
+            color: isSelected ? theme.accent : Colors.white.withOpacity(0.1),
+            width: isSelected ? 3 : 1,
           ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: theme.accent.withOpacity(0.3),
-                    blurRadius: 12,
-                    spreadRadius: 2,
-                  ),
-                ]
-              : null,
+          boxShadow: [
+            BoxShadow(
+              color: isSelected 
+                  ? theme.accent.withOpacity(0.4) 
+                  : Colors.black.withOpacity(0.2),
+              blurRadius: isSelected ? 20 : 8,
+              spreadRadius: isSelected ? 2 : 0,
+            ),
+          ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(13),
+          borderRadius: BorderRadius.circular(17),
           child: Stack(
             children: [
               // Background gradient preview
               Container(
                 decoration: BoxDecoration(
                   gradient: RadialGradient(
-                    center: Alignment.center,
-                    radius: 1.0,
+                    center: Alignment.topLeft,
+                    radius: 1.5,
                     colors: [theme.bgColor1, theme.bgColor2, theme.bgColor3],
-                    stops: const [0.0, 0.3, 1.0],
+                    stops: const [0.0, 0.4, 1.0],
+                  ),
+                ),
+              ),
+              // Glass overlay
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white.withOpacity(0.1),
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.2),
+                    ],
                   ),
                 ),
               ),
@@ -126,68 +142,75 @@ class _ThemeCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Emoji
-                    Text(
-                      theme.emoji,
-                      style: const TextStyle(fontSize: 40),
+                    // Accent color circle with emoji
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: theme.accent.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: theme.accent,
+                          width: 3,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.accent.withOpacity(0.3),
+                            blurRadius: 12,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          theme.emoji,
+                          style: const TextStyle(fontSize: 28),
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
                     // Theme name
                     Text(
-                      theme.nameUz,
+                      theme.name,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
+                        letterSpacing: 0.5,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      theme.name,
+                      theme.nameUz,
                       style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 13,
+                        color: Colors.white.withOpacity(0.6),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    // Accent color preview
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: theme.accent,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
-                          width: 2,
-                        ),
-                      ),
-                      child: isSelected
-                          ? const Icon(
-                              Icons.check,
-                              color: Colors.white,
-                              size: 24,
-                            )
-                          : null,
                     ),
                   ],
                 ),
               ),
-              // Selected indicator
+              // Selected checkmark
               if (isSelected)
                 Positioned(
-                  top: 8,
-                  right: 8,
+                  top: 10,
+                  right: 10,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
+                    width: 28,
+                    height: 28,
                     decoration: BoxDecoration(
                       color: theme.accent,
-                      borderRadius: BorderRadius.circular(12),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.accent.withOpacity(0.5),
+                          blurRadius: 8,
+                        ),
+                      ],
                     ),
                     child: const Icon(
                       Icons.check,
                       color: Colors.white,
-                      size: 16,
+                      size: 18,
                     ),
                   ),
                 ),

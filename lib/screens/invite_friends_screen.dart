@@ -54,7 +54,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text(
-                      'Do\'stni taklif qilish',
+                      'Invite Friend',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -96,7 +96,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         const SizedBox(height: 20),
         
         const Text(
-          'Do\'stingiz bilan 1v1 o\'ynang',
+          'Play 1v1 with your friend',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                     ),
                     const SizedBox(width: 12),
                     const Text(
-                      'Yangi o\'yin yaratish',
+                      'Create New Game',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -137,7 +137,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                 
                 // Time control
                 Text(
-                  'Vaqt nazorati',
+                  'Time Control',
                   style: TextStyle(
                     fontSize: 14,
                     color: AppTheme.kColorTextSecondary,
@@ -178,7 +178,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                             ),
                           )
                         : const Text(
-                            'O\'yin yaratish',
+                            'Create Game',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -200,7 +200,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                'yoki',
+                'or',
                 style: TextStyle(color: AppTheme.kColorTextSecondary),
               ),
             ),
@@ -230,7 +230,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                     ),
                     const SizedBox(width: 12),
                     const Text(
-                      'Kodga qo\'shilish',
+                      'Join with Code',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -294,7 +294,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                             ),
                           )
                         : const Text(
-                            'Qo\'shilish',
+                            'Join',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -333,7 +333,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         const SizedBox(height: 32),
         
         const Text(
-          'Do\'stingizni kutmoqda...',
+          'Waiting for friend...',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -343,7 +343,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         const SizedBox(height: 12),
         
         Text(
-          '$_selectedTimeMinutes daqiqa o\'yin',
+          '$_selectedTimeMinutes min game',
           style: TextStyle(
             fontSize: 16,
             color: AppTheme.kColorTextSecondary,
@@ -358,7 +358,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
             child: Column(
               children: [
                 Text(
-                  'O\'yin kodi',
+                  'Game Code',
                   style: TextStyle(
                     fontSize: 14,
                     color: AppTheme.kColorTextSecondary,
@@ -382,7 +382,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                       child: OutlinedButton.icon(
                         onPressed: _copyCode,
                         icon: const Icon(Icons.copy),
-                        label: const Text('Nusxalash'),
+                        label: const Text('Copy'),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
@@ -393,7 +393,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                       child: ElevatedButton.icon(
                         onPressed: _shareCode,
                         icon: const Icon(Icons.share),
-                        label: const Text('Ulashish'),
+                        label: const Text('Share'),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
@@ -412,7 +412,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         TextButton(
           onPressed: _cancelAndGoBack,
           child: Text(
-            'Bekor qilish',
+            'Cancel',
             style: TextStyle(
               fontSize: 16,
               color: AppTheme.kColorTextSecondary,
@@ -530,7 +530,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
     if (code.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('6 xonali kod kiriting'),
+          content: Text('Enter 6-digit code'),
           backgroundColor: Colors.orange,
         ),
       );
@@ -557,7 +557,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('O\'yin topilmadi yoki muddati tugagan'),
+              content: Text('Game not found or expired'),
               backgroundColor: Colors.orange,
             ),
           );
@@ -574,7 +574,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('O\'zingizning o\'yiningizga qo\'shila olmaysiz'),
+              content: Text('You cannot join your own game'),
               backgroundColor: Colors.orange,
             ),
           );

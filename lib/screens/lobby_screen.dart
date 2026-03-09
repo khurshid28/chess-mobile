@@ -65,7 +65,7 @@ class _ActionButtonsSection extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 icon: Icons.public,
-                text: 'Online\nO\'yin',
+                text: 'Online\nGame',
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const OnlineGamesScreen())),
               ),
@@ -74,7 +74,7 @@ class _ActionButtonsSection extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 icon: Icons.smart_toy,
-                text: 'Kompyuter\nbilan',
+                text: 'Play\nBot',
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const BotSelectionScreen())),
               ),
@@ -88,7 +88,7 @@ class _ActionButtonsSection extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 icon: Icons.extension,
-                text: 'Boshqotir-\nmalar',
+                text: 'Daily\nPuzzles',
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const PuzzleLobbyScreen())),
               ),
@@ -138,7 +138,7 @@ class _InviteFriendsButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Do\'stlarni taklif qilish',
+                    'Invite Friends',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -147,7 +147,7 @@ class _InviteFriendsButton extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Do\'stlaringiz bilan o\'ynang',
+                    'Play with your friends',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.kColorTextSecondary,

@@ -67,8 +67,8 @@ class _PuzzleViewState extends State<PuzzleView> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(widget.puzzleIndex != null 
-            ? 'Boshqotirma #${widget.puzzleIndex! + 1}' 
-            : 'Boshqotirma'),
+            ? 'Puzzle #${widget.puzzleIndex! + 1}' 
+            : 'Puzzle'),
       ),
       body: Container(
         decoration: AppTheme.backgroundDecoration,
@@ -96,14 +96,14 @@ class _PuzzleViewState extends State<PuzzleView> {
             children: [
               Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error, size: 48),
               const SizedBox(height: 16),
-              const Text("Boshqotirma yuklanmadi.", style: TextStyle(fontSize: 18)),
+              const Text("Puzzle failed to load.", style: TextStyle(fontSize: 18)),
               const SizedBox(height: 8),
-              Text(provider.errorMessage ?? "Xato yuz berdi.", textAlign: TextAlign.center,),
+              Text(provider.errorMessage ?? "An error occurred.", textAlign: TextAlign.center,),
               const SizedBox(height: 24),
                ElevatedButton(
 
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Orqaga"),
+                child: const Text("Back"),
               ),
             ],
           ),
@@ -124,7 +124,7 @@ class _PuzzleViewState extends State<PuzzleView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            '${provider.playerSide == dartchess.Side.white ? "Oq" : "Qora"} uchun eng yaxshi yurishni toping.',
+            '${provider.playerSide == dartchess.Side.white ? "White" : "Black"} to move. Find the best move.',
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
@@ -223,7 +223,7 @@ class _PuzzleViewState extends State<PuzzleView> {
               children: [
                 Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
-                Text("To'g'ri! Boshqotirma yechildi!", style: TextStyle(color: Colors.white, fontSize: 18)),
+                Text("Correct! Puzzle solved!", style: TextStyle(color: Colors.white, fontSize: 18)),
               ],
             ),
           ),
@@ -241,12 +241,12 @@ class _PuzzleViewState extends State<PuzzleView> {
                   children: [
                     Icon(Icons.cancel, color: Colors.white),
                     SizedBox(width: 10),
-                    Text("Noto'g'ri yurish!", style: TextStyle(color: Colors.white, fontSize: 18)),
+                    Text("Wrong move!", style: TextStyle(color: Colors.white, fontSize: 18)),
                   ],
                 ),
                 ElevatedButton(
                   onPressed: () => provider.retryPuzzle(),
-                  child: const Text("Qayta"),
+                  child: const Text("Retry"),
                 )
               ],
             ),
