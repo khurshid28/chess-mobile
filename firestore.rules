@@ -125,11 +125,39 @@ service cloud.firestore {
       allow read: if resource.data != null && (
                      (isSignedIn() && resource.data.status == 'inprogress') || 
                      (isSignedIn() && resource.data.status == 'completed') ||
+                     (isSignedIn() && resource.data.status == 'active') ||
                      isParticipant()
                   );
 
-      // Deny all direct writes from the client. Handled by Cloud Functions.
-      allow write: if false;
+      // Allow creating challenge games from client
+      allow create: if isSignedIn() && 
+                       request.resource.data.type == 'challenge' &&
+                       (request.resource.data.whiteId == request.auth.uid || 
+                        request.resource.data.blackId == request.auth.uid);
+      
+      // Other writes handled by Cloud Functions
+      allow update, delete: if false;
+    }
+
+    // --- Challenges Collection (1v1 Friend Invites) ---
+    match /challenges/{challengeId} {
+      // Anyone signed in can read challenges (to join by code)
+      allow read: if isSignedIn();
+      
+      // Creator can create a challenge
+      allow create: if isSignedIn() && 
+                       request.resource.data.creatorId == request.auth.uid &&
+                       request.resource.data.status == 'waiting';
+      
+      // Creator can delete their own waiting challenge
+      allow delete: if isSignedIn() && 
+                       resource.data.creatorId == request.auth.uid;
+      
+      // Opponent can update to join (change status to matched)
+      allow update: if isSignedIn() && 
+                       resource.data.status == 'waiting' &&
+                       request.resource.data.status == 'matched' &&
+                       request.resource.data.opponentId == request.auth.uid;
     }
   }
 }
