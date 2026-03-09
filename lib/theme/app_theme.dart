@@ -29,6 +29,16 @@ class AppTheme {
   
   static bool get isLight => _currentColors.isLight;
 
+  // Theme-aware container background color (use instead of Colors.white.withOpacity(0.1))
+  static Color get containerBgColor => isLight 
+      ? Colors.black.withOpacity(0.05) 
+      : Colors.white.withOpacity(0.1);
+  
+  // Theme-aware divider color
+  static Color get dividerColor => isLight 
+      ? Colors.black.withOpacity(0.1) 
+      : Colors.white.withOpacity(0.1);
+
   static BoxDecoration get backgroundDecoration => _currentColors.backgroundDecoration;
 
   static ThemeData get darkTheme {

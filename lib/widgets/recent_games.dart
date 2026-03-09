@@ -1,7 +1,7 @@
 
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
-import 'package:chess_park/models/bot_personality_model.dart';
+import 'package:chess_park/models/bot_category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/services/bot_game_database.dart';
@@ -155,12 +155,8 @@ class _RecentGamesState extends State<RecentGames> {
 
   String _getBotAvatar(String? botId) {
     if (botId == null) return '🤖';
-    try {
-      final bot = BotPersonalities.all.firstWhere((b) => b.id == botId);
-      return bot.avatar;
-    } catch (e) {
-      return '🤖';
-    }
+    final bot = BotCategories.getBotById(botId);
+    return bot?.avatar ?? '🤖';
   }
 
   @override

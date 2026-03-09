@@ -3,20 +3,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// App theme variants
 enum AppThemeType {
+  // Dark themes
   forest,
   ocean,
-  sunset,
   midnight,
-  gold,
-  rose,
-  snow,
-  light,
+  roseDark,
+  // Light themes
+  cream,
+  sky,
+  peach,
+  mint,
 }
 
 /// Theme color scheme data
 class AppThemeColors {
   final String name;
-  final String nameUz;
   final String emoji;
   final Color accent;
   final Color bgColor1;
@@ -28,7 +29,6 @@ class AppThemeColors {
 
   const AppThemeColors({
     required this.name,
-    required this.nameUz,
     required this.emoji,
     required this.accent,
     required this.bgColor1,
@@ -56,112 +56,111 @@ class AppThemeColors {
 
 /// All available themes
 class AppThemes {
+  // === DARK THEMES ===
   static const forest = AppThemeColors(
     name: 'Forest',
-    nameUz: 'O\'rmon',
     emoji: '🌲',
-    accent: Color(0xFF628141),
-    bgColor1: Color(0xFF2a3123),
-    bgColor2: Color(0xFF232a1c),
-    bgColor3: Color(0xFF1a2113),
-    surfaceColor: Color(0xFF2a3123),
-    glassColor: Color(0xFF628141),
+    accent: Color(0xFF7CB342),
+    bgColor1: Color(0xFF2d3a2e),
+    bgColor2: Color(0xFF242d24),
+    bgColor3: Color(0xFF1a211a),
+    surfaceColor: Color(0xFF2d3a2e),
+    glassColor: Color(0xFF7CB342),
   );
 
   static const ocean = AppThemeColors(
     name: 'Ocean',
-    nameUz: 'Okean',
     emoji: '🌊',
-    accent: Color(0xFF4A90A4),
-    bgColor1: Color(0xFF1a2530),
-    bgColor2: Color(0xFF152028),
-    bgColor3: Color(0xFF0f1a20),
-    surfaceColor: Color(0xFF1a2530),
-    glassColor: Color(0xFF4A90A4),
-  );
-
-  static const sunset = AppThemeColors(
-    name: 'Sunset',
-    nameUz: 'Quyosh botishi',
-    emoji: '🌅',
-    accent: Color(0xFFD4854A),
-    bgColor1: Color(0xFF2a2520),
-    bgColor2: Color(0xFF221d18),
-    bgColor3: Color(0xFF1a1510),
-    surfaceColor: Color(0xFF2a2520),
-    glassColor: Color(0xFFD4854A),
+    accent: Color(0xFF29B6F6),
+    bgColor1: Color(0xFF1e3a5f),
+    bgColor2: Color(0xFF162d4d),
+    bgColor3: Color(0xFF0d1f33),
+    surfaceColor: Color(0xFF1e3a5f),
+    glassColor: Color(0xFF29B6F6),
   );
 
   static const midnight = AppThemeColors(
     name: 'Midnight',
-    nameUz: 'Yarim tun',
     emoji: '🌙',
-    accent: Color(0xFF7C5CBF),
-    bgColor1: Color(0xFF201a2a),
-    bgColor2: Color(0xFF1a1522),
-    bgColor3: Color(0xFF15101a),
-    surfaceColor: Color(0xFF201a2a),
-    glassColor: Color(0xFF7C5CBF),
+    accent: Color(0xFFAB47BC),
+    bgColor1: Color(0xFF2a2040),
+    bgColor2: Color(0xFF1f1830),
+    bgColor3: Color(0xFF150f20),
+    surfaceColor: Color(0xFF2a2040),
+    glassColor: Color(0xFFAB47BC),
   );
 
-  static const gold = AppThemeColors(
-    name: 'Gold',
-    nameUz: 'Oltin',
-    emoji: '✨',
-    accent: Color(0xFFD4AF37),
-    bgColor1: Color(0xFF2a2820),
-    bgColor2: Color(0xFF222018),
-    bgColor3: Color(0xFF1a1810),
-    surfaceColor: Color(0xFF2a2820),
-    glassColor: Color(0xFFD4AF37),
-  );
-
-  static const rose = AppThemeColors(
+  static const roseDark = AppThemeColors(
     name: 'Rose',
-    nameUz: 'Atirgul',
-    emoji: '🌸',
-    accent: Color(0xFFC76B8F),
-    bgColor1: Color(0xFF2a2025),
-    bgColor2: Color(0xFF22181d),
-    bgColor3: Color(0xFF1a1015),
-    surfaceColor: Color(0xFF2a2025),
-    glassColor: Color(0xFFC76B8F),
+    emoji: '🌹',
+    accent: Color(0xFFE91E63),
+    bgColor1: Color(0xFF3d2030),
+    bgColor2: Color(0xFF2d1825),
+    bgColor3: Color(0xFF1f101a),
+    surfaceColor: Color(0xFF3d2030),
+    glassColor: Color(0xFFE91E63),
   );
 
-  static const snow = AppThemeColors(
-    name: 'Snow',
-    nameUz: 'Qor',
-    emoji: '❄️',
-    accent: Color(0xFF5B8DEF),
-    bgColor1: Color(0xFF2c3e50),
-    bgColor2: Color(0xFF243447),
-    bgColor3: Color(0xFF1c2a3a),
-    surfaceColor: Color(0xFF2c3e50),
-    glassColor: Color(0xFF5B8DEF),
+  // === LIGHT THEMES ===
+  static const cream = AppThemeColors(
+    name: 'Cream',
+    emoji: '☕',
+    accent: Color(0xFF8D6E63),
+    bgColor1: Color(0xFFFFFBF5),
+    bgColor2: Color(0xFFF5EFE6),
+    bgColor3: Color(0xFFEAE0D5),
+    surfaceColor: Color(0xFFFAF6F0),
+    glassColor: Color(0xFF8D6E63),
+    isLight: true,
   );
 
-  static const light = AppThemeColors(
-    name: 'Light',
-    nameUz: 'Oq',
-    emoji: '☀️',
-    accent: Color(0xFF4A7C59),
-    bgColor1: Color(0xFFf5f5f5),
-    bgColor2: Color(0xFFe8e8e8),
-    bgColor3: Color(0xFFdcdcdc),
-    surfaceColor: Color(0xFFf0f0f0),
-    glassColor: Color(0xFF4A7C59),
+  static const sky = AppThemeColors(
+    name: 'Sky',
+    emoji: '☁️',
+    accent: Color(0xFF1976D2),
+    bgColor1: Color(0xFFF0F7FF),
+    bgColor2: Color(0xFFE3F2FD),
+    bgColor3: Color(0xFFD0E8FF),
+    surfaceColor: Color(0xFFEBF4FF),
+    glassColor: Color(0xFF1976D2),
+    isLight: true,
+  );
+
+  static const peach = AppThemeColors(
+    name: 'Peach',
+    emoji: '🍑',
+    accent: Color(0xFFE64A19),
+    bgColor1: Color(0xFFFFF5F0),
+    bgColor2: Color(0xFFFFECE3),
+    bgColor3: Color(0xFFFFDDD0),
+    surfaceColor: Color(0xFFFFF0E8),
+    glassColor: Color(0xFFE64A19),
+    isLight: true,
+  );
+
+  static const mint = AppThemeColors(
+    name: 'Mint',
+    emoji: '🌿',
+    accent: Color(0xFF00897B),
+    bgColor1: Color(0xFFF0FFF8),
+    bgColor2: Color(0xFFE0F7EF),
+    bgColor3: Color(0xFFD0EFE5),
+    surfaceColor: Color(0xFFE8FFF5),
+    glassColor: Color(0xFF00897B),
     isLight: true,
   );
 
   static List<AppThemeColors> get all => [
+        // Dark themes first
         forest,
         ocean,
-        sunset,
         midnight,
-        gold,
-        rose,
-        snow,
-        light,
+        roseDark,
+        // Light themes
+        cream,
+        sky,
+        peach,
+        mint,
       ];
 
   static AppThemeColors fromType(AppThemeType type) {
@@ -170,18 +169,18 @@ class AppThemes {
         return forest;
       case AppThemeType.ocean:
         return ocean;
-      case AppThemeType.sunset:
-        return sunset;
       case AppThemeType.midnight:
         return midnight;
-      case AppThemeType.gold:
-        return gold;
-      case AppThemeType.rose:
-        return rose;
-      case AppThemeType.snow:
-        return snow;
-      case AppThemeType.light:
-        return light;
+      case AppThemeType.roseDark:
+        return roseDark;
+      case AppThemeType.cream:
+        return cream;
+      case AppThemeType.sky:
+        return sky;
+      case AppThemeType.peach:
+        return peach;
+      case AppThemeType.mint:
+        return mint;
     }
   }
 

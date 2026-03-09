@@ -190,7 +190,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     final isUserWhite = widget.game.playerWhiteId == widget.currentUserId;
 
     return Card(
-      color: Colors.white.withOpacity(0.1),
+      color: AppTheme.containerBgColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -364,7 +364,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         child: AspectRatio(
           aspectRatio: 1.0,
           child: Container(
-            color: Colors.white.withOpacity(0.1),
+            color: AppTheme.containerBgColor,
             child: Center(
               child: Text(
                 'Game completed\nFinal position: ${widget.game.fen}',
@@ -383,7 +383,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
   Widget _buildMoveNavigation() {
     return Card(
-      color: Colors.white.withOpacity(0.1),
+      color: AppTheme.containerBgColor,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -430,7 +430,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     }
 
     return Card(
-      color: Colors.white.withOpacity(0.1),
+      color: AppTheme.containerBgColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -492,7 +492,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     final isTournament = widget.game.tournamentId != null;
     
     return Card(
-      color: Colors.white.withOpacity(0.1),
+      color: AppTheme.containerBgColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

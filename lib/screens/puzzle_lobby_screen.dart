@@ -109,7 +109,7 @@ class PuzzleLobbyView extends StatelessWidget {
                                         ? 0 
                                         : provider.solvedPuzzleIds.length / provider.puzzles.length,
                                     strokeWidth: 5,
-                                    backgroundColor: Colors.white.withOpacity(0.1),
+                                    backgroundColor: AppTheme.containerBgColor,
                                     valueColor: AlwaysStoppedAnimation<Color>(AppTheme.kColorAccent),
                                   ),
                                 ),

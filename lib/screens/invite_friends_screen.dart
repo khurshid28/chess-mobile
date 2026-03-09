@@ -257,7 +257,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                       letterSpacing: 4,
                     ),
                     filled: true,
-                    fillColor: Colors.white.withOpacity(0.1),
+                    fillColor: AppTheme.containerBgColor,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -432,7 +432,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         decoration: BoxDecoration(
           color: isSelected 
               ? AppTheme.kColorAccent.withOpacity(0.2) 
-              : Colors.white.withOpacity(0.1),
+              : AppTheme.containerBgColor,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected ? AppTheme.kColorAccent : Colors.transparent,
@@ -445,7 +445,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: isSelected ? AppTheme.kColorAccent : Colors.white,
+              color: isSelected ? AppTheme.kColorAccent : AppTheme.kColorTextPrimary,
             ),
           ),
         ),
@@ -497,7 +497,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik: $e'),
+            content: Text('Error: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -622,7 +622,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik: $e'),
+            content: Text('Error: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -655,7 +655,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
     Clipboard.setData(ClipboardData(text: _challengeCode!));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Kod nusxalandi!'),
+        content: const Text('Code copied!'),
         backgroundColor: Colors.green.shade700,
         duration: const Duration(seconds: 2),
       ),
@@ -665,8 +665,8 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
   void _shareCode() {
     HapticFeedback.lightImpact();
     Share.share(
-      'Chess Park da meni yengishga urinib ko\'ring! 🎯\n\nO\'yin kodi: $_challengeCode\n$_selectedTimeMinutes daqiqa o\'yin',
-      subject: 'Chess Park - 1v1 O\'yin',
+      'Try to beat me on Chess Park! 🎯\n\nGame code: $_challengeCode\n$_selectedTimeMinutes minute game',
+      subject: 'Chess Park - 1v1 Game',
     );
   }
 }

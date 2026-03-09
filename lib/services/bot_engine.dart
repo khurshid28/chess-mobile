@@ -92,10 +92,10 @@ class BotEngine {
   /// Get the best move for the bot
   Future<Move?> getBestMove(
     Position position,
-    BotDifficulty difficulty,
+    BotPersonality bot,
   ) async {
-    print('🤖 Bot engine: searching for move. Depth: ${difficulty.searchDepth}');
-    AppLogger().debug('🤖 Bot engine: searching for move. Depth: ${difficulty.searchDepth}, Error rate: ${difficulty.errorRate}');
+    print('🤖 Bot engine: searching for move. Depth: ${bot.searchDepth}');
+    AppLogger().debug('🤖 Bot engine: searching for move. Depth: ${bot.searchDepth}, Error rate: ${bot.errorRate}');
     
     final legalMovesCount = position.legalMoves.length;
     print('📊 Legal moves available: $legalMovesCount');
@@ -118,14 +118,14 @@ class BotEngine {
     }
     
     // Occasionally make a weaker move based on error rate (for realism)
-    if (difficulty.errorRate > 0 &&
-        _random.nextDouble() < difficulty.errorRate) {
+    if (bot.errorRate > 0 &&
+        _random.nextDouble() < bot.errorRate) {
       AppLogger().debug('🎲 Making weaker move (error rate triggered)');
-      return _makeWeakerMove(position, difficulty.searchDepth - 1);
+      return _makeWeakerMove(position, bot.searchDepth - 1);
     }
 
     // Find the best move using minimax
-    final bestMove = _searchBestMove(position, difficulty);
+    final bestMove = _searchBestMove(position, bot);
     
     if (bestMove != null) {
       AppLogger().debug('✅ Bot engine found move: ${bestMove.uci}');
@@ -137,7 +137,7 @@ class BotEngine {
   }
 
   /// Search for the best move using minimax algorithm
-  Move? _searchBestMove(Position position, BotDifficulty difficulty) {
+  Move? _searchBestMove(Position position, BotPersonality bot) {
     final legalMoves = position.legalMoves;
     print('🔍 _searchBestMove: legalMoves.length = ${legalMoves.length}');
     if (legalMoves.isEmpty) {
@@ -185,7 +185,7 @@ class BotEngine {
         final newPos = position.playUnchecked(move);
         
         // Simple 1-ply evaluation for speed
-        int score = _evaluatePosition(newPos, difficulty.usePieceSquareTables);
+        int score = _evaluatePosition(newPos, bot.usePieceSquareTables);
         
         // Flip score for black
         if (!isWhite) {

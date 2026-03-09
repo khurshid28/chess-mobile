@@ -15,7 +15,6 @@ class BotGameProvider extends ChangeNotifier {
 
   Position _position = Chess.initial;
   BotPersonality? _currentBot;
-  BotDifficulty? _currentDifficulty;
   Side _userSide = Side.white;
   bool _isThinking = false;
   String? _gameResult;
@@ -34,7 +33,6 @@ class BotGameProvider extends ChangeNotifier {
   // Getters
   Position get position => _position;
   BotPersonality? get currentBot => _currentBot;
-  BotDifficulty? get currentDifficulty => _currentDifficulty;
   Side get userSide => _userSide;
   bool get isThinking => _isThinking;
   String? get gameResult => _gameResult;
@@ -46,21 +44,13 @@ class BotGameProvider extends ChangeNotifier {
   int get botTimeLeft => _botTimeLeft;
 
   String get botDisplayName {
-    if (_currentBot == null || _currentDifficulty == null) return 'Computer';
-
-    final levelNames = {
-      'easy': 'Easy',
-      'medium': 'Medium',
-      'hard': 'Hard',
-      'maximum': 'Maximum',
-    };
-
-    return '${_currentBot!.name} (${levelNames[_currentDifficulty!.level]})';
+    if (_currentBot == null) return 'Computer';
+    return _currentBot!.name;
   }
 
   int get botDisplayRating {
-    if (_currentDifficulty == null) return 1200;
-    return _currentDifficulty!.averageRating;
+    if (_currentBot == null) return 1200;
+    return _currentBot!.rating;
   }
 
   String get fen => _position.fen;
@@ -82,15 +72,13 @@ class BotGameProvider extends ChangeNotifier {
   /// Create a new bot game
   Future<void> createBotGame({
     required BotPersonality bot,
-    required String difficulty,
     required String userId,
     int timeControl = 600,
     Side? userSide,
   }) async {
-    AppLogger().info('🎮 Creating bot game: ${bot.nameUz}, difficulty: $difficulty, userId: $userId');
+    AppLogger().info('🎮 Creating bot game: ${bot.name}, rating: ${bot.rating}, userId: $userId');
     
     _currentBot = bot;
-    _currentDifficulty = bot.getDifficulty(difficulty);
     _userSide = userSide ?? (_random.nextBool() ? Side.white : Side.black);
     _timeControlSeconds = timeControl;
     _userTimeLeft = timeControl;
@@ -298,7 +286,7 @@ class BotGameProvider extends ChangeNotifier {
     try {
       print('🔍 Calling bot engine...');
       AppLogger().info('🔍 Calling bot engine...');
-      final botMove = await _botEngine.getBestMove(_position, _currentDifficulty!);
+      final botMove = await _botEngine.getBestMove(_position, _currentBot!);
       print('📬 Bot engine returned: ${botMove?.uci ?? "null"}');
       AppLogger().info('📬 Bot engine returned: ${botMove?.uci ?? "null"}');
       
@@ -332,10 +320,10 @@ class BotGameProvider extends ChangeNotifier {
 
   /// Calculate bot thinking time (for realistic appearance)
   int _calculateThinkTime() {
-    if (_currentDifficulty == null) return 200;
+    if (_currentBot == null) return 200;
 
     // Base time increases with search depth (reduced for faster play)
-    final base = _currentDifficulty!.searchDepth * 100;
+    final base = _currentBot!.searchDepth * 100;
     
     // Add random variation
     final random = _random.nextInt(150);
@@ -433,21 +421,22 @@ class BotGameProvider extends ChangeNotifier {
       final accuracy = 85 + (5 - (5 * (totalMoves / 60))).clamp(0, 15).toInt();
       
       int ratingChange = 0;
+      final botRating = _currentBot?.rating ?? 1200;
       if (_gameResult == '1-0' && _userSide == Side.white) {
-        ratingChange = (_currentDifficulty?.averageRating ?? 1200) ~/ 50;
+        ratingChange = botRating ~/ 50;
       } else if (_gameResult == '0-1' && _userSide == Side.black) {
-        ratingChange = (_currentDifficulty?.averageRating ?? 1200) ~/ 50;
+        ratingChange = botRating ~/ 50;
       } else if (_gameResult != '1/2-1/2') {
-        ratingChange = -((_currentDifficulty?.averageRating ?? 1200) ~/ 50);
+        ratingChange = -(botRating ~/ 50);
       }
 
       final gameHistory = BotGameHistory(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         userId: _userId!,
         botId: _currentBot?.id ?? '',
-        botName: _currentBot?.nameUz ?? 'Bot',
-        botRating: _currentDifficulty?.averageRating ?? 1200,
-        difficulty: _currentDifficulty?.level ?? 'easy',
+        botName: _currentBot?.name ?? 'Bot',
+        botRating: botRating,
+        difficulty: _currentBot?.style ?? 'balanced',
         result: _gameResult ?? '1/2-1/2',
         resultReason: _gameResultReason ?? '',
         moveHistory: _moveHistory,
@@ -499,13 +488,12 @@ class BotGameProvider extends ChangeNotifier {
     }
   }
 
-  /// Start a new game with the same bot and difficulty
+  /// Start a new game with the same bot
   Future<void> rematch() async {
-    if (_currentBot == null || _currentDifficulty == null || _userId == null) return;
+    if (_currentBot == null || _userId == null) return;
     
     await createBotGame(
       bot: _currentBot!,
-      difficulty: _currentDifficulty!.level,
       userId: _userId!,
       timeControl: _timeControlSeconds,
       userSide: _userSide.opposite,
@@ -543,7 +531,6 @@ class BotGameProvider extends ChangeNotifier {
     _timer?.cancel();
     _position = Chess.initial;
     _currentBot = null;
-    _currentDifficulty = null;
     _userSide = Side.white;
     _isThinking = false;
     _gameResult = null;

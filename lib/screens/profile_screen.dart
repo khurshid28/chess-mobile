@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                 // Settings button
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: AppTheme.containerBgColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
@@ -411,7 +411,7 @@ class _QuickStatsRow extends StatelessWidget {
           Container(
             width: 1,
             height: 40,
-            color: Colors.white.withOpacity(0.1),
+            color: AppTheme.dividerColor,
           ),
           _QuickStatItem(
             icon: Icons.games_rounded,
@@ -422,7 +422,7 @@ class _QuickStatsRow extends StatelessWidget {
           Container(
             width: 1,
             height: 40,
-            color: Colors.white.withOpacity(0.1),
+            color: AppTheme.dividerColor,
           ),
           _QuickStatItem(
             icon: Icons.percent_rounded,
@@ -516,14 +516,14 @@ class _DetailedStats extends StatelessWidget {
             label: 'Wins',
             value: user.wins.toString(),
           ),
-          Divider(color: Colors.white.withOpacity(0.1), height: 1),
+          Divider(color: AppTheme.dividerColor, height: 1),
           _DetailStatTile(
             icon: Icons.close_rounded,
             iconColor: Colors.redAccent,
             label: 'Losses',
             value: user.losses.toString(),
           ),
-          Divider(color: Colors.white.withOpacity(0.1), height: 1),
+          Divider(color: AppTheme.dividerColor, height: 1),
           _DetailStatTile(
             icon: Icons.handshake_rounded,
             iconColor: Colors.blueGrey,

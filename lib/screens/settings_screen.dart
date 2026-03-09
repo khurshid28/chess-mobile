@@ -54,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.only(left: 8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: AppTheme.containerBgColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: IconButton(
@@ -136,7 +136,7 @@ class SettingsScreen extends StatelessWidget {
                               : Container(
                                   padding: const EdgeInsets.all(6),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.1),
+                                    color: AppTheme.containerBgColor,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Icon(
@@ -179,7 +179,7 @@ class SettingsScreen extends StatelessWidget {
                           subtitle: Consumer<ThemeProvider>(
                             builder: (context, themeProvider, child) {
                               return Text(
-                                '${themeProvider.currentTheme.emoji} ${themeProvider.currentTheme.nameUz}',
+                                '${themeProvider.currentTheme.emoji} ${themeProvider.currentTheme.name}',
                                 style: TextStyle(
                                   color: AppTheme.kColorTextSecondary,
                                 ),
@@ -189,7 +189,7 @@ class SettingsScreen extends StatelessWidget {
                           trailing: Container(
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
+                              color: AppTheme.containerBgColor,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Icon(
@@ -232,7 +232,7 @@ class SettingsScreen extends StatelessWidget {
                             },
                           ),
                           const SizedBox(height: 16),
-                          Divider(color: Colors.white.withOpacity(0.1), height: 1),
+                          Divider(color: AppTheme.dividerColor, height: 1),
                           const SizedBox(height: 16),
                           _buildDropdownSelector(
                             context,
@@ -332,7 +332,7 @@ class SettingsScreen extends StatelessWidget {
                               trailing: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
+                                  color: AppTheme.containerBgColor,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
@@ -346,7 +346,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                           Divider(
-                            color: Colors.white.withOpacity(0.1),
+                            color: AppTheme.dividerColor,
                             height: 1,
                             indent: 16,
                             endIndent: 16,
@@ -374,7 +374,7 @@ class SettingsScreen extends StatelessWidget {
                               trailing: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
+                                  color: AppTheme.containerBgColor,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
@@ -388,7 +388,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                           Divider(
-                            color: Colors.white.withOpacity(0.1),
+                            color: AppTheme.dividerColor,
                             height: 1,
                             indent: 16,
                             endIndent: 16,
@@ -423,7 +423,7 @@ class SettingsScreen extends StatelessWidget {
                               trailing: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
+                                  color: AppTheme.containerBgColor,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
@@ -554,7 +554,7 @@ class SettingsScreen extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.1),
+          fillColor: AppTheme.containerBgColor,
         ),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),

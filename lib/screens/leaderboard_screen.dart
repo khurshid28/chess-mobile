@@ -175,7 +175,7 @@ class _LeaderboardList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: top10.length,
                 separatorBuilder: (context, index) =>
-                    Divider(color: Colors.white.withOpacity(0.1), height: 1, indent: 16, endIndent: 16),
+                    Divider(color: AppTheme.dividerColor, height: 1, indent: 16, endIndent: 16),
                 itemBuilder: (context, index) {
                   final player = top10[index];
                   final isCurrentUser = currentUser != null && player.id == currentUser.id;
@@ -206,7 +206,7 @@ class _LeaderboardList extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Divider(color: Colors.white.withOpacity(0.1), height: 1, indent: 16, endIndent: 16),
+                    Divider(color: AppTheme.dividerColor, height: 1, indent: 16, endIndent: 16),
                     _PlayerTile(player: userInList, rank: userRank!, isCurrentUser: true),
                   ],
                 ),

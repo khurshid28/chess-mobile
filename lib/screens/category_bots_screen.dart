@@ -5,7 +5,7 @@ import '../models/bot_category_model.dart';
 import '../models/bot_personality_model.dart';
 import '../widgets/glass_panel.dart';
 import '../theme/app_theme.dart';
-import 'bot_difficulty_screen.dart';
+import 'bot_game_setup_screen.dart';
 
 class CategoryBotsScreen extends StatelessWidget {
   final BotCategory category;
@@ -17,20 +17,6 @@ class CategoryBotsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate category rating range
-    int minRating = 9999;
-    int maxRating = 0;
-    for (final bot in category.bots) {
-      final easy = bot.difficulties['easy'];
-      final max = bot.difficulties['maximum'];
-      if (easy != null && easy.minRating < minRating) {
-        minRating = easy.minRating;
-      }
-      if (max != null && max.maxRating > maxRating) {
-        maxRating = max.maxRating;
-      }
-    }
-
     return Scaffold(
       body: Container(
         decoration: AppTheme.backgroundDecoration,
@@ -49,7 +35,7 @@ class CategoryBotsScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        category.nameUz,
+                        category.name,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
@@ -115,7 +101,7 @@ class CategoryBotsScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      '${category.botCount} ta bot',
+                                      '${category.botCount} bots',
                                       style: TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w600,
@@ -127,7 +113,7 @@ class CategoryBotsScreen extends StatelessWidget {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.1),
+                                      color: AppTheme.containerBgColor,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Row(
@@ -136,7 +122,7 @@ class CategoryBotsScreen extends StatelessWidget {
                                         const Icon(Icons.star_rounded, size: 12, color: Colors.amber),
                                         const SizedBox(width: 4),
                                         Text(
-                                          '$minRating - $maxRating',
+                                          '${category.minRating} - ${category.maxRating}',
                                           style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
                                         ),
                                       ],
@@ -158,7 +144,7 @@ class CategoryBotsScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Botni tanlang:',
+                  'Choose a bot:',
                   style: TextStyle(
                     fontSize: 16,
                     color: AppTheme.kColorTextSecondary,
@@ -174,7 +160,7 @@ class CategoryBotsScreen extends StatelessWidget {
                   itemCount: category.bots.length,
                   itemBuilder: (context, index) {
                     final bot = category.bots[index];
-                    return _buildBotListItem(context, bot, index);
+                    return _buildBotListItem(context, bot);
                   },
                 ),
               ),
@@ -185,10 +171,8 @@ class CategoryBotsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBotListItem(BuildContext context, BotPersonality bot, int index) {
+  Widget _buildBotListItem(BuildContext context, BotPersonality bot) {
     final theme = Theme.of(context);
-    final easyRating = bot.difficulties['easy']?.minRating ?? 0;
-    final maxRating = bot.difficulties['maximum']?.maxRating ?? 0;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -198,7 +182,7 @@ class CategoryBotsScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => BotDifficultyScreen(bot: bot),
+              builder: (_) => BotGameSetupScreen(bot: bot),
             ),
           );
         },
@@ -228,12 +212,48 @@ class CategoryBotsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        bot.nameUz,
-                        style: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            bot.name,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          // Rating badge
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: _getRatingColor(bot.rating).withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: _getRatingColor(bot.rating).withOpacity(0.5),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.star_rounded,
+                                  size: 14,
+                                  color: _getRatingColor(bot.rating),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '${bot.rating}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: _getRatingColor(bot.rating),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -245,32 +265,10 @@ class CategoryBotsScreen extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 8),
-                      // Rating range
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.star_rounded, size: 14, color: Colors.amber),
-                            const SizedBox(width: 4),
-                            Text(
-                              '$easyRating - $maxRating',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
+                const SizedBox(width: 8),
                 // Arrow indicator
                 Icon(
                   Icons.chevron_right_rounded,
@@ -283,5 +281,14 @@ class CategoryBotsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  Color _getRatingColor(int rating) {
+    if (rating < 800) return Colors.green;
+    if (rating < 1200) return Colors.teal;
+    if (rating < 1600) return Colors.blue;
+    if (rating < 2000) return Colors.purple;
+    if (rating < 2400) return Colors.orange;
+    return Colors.red;
   }
 }

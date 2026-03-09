@@ -37,7 +37,7 @@ class BotSelectionScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Kategoriyani tanlang:',
+                  'Choose a category:',
                   style: TextStyle(
                     fontSize: 16,
                     color: AppTheme.kColorTextSecondary,
@@ -64,20 +64,6 @@ class BotSelectionScreen extends StatelessWidget {
 
   Widget _buildCategoryListItem(BuildContext context, BotCategory category) {
     final theme = Theme.of(context);
-    
-    // Calculate rating range from bots
-    int minRating = 9999;
-    int maxRating = 0;
-    for (final bot in category.bots) {
-      final easy = bot.difficulties['easy'];
-      final max = bot.difficulties['maximum'];
-      if (easy != null && easy.minRating < minRating) {
-        minRating = easy.minRating;
-      }
-      if (max != null && max.maxRating > maxRating) {
-        maxRating = max.maxRating;
-      }
-    }
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -135,7 +121,7 @@ class BotSelectionScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        category.nameUz,
+                        category.name,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -162,7 +148,7 @@ class BotSelectionScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              '${category.botCount} ta bot',
+                              '${category.botCount} bots',
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
@@ -175,7 +161,7 @@ class BotSelectionScreen extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
+                              color: AppTheme.containerBgColor,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
@@ -188,7 +174,7 @@ class BotSelectionScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  '$minRating - $maxRating',
+                                  '${category.minRating} - ${category.maxRating}',
                                   style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,

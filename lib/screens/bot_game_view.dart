@@ -995,7 +995,7 @@ class _BotGameViewState extends State<BotGameView> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        '+${(provider.currentDifficulty?.averageRating ?? 1200) ~/ 50} rating',
+                        '+${(provider.currentBot?.rating ?? 1200) ~/ 50} rating',
                         style: const TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -1019,7 +1019,7 @@ class _BotGameViewState extends State<BotGameView> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        '-${(provider.currentDifficulty?.averageRating ?? 1200) ~/ 50} rating',
+                        '-${(provider.currentBot?.rating ?? 1200) ~/ 50} rating',
                         style: const TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.bold,
@@ -1042,8 +1042,8 @@ class _BotGameViewState extends State<BotGameView> {
           TextButton(
             onPressed: () {
               Navigator.pop(ctx); // Close dialog
-              final botAccuracy = provider.currentDifficulty?.averageRating != null 
-                  ? ((provider.currentDifficulty!.averageRating - 400) / 20).clamp(60.0, 99.0)
+              final botAccuracy = provider.currentBot?.rating != null 
+                  ? ((provider.currentBot!.rating - 400) / 20).clamp(60.0, 99.0)
                   : 80.0;
               
               // Navigate to review screen

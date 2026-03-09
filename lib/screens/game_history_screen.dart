@@ -1,6 +1,6 @@
 
 import 'package:chess_park/models/game_model.dart';
-import 'package:chess_park/models/bot_personality_model.dart';
+import 'package:chess_park/models/bot_category_model.dart';
 import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/services/bot_game_database.dart';
 import 'package:chess_park/models/bot_game_history_model.dart';
@@ -81,7 +81,7 @@ class _GameHistoryList extends StatelessWidget {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: Text(
-              'O\'yin tarixi yo\'q.',
+              'No game history.',
               style: TextStyle(color: AppTheme.kColorTextSecondary),
             ),
           );
@@ -229,11 +229,7 @@ class _BotGameHistoryTile extends StatelessWidget {
   }
   
   String _getBotAvatar(String botId) {
-    try {
-      final bot = BotPersonalities.all.firstWhere((b) => b.id == botId);
-      return bot.avatar;
-    } catch (e) {
-      return '🤖';
-    }
+    final bot = BotCategories.getBotById(botId);
+    return bot?.avatar ?? '🤖';
   }
 }

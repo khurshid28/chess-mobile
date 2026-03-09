@@ -35,32 +35,81 @@ class ThemePickerScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              // Theme grid
+              // Theme sections
               Expanded(
-                child: Padding(
+                child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.85,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                    ),
-                    itemCount: AppThemes.all.length,
-                    itemBuilder: (context, index) {
-                      final theme = AppThemes.all[index];
-                      final themeType = AppThemeType.values[index];
-                      final isSelected = currentThemeType == themeType;
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Dark Themes Section
+                      _SectionHeader(
+                        title: 'Dark Themes',
+                        subtitle: 'Elegant dark backgrounds',
+                        icon: Icons.dark_mode_rounded,
+                      ),
+                      const SizedBox(height: 12),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.85,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                        itemCount: 4, // First 4 are dark themes
+                        itemBuilder: (context, index) {
+                          final theme = AppThemes.all[index];
+                          final themeType = AppThemeType.values[index];
+                          final isSelected = currentThemeType == themeType;
 
-                      return _ThemeCard(
-                        theme: theme,
-                        isSelected: isSelected,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          themeProvider.setTheme(themeType);
+                          return _ThemeCard(
+                            theme: theme,
+                            isSelected: isSelected,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              themeProvider.setTheme(themeType);
+                            },
+                          );
                         },
-                      );
-                    },
+                      ),
+                      const SizedBox(height: 24),
+                      // Light Themes Section
+                      _SectionHeader(
+                        title: 'Light Themes',
+                        subtitle: 'Clean and bright',
+                        icon: Icons.light_mode_rounded,
+                      ),
+                      const SizedBox(height: 12),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.85,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                        itemCount: 4, // Last 4 are light themes
+                        itemBuilder: (context, index) {
+                          final actualIndex = index + 4; // Offset for light themes
+                          final theme = AppThemes.all[actualIndex];
+                          final themeType = AppThemeType.values[actualIndex];
+                          final isSelected = currentThemeType == themeType;
+
+                          return _ThemeCard(
+                            theme: theme,
+                            isSelected: isSelected,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              themeProvider.setTheme(themeType);
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                    ],
                   ),
                 ),
               ),
@@ -85,6 +134,8 @@ class _ThemeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLightTheme = theme.isLight;
+    
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -94,17 +145,29 @@ class _ThemeCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? theme.accent : Colors.white.withOpacity(0.1),
+            color: isSelected 
+                ? theme.accent 
+                : isLightTheme 
+                    ? Colors.grey.withOpacity(0.3) 
+                    : Colors.white.withOpacity(0.1),
             width: isSelected ? 3 : 1,
           ),
           boxShadow: [
             BoxShadow(
               color: isSelected 
                   ? theme.accent.withOpacity(0.4) 
-                  : Colors.black.withOpacity(0.2),
+                  : isLightTheme
+                      ? Colors.black.withOpacity(0.08)
+                      : Colors.black.withOpacity(0.2),
               blurRadius: isSelected ? 20 : 8,
               spreadRadius: isSelected ? 2 : 0,
             ),
+            if (isLightTheme)
+              BoxShadow(
+                color: Colors.white.withOpacity(0.8),
+                blurRadius: 0,
+                spreadRadius: 0,
+              ),
           ],
         ),
         child: ClipRRect(
@@ -128,11 +191,17 @@ class _ThemeCard extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withOpacity(0.1),
-                      Colors.transparent,
-                      Colors.black.withOpacity(0.2),
-                    ],
+                    colors: isLightTheme
+                        ? [
+                            Colors.white.withOpacity(0.6),
+                            Colors.white.withOpacity(0.2),
+                            theme.accent.withOpacity(0.05),
+                          ]
+                        : [
+                            Colors.white.withOpacity(0.1),
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.2),
+                          ],
                   ),
                 ),
               ),
@@ -147,7 +216,7 @@ class _ThemeCard extends StatelessWidget {
                       width: 60,
                       height: 60,
                       decoration: BoxDecoration(
-                        color: theme.accent.withOpacity(0.2),
+                        color: theme.accent.withOpacity(isLightTheme ? 0.15 : 0.2),
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: theme.accent,
@@ -180,10 +249,9 @@ class _ThemeCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      theme.nameUz,
+                      theme.emoji,
                       style: TextStyle(
-                        fontSize: 13,
-                        color: theme.textSecondary,
+                        fontSize: 20,
                       ),
                     ),
                   ],
@@ -218,6 +286,59 @@ class _ThemeCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+
+  const _SectionHeader({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppTheme.kColorAccent.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            icon,
+            color: AppTheme.kColorAccent,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.kColorTextPrimary,
+              ),
+            ),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 12,
+                color: AppTheme.kColorTextSecondary,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
