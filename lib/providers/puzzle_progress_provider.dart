@@ -14,6 +14,7 @@ class PuzzleProgressProvider extends ChangeNotifier {
   int _unlockedCount = 3; // First 3 puzzles are unlocked
   PuzzleLoadState _state = PuzzleLoadState.initial;
   String? _errorMessage;
+  int _loadingProgress = 0; // Current loading progress
   
   static const int totalPuzzleCount = 50;
   static const String _puzzlesCacheKey = 'cached_puzzles';
@@ -28,6 +29,7 @@ class PuzzleProgressProvider extends ChangeNotifier {
   int get unlockedCount => _unlockedCount;
   PuzzleLoadState get state => _state;
   String? get errorMessage => _errorMessage;
+  int get loadingProgress => _loadingProgress;
   
   bool isPuzzleUnlocked(int index) => index < _unlockedCount;
   bool isPuzzleSolved(int index) {

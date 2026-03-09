@@ -42,7 +42,7 @@ class PuzzleLobbyView extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
-                    Text('Kunlik Boshqotirmalar', style: Theme.of(context).textTheme.titleLarge),
+                    Text('Boshqotirmalar', style: Theme.of(context).textTheme.titleLarge),
                     const Spacer(),
                     if (provider.state != PuzzleLoadState.loading)
                       IconButton(
@@ -77,7 +77,7 @@ class PuzzleLobbyView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${provider.solvedPuzzleIds.length}/${provider.puzzles.length} yechildi',
+                                  '${provider.solvedPuzzleIds.length}/${provider.puzzles.length}',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class PuzzleLobbyView extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '${provider.unlockedCount} ta ochiq',
+                                  '${provider.unlockedCount} ochiq',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: AppTheme.kColorTextSecondary,
@@ -99,22 +99,25 @@ class PuzzleLobbyView extends StatelessWidget {
                             width: 50,
                             height: 50,
                             child: Stack(
+                              alignment: Alignment.center,
                               children: [
-                                CircularProgressIndicator(
-                                  value: provider.puzzles.isEmpty 
-                                      ? 0 
-                                      : provider.solvedPuzzleIds.length / provider.puzzles.length,
-                                  strokeWidth: 5,
-                                  backgroundColor: Colors.white.withOpacity(0.1),
-                                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.kColorAccent),
+                                SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator(
+                                    value: provider.puzzles.isEmpty 
+                                        ? 0 
+                                        : provider.solvedPuzzleIds.length / provider.puzzles.length,
+                                    strokeWidth: 5,
+                                    backgroundColor: Colors.white.withOpacity(0.1),
+                                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.kColorAccent),
+                                  ),
                                 ),
-                                Center(
-                                  child: Text(
-                                    '${((provider.solvedPuzzleIds.length / (provider.puzzles.isEmpty ? 1 : provider.puzzles.length)) * 100).toInt()}%',
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                Text(
+                                  '${((provider.solvedPuzzleIds.length / (provider.puzzles.isEmpty ? 1 : provider.puzzles.length)) * 100).toInt()}%',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -150,7 +153,7 @@ class PuzzleLobbyView extends StatelessWidget {
               CircularProgressIndicator(color: AppTheme.kColorAccent),
               const SizedBox(height: 16),
               Text(
-                'Boshqotirmalar yuklanmoqda...\n${provider.puzzles.length}/50',
+                'Yuklanmoqda... ${provider.puzzles.length}/50',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppTheme.kColorTextSecondary),
               ),
@@ -169,10 +172,10 @@ class PuzzleLobbyView extends StatelessWidget {
                   children: [
                     const Icon(Icons.error_outline, color: Colors.redAccent, size: 48),
                     const SizedBox(height: 16),
-                    const Text("Yuklab bo'lmadi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text('Xatolik', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     Text(
-                      provider.errorMessage ?? "Qayta urinib ko'ring",
+                      provider.errorMessage ?? 'Qaytadan urinib ko\'ring',
                       textAlign: TextAlign.center,
                       style: TextStyle(color: AppTheme.kColorTextSecondary),
                     ),
@@ -180,7 +183,7 @@ class PuzzleLobbyView extends StatelessWidget {
                     ElevatedButton.icon(
                       onPressed: () => provider.refreshPuzzles(),
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Qayta yuklash'),
+                      label: const Text('Qayta'),
                     ),
                   ],
                 ),
