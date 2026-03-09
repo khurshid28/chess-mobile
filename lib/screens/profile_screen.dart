@@ -2,9 +2,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chess_park/models/user_model.dart';
 import 'package:chess_park/providers/auth_provider.dart';
+import 'package:chess_park/screens/settings_screen.dart';
 import 'package:chess_park/theme/app_constants.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
+import 'package:chess_park/widgets/recent_games.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
                     color: AppTheme.kColorAccent.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.person_rounded,
                     color: AppTheme.kColorAccent,
                     size: 24,
@@ -58,12 +60,31 @@ class ProfileScreen extends StatelessWidget {
                   'Profile',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
+                const Spacer(),
+                // Settings button
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.settings_rounded, color: AppTheme.kColorTextPrimary),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const SettingsScreen(),
+                      ));
+                    },
+                  ),
+                ),
               ],
             ),
           ),
           _ProfileHeader(user: user),
           _kVerticalSpacer,
           _QuickStatsRow(user: user),
+          _kVerticalSpacer,
+          // Game History Section
+          RecentGames(userId: user.id),
           _kVerticalSpacer,
           _DetailedStats(user: user),
           _kVerticalSpacer,

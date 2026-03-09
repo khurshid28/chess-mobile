@@ -60,7 +60,7 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
 
               // Difficulty selection
               const Text(
-                'Difficulty:',
+                'Qiyinlik darajasi:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
@@ -111,17 +111,17 @@ class _BotDifficultyScreenState extends State<BotDifficultyScreen> {
 
               // Time control
               const Text(
-                'Time Control:',
+                'Vaqt nazorati:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildTimeButton(1),
                   _buildTimeButton(3),
                   _buildTimeButton(5),
                   _buildTimeButton(10),
+                  _buildTimeButton(15),
                 ],
               ),
 

@@ -3,17 +3,26 @@ import 'package:chess_park/models/user_model.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_flags/country_flags.dart';
 
 class UserHeader extends StatelessWidget {
   final UserModel user;
+  final VoidCallback? onTap;
 
-  const UserHeader({super.key, required this.user});
+  const UserHeader({super.key, required this.user, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return GlassPanel(
+    return GestureDetector(
+      onTap: onTap != null
+          ? () {
+              HapticFeedback.lightImpact();
+              onTap!();
+            }
+          : null,
+      child: GlassPanel(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,6 +110,7 @@ class UserHeader extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:chess_park/providers/auth_provider.dart';
-import 'package:chess_park/theme/app_constants.dart';
+import 'package:chess_park/providers/auth_provider.dart';import 'package:chess_park/providers/theme_provider.dart';
+import 'package:chess_park/screens/theme_picker_screen.dart';import 'package:chess_park/theme/app_constants.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:flutter/material.dart';
@@ -152,6 +152,62 @@ class SettingsScreen extends StatelessWidget {
                     const SizedBox(height: 28),
 
                     _buildSectionHeader('Appearance', theme, Icons.palette_rounded),
+
+                    // App Theme Picker
+                    GlassPanel(
+                      padding: EdgeInsets.zero,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 10.0,
+                          ),
+                          leading: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppTheme.kColorAccent.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(
+                              Icons.color_lens_rounded,
+                              color: AppTheme.kColorAccent,
+                              size: 22,
+                            ),
+                          ),
+                          title: const Text('App Theme'),
+                          subtitle: Consumer<ThemeProvider>(
+                            builder: (context, themeProvider, child) {
+                              return Text(
+                                '${themeProvider.currentTheme.emoji} ${themeProvider.currentTheme.nameUz}',
+                                style: const TextStyle(
+                                  color: AppTheme.kColorTextSecondary,
+                                ),
+                              );
+                            },
+                          ),
+                          trailing: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.chevron_right_rounded,
+                              color: AppTheme.kColorTextSecondary,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const ThemePickerScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
 
                     GlassPanel(
                       padding: const EdgeInsets.all(16),

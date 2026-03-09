@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:chess_park/screens/leaderboard_screen.dart';
 import 'package:chess_park/screens/lobby_screen.dart';
 import 'package:chess_park/screens/profile_screen.dart';
-import 'package:chess_park/screens/settings_screen.dart';
+
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,12 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    LobbyScreen(),
-    LeaderboardScreen(),
-    ProfileScreen(),
-  ];
-
   void _onItemTapped(int index) {
     HapticFeedback.lightImpact();
     setState(() {
@@ -30,8 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _goToProfile() {
+    _onItemTapped(2); // Profile tab is index 2
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<Widget> widgetOptions = <Widget>[
+      LobbyScreen(onProfileTap: _goToProfile),
+      const LeaderboardScreen(),
+      const ProfileScreen(),
+    ];
 
     final double bottomPadding = MediaQuery.of(context).padding.bottom > 0
         ? MediaQuery.of(context).padding.bottom
@@ -48,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               IndexedStack(
                 index: _selectedIndex,
-                children: _widgetOptions,
+                children: widgetOptions,
               ),
               if (_selectedIndex == 0)
-                _TopBar(),
+                const _TopBar(),
 
               _GlassyBottomNavBar(
                 selectedIndex: _selectedIndex,
@@ -80,21 +83,8 @@ class _TopBar extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10, left: 12, right: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.settings_rounded, color: AppTheme.kColorTextPrimary),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const SettingsScreen(),
-                  ));
-                },
-              ),
-            ),
+          children: const [
+            // Settings moved to Profile screen
           ],
         ),
       ),

@@ -4,18 +4,20 @@ import 'package:chess_park/screens/online_games_screen.dart';
 import 'package:chess_park/screens/puzzle_lobby_screen.dart';
 import 'package:chess_park/screens/bot_selection_screen.dart';
 import 'package:chess_park/screens/puzzle_screen.dart';
+import 'package:chess_park/screens/invite_friends_screen.dart';
 import 'package:chess_park/services/puzzle_service.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:chess_park/widgets/live_top_players_widget.dart';
-import 'package:chess_park/widgets/recent_games.dart';
 import 'package:chess_park/widgets/user_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class LobbyScreen extends StatelessWidget {
-  const LobbyScreen({super.key});
+  final VoidCallback? onProfileTap;
+  
+  const LobbyScreen({super.key, this.onProfileTap});
 
   Future<void> _refreshData(BuildContext context) async {
     final authProvider = context.read<AuthProvider>();
@@ -38,11 +40,9 @@ class LobbyScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.fromLTRB(24.0, topPadding, 24.0, 120.0),
           children: [
-            if (user != null) UserHeader(user: user),
+            if (user != null) UserHeader(user: user, onTap: onProfileTap),
             const SizedBox(height: 24),
             const _ActionButtonsSection(),
-            const SizedBox(height: 24),
-            if (user != null) RecentGames(userId: user.id),
             const SizedBox(height: 24),
             const LiveTopPlayersWidget(),
           ],
@@ -65,7 +65,7 @@ class _ActionButtonsSection extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 icon: Icons.public,
-                text: 'Play\nOnline',
+                text: 'Online\nO\'yin',
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const OnlineGamesScreen())),
               ),
@@ -74,7 +74,7 @@ class _ActionButtonsSection extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 icon: Icons.smart_toy,
-                text: 'Play\nComputer',
+                text: 'Kompyuter\nbilan',
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const BotSelectionScreen())),
               ),
@@ -87,8 +87,8 @@ class _ActionButtonsSection extends StatelessWidget {
           children: [
             Expanded(
               child: _ActionButton(
-                icon: Icons.lightbulb_outline,
-                text: 'Puzzles',
+                icon: Icons.extension,
+                text: 'Boshqotir-\nmalar',
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const PuzzleLobbyScreen())),
               ),
@@ -99,7 +99,70 @@ class _ActionButtonsSection extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 16),
+        // Invite friends button
+        _InviteFriendsButton(),
       ],
+    );
+  }
+}
+
+class _InviteFriendsButton extends StatelessWidget {
+  const _InviteFriendsButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => const InviteFriendsScreen(),
+        ));
+      },
+      child: GlassPanel(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.person_add, color: Colors.green, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Do\'stlarni taklif qilish',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.kColorTextPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Do\'stlaringiz bilan o\'ynang',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.kColorTextSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: AppTheme.kColorTextSecondary,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

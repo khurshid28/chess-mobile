@@ -13,8 +13,15 @@ import 'package:dartchess/dartchess.dart' as dartchess;
 class PuzzleScreen extends StatelessWidget {
 
   final PuzzleModel puzzle;
+  final int? puzzleIndex;
+  final VoidCallback? onSolved;
 
-  const PuzzleScreen({super.key, required this.puzzle});
+  const PuzzleScreen({
+    super.key, 
+    required this.puzzle,
+    this.puzzleIndex,
+    this.onSolved,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +29,36 @@ class PuzzleScreen extends StatelessWidget {
     return ChangeNotifierProvider(
 
       create: (_) => PuzzleProvider(puzzle),
-      child: const PuzzleView(),
+      child: PuzzleView(onSolved: onSolved, puzzleIndex: puzzleIndex),
     );
   }
 }
 
-class PuzzleView extends StatelessWidget {
-  const PuzzleView({super.key});
+class PuzzleView extends StatefulWidget {
+  final VoidCallback? onSolved;
+  final int? puzzleIndex;
+  
+  const PuzzleView({super.key, this.onSolved, this.puzzleIndex});
+
+  @override
+  State<PuzzleView> createState() => _PuzzleViewState();
+}
+
+class _PuzzleViewState extends State<PuzzleView> {
+  bool _solvedCallbackCalled = false;
 
   @override
   Widget build(BuildContext context) {
     final puzzleProvider = context.watch<PuzzleProvider>();
     final settingsProvider = context.watch<SettingsProvider>();
+    
+    // Call onSolved callback when puzzle is solved
+    if (puzzleProvider.state == PuzzleState.solved && !_solvedCallbackCalled) {
+      _solvedCallbackCalled = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onSolved?.call();
+      });
+    }
 
 
     return Scaffold(
@@ -41,7 +66,9 @@ class PuzzleView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Puzzle: ${puzzleProvider.puzzle.id}'),
+        title: Text(widget.puzzleIndex != null 
+            ? 'Boshqotirma #${widget.puzzleIndex! + 1}' 
+            : 'Boshqotirma'),
       ),
       body: Container(
         decoration: AppTheme.backgroundDecoration,
@@ -69,14 +96,14 @@ class PuzzleView extends StatelessWidget {
             children: [
               Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error, size: 48),
               const SizedBox(height: 16),
-              const Text("Failed to initialize the puzzle.", style: TextStyle(fontSize: 18)),
+              const Text("Boshqotirma yuklanmadi.", style: TextStyle(fontSize: 18)),
               const SizedBox(height: 8),
-              Text(provider.errorMessage ?? "An unknown error occurred.", textAlign: TextAlign.center,),
+              Text(provider.errorMessage ?? "Xato yuz berdi.", textAlign: TextAlign.center,),
               const SizedBox(height: 24),
                ElevatedButton(
 
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Go Back"),
+                child: const Text("Orqaga"),
               ),
             ],
           ),
@@ -97,7 +124,7 @@ class PuzzleView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Find the best move for ${provider.playerSide == dartchess.Side.white ? "White" : "Black"}.',
+            '${provider.playerSide == dartchess.Side.white ? "Oq" : "Qora"} uchun eng yaxshi yurishni toping.',
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
@@ -196,7 +223,7 @@ class PuzzleView extends StatelessWidget {
               children: [
                 Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
-                Text("Puzzle Solved!", style: TextStyle(color: Colors.white, fontSize: 18)),
+                Text("To'g'ri! Boshqotirma yechildi!", style: TextStyle(color: Colors.white, fontSize: 18)),
               ],
             ),
           ),
@@ -214,12 +241,12 @@ class PuzzleView extends StatelessWidget {
                   children: [
                     Icon(Icons.cancel, color: Colors.white),
                     SizedBox(width: 10),
-                    Text("Wrong Move!", style: TextStyle(color: Colors.white, fontSize: 18)),
+                    Text("Noto'g'ri yurish!", style: TextStyle(color: Colors.white, fontSize: 18)),
                   ],
                 ),
                 ElevatedButton(
                   onPressed: () => provider.retryPuzzle(),
-                  child: const Text("Retry"),
+                  child: const Text("Qayta"),
                 )
               ],
             ),

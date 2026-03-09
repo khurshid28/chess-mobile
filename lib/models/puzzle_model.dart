@@ -15,16 +15,38 @@ class PuzzleModel {
   });
 
   factory PuzzleModel.fromJson(Map<String, dynamic> json) {
-    final game = json['game'] ?? {};
-    final puzzle = json['puzzle'] ?? {};
+    // Handle both Lichess API format and our cached format
+    if (json.containsKey('game') || json.containsKey('puzzle')) {
+      // Lichess API response format
+      final game = json['game'] ?? {};
+      final puzzle = json['puzzle'] ?? {};
 
-    return PuzzleModel(
-      id: puzzle['id']?.toString() ?? 'unknown_id',
-      rating: puzzle['rating'] ?? 1500,
-      initialPgn: game['pgn'] ?? '',
+      return PuzzleModel(
+        id: puzzle['id']?.toString() ?? 'unknown_id',
+        rating: puzzle['rating'] ?? 1500,
+        initialPgn: game['pgn'] ?? '',
+        solution: List<String>.from(puzzle['solution'] ?? []),
+        themes: List<String>.from(puzzle['themes'] ?? []),
+      );
+    } else {
+      // Our cached format
+      return PuzzleModel(
+        id: json['id']?.toString() ?? 'unknown_id',
+        rating: json['rating'] ?? 1500,
+        initialPgn: json['initialPgn'] ?? '',
+        solution: List<String>.from(json['solution'] ?? []),
+        themes: List<String>.from(json['themes'] ?? []),
+      );
+    }
+  }
 
-      solution: List<String>.from(puzzle['solution'] ?? []),
-      themes: List<String>.from(puzzle['themes'] ?? []),
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'rating': rating,
+      'initialPgn': initialPgn,
+      'solution': solution,
+      'themes': themes,
+    };
   }
 }

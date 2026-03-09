@@ -3,6 +3,7 @@ import 'package:chess_park/providers/connectivity_provider.dart';
 import 'package:chess_park/providers/live_game_provider.dart';
 import 'package:chess_park/providers/server_time_provider.dart';
 import 'package:chess_park/providers/settings_provider.dart';
+import 'package:chess_park/providers/theme_provider.dart';
 import 'package:chess_park/providers/bot_game_provider.dart';
 import 'package:chess_park/screens/verify_email_screen.dart';
 import 'package:chess_park/services/game_repository.dart';
@@ -68,6 +69,11 @@ void main() async {
   final settingsProvider = SettingsProvider();
   final serverTimeProvider = ServerTimeProvider();
   final connectivityProvider = ConnectivityProvider();
+  final themeProvider = ThemeProvider();
+
+  // Load theme before running app
+  await themeProvider.loadTheme();
+  AppTheme.updateColors(themeProvider.currentTheme);
 
   if (!kDebugMode) {
     await Future.wait([
@@ -82,18 +88,21 @@ void main() async {
     settingsProvider: settingsProvider,
     serverTimeProvider: serverTimeProvider,
     connectivityProvider: connectivityProvider,
+    themeProvider: themeProvider,
   ));
 }
 class ChessPark extends StatelessWidget {
   final SettingsProvider settingsProvider;
   final ServerTimeProvider serverTimeProvider;
   final ConnectivityProvider connectivityProvider;
+  final ThemeProvider themeProvider;
 
   const ChessPark({
     super.key,
     required this.settingsProvider,
     required this.serverTimeProvider,
     required this.connectivityProvider,
+    required this.themeProvider,
   });
 
   @override
@@ -107,18 +116,25 @@ class ChessPark extends StatelessWidget {
         Provider<FirestoreService>.value(value: firestoreService),
         ChangeNotifierProvider<SettingsProvider>.value(value: settingsProvider),
         ChangeNotifierProvider<ServerTimeProvider>.value(value: serverTimeProvider),
+        ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
         ChangeNotifierProvider(create: (_) => AuthProvider(settingsProvider: settingsProvider)),
         ChangeNotifierProvider(create: (_) => LiveGamesProvider(firestoreService: firestoreService)),
         ChangeNotifierProvider<ConnectivityProvider>.value(value: connectivityProvider),
         ChangeNotifierProvider(create: (_) => BotGameProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: AppConstants.appName,
-        theme: AppTheme.darkTheme,
-        home: const NetworkAwareWidget(
-          child: AuthWrapper(),
-        ),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          // Update AppTheme colors when theme changes
+          AppTheme.updateColors(themeProvider.currentTheme);
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: AppConstants.appName,
+            theme: AppTheme.darkTheme,
+            home: const NetworkAwareWidget(
+              child: AuthWrapper(),
+            ),
+          );
+        },
       ),
     );
   }
@@ -133,10 +149,10 @@ class AuthWrapper extends StatelessWidget {
     final authState = context.watch<AuthProvider>().authState;
 
 
-    const loadingView = Scaffold(
+    final loadingView = Scaffold(
       body: DecoratedBox(
         decoration: AppTheme.backgroundDecoration,
-        child: Center(child: CircularProgressIndicator(color: Colors.white))
+        child: const Center(child: CircularProgressIndicator(color: Colors.white))
       )
     );
 
@@ -156,4 +172,5 @@ class AuthWrapper extends StatelessWidget {
         return loadingView;
     }
   }
+
 }
