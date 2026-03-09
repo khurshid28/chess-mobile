@@ -52,7 +52,7 @@ class UserHeader extends StatelessWidget {
                     Flexible(
                       child: Text(
                         user.displayName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                           color: AppTheme.kColorTextPrimary,
@@ -77,7 +77,7 @@ class UserHeader extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   user.email,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     color: AppTheme.kColorTextSecondary,
                   ),

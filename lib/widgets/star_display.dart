@@ -72,7 +72,7 @@ class StarCounter extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 Icons.star,
                 color: AppTheme.kColorTextPrimary,
                 size: 32,

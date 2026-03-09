@@ -269,7 +269,7 @@ class _RecentGamesState extends State<RecentGames> {
           Expanded(
             child: Text(
               game.opponentName,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 color: AppTheme.kColorTextPrimary,
                 fontWeight: FontWeight.bold,
@@ -279,7 +279,7 @@ class _RecentGamesState extends State<RecentGames> {
           ),
           Text(
             '(${game.opponentRating})',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               color: AppTheme.kColorTextSecondary,
             ),
@@ -324,7 +324,7 @@ class _RecentGamesState extends State<RecentGames> {
           const SizedBox(height: 2),
           Text(
             dateStr,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               color: AppTheme.kColorTextSecondary,
             ),
@@ -348,7 +348,7 @@ class _RecentGamesState extends State<RecentGames> {
       children: [
         Icon(Icons.history, color: AppTheme.kColorAccent, size: 22),
         const SizedBox(width: 8),
-        const Expanded(
+        Expanded(
           child: Text(
             'Recent Games',
             style: TextStyle(

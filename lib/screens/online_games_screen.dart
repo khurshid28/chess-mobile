@@ -328,7 +328,7 @@ class _OnlineGamesViewState extends State<OnlineGamesView> {
             children: [
               const CircularProgressIndicator(color: Colors.white),
               const SizedBox(height: 24),
-              const Text("Searching for opponent...", style: TextStyle(fontSize: 18, color: AppTheme.kColorTextPrimary)),
+              Text("Searching for opponent...", style: TextStyle(fontSize: 18, color: AppTheme.kColorTextPrimary)),
               const SizedBox(height: 8),
               Text("Time Control: ${(lobbyProvider.currentTimeControl ?? 0) ~/ 60} min", style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 24),

@@ -79,7 +79,7 @@ class _GameHistoryList extends StatelessWidget {
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
               'O\'yin tarixi yo\'q.',
               style: TextStyle(color: AppTheme.kColorTextSecondary),
@@ -181,19 +181,19 @@ class _BotGameHistoryTile extends StatelessWidget {
       ),
       title: Text(
         game.botName,
-        style: const TextStyle(color: AppTheme.kColorTextPrimary),
+        style: TextStyle(color: AppTheme.kColorTextPrimary),
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '${game.botRating} • ${game.movesPlayed} yurish',
-            style: const TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 12),
+            style: TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 12),
           ),
           const SizedBox(height: 2),
           Text(
             DateFormat('dd.MM.yyyy HH:mm').format(game.createdAt),
-            style: const TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 11),
+            style: TextStyle(color: AppTheme.kColorTextSecondary, fontSize: 11),
           ),
         ],
       ),

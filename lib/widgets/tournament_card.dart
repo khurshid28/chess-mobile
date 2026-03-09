@@ -48,7 +48,7 @@ class TournamentCard extends StatelessWidget {
                     ),
                     child: Text(
                       tournament.categoryLabel,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppTheme.kColorTextPrimary,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,

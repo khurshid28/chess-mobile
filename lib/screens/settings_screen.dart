@@ -31,7 +31,7 @@ class SettingsScreen extends StatelessWidget {
       return Scaffold(
         body: Container(
           decoration: AppTheme.backgroundDecoration,
-          child: const Center(
+          child: Center(
             child: Text(
               "Please log in to change settings.",
               style: TextStyle(color: AppTheme.kColorTextSecondary),
@@ -58,7 +58,7 @@ class SettingsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.arrow_back_ios_new_rounded,
                           color: AppTheme.kColorTextPrimary,
                           size: 20,
@@ -120,7 +120,7 @@ class SettingsScreen extends StatelessWidget {
                                 ? Country.tryParse(user.countryCode!)?.name ??
                                       user.countryCode!
                                 : 'Not set',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppTheme.kColorTextSecondary,
                             ),
                           ),
@@ -139,7 +139,7 @@ class SettingsScreen extends StatelessWidget {
                                     color: Colors.white.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.chevron_right_rounded,
                                     color: AppTheme.kColorTextSecondary,
                                   ),
@@ -180,7 +180,7 @@ class SettingsScreen extends StatelessWidget {
                             builder: (context, themeProvider, child) {
                               return Text(
                                 '${themeProvider.currentTheme.emoji} ${themeProvider.currentTheme.nameUz}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppTheme.kColorTextSecondary,
                                 ),
                               );
@@ -192,7 +192,7 @@ class SettingsScreen extends StatelessWidget {
                               color: Colors.white.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.chevron_right_rounded,
                               color: AppTheme.kColorTextSecondary,
                             ),
@@ -268,7 +268,7 @@ class SettingsScreen extends StatelessWidget {
                         color: Colors.transparent,
                         child: SwitchListTile(
                           title: const Text('Enable Premoves'),
-                          subtitle: const Text(
+                          subtitle: Text(
                             'Make moves while waiting for opponent\'s turn.',
                             style: TextStyle(color: AppTheme.kColorTextSecondary),
                           ),
@@ -335,7 +335,7 @@ class SettingsScreen extends StatelessWidget {
                                   color: Colors.white.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.open_in_new_rounded,
                                   color: AppTheme.kColorTextSecondary,
                                   size: 18,
@@ -377,7 +377,7 @@ class SettingsScreen extends StatelessWidget {
                                   color: Colors.white.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.open_in_new_rounded,
                                   color: AppTheme.kColorTextSecondary,
                                   size: 18,
@@ -413,7 +413,7 @@ class SettingsScreen extends StatelessWidget {
                                 ),
                               ),
                               title: const Text('Share App'),
-                              subtitle: const Text(
+                              subtitle: Text(
                                 'Invite friends to play',
                                 style: TextStyle(
                                   color: AppTheme.kColorTextSecondary,
@@ -426,7 +426,7 @@ class SettingsScreen extends StatelessWidget {
                                   color: Colors.white.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   color: AppTheme.kColorTextSecondary,
                                   size: 18,
@@ -491,7 +491,7 @@ class SettingsScreen extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   color: AppTheme.kColorTextSecondary,
                 ),
@@ -503,7 +503,7 @@ class SettingsScreen extends StatelessWidget {
                   isExpanded: true,
                   dropdownColor: AppTheme.kBgColor1,
                   borderRadius: BorderRadius.circular(12),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.keyboard_arrow_down_rounded,
                     color: AppTheme.kColorTextSecondary,
                   ),
@@ -543,12 +543,12 @@ class SettingsScreen extends StatelessWidget {
       showPhoneCode: false,
       countryListTheme: CountryListThemeData(
         backgroundColor: AppTheme.kBgColor1,
-        textStyle: const TextStyle(color: AppTheme.kColorTextPrimary),
-        searchTextStyle: const TextStyle(color: AppTheme.kColorTextPrimary),
+        textStyle: TextStyle(color: AppTheme.kColorTextPrimary),
+        searchTextStyle: TextStyle(color: AppTheme.kColorTextPrimary),
         inputDecoration: InputDecoration(
           hintText: 'Search...',
-          hintStyle: const TextStyle(color: AppTheme.kColorTextSecondary),
-          prefixIcon: const Icon(Icons.search_rounded, color: AppTheme.kColorTextSecondary),
+          hintStyle: TextStyle(color: AppTheme.kColorTextSecondary),
+          prefixIcon: Icon(Icons.search_rounded, color: AppTheme.kColorTextSecondary),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,

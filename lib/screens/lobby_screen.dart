@@ -137,7 +137,7 @@ class _InviteFriendsButton extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Invite Friends',
                     style: TextStyle(
                       fontSize: 18,
@@ -198,7 +198,7 @@ class _ActionButton extends StatelessWidget {
               Text(
                 text,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   color: AppTheme.kColorTextPrimary,
                   fontWeight: FontWeight.w600,
@@ -282,7 +282,7 @@ class _DailyPuzzleButton extends StatelessWidget {
               Text(
                 text,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   color: AppTheme.kColorTextPrimary,
                   fontWeight: FontWeight.w600,

@@ -275,7 +275,7 @@ class _PuzzleViewState extends State<PuzzleView> {
             children: provider.puzzle.themes.map((theme) => Chip(
               label: Text(theme),
             backgroundColor: AppTheme.kColorAccent.withAlpha(230),
-labelStyle: const TextStyle(color: AppTheme.kColorTextPrimary),
+labelStyle: TextStyle(color: AppTheme.kColorTextPrimary),
 side: BorderSide(color: AppTheme.kColorAccent.withAlpha(230)),
             )).toList(),
           ),

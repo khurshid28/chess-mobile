@@ -448,7 +448,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
       child: Row(
           children: [
             IconButton(
-                icon: const Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
+                icon: Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
                 onPressed: () {
                   Navigator.of(context).maybePop();
                 },
@@ -477,7 +477,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
                 ? CachedNetworkImageProvider(playerDisplay.imageUrl!)
                 : null,
             child: playerDisplay.imageUrl == null
-                ? const Icon(Icons.person_outline, size: 20, color: AppTheme.kColorTextSecondary)
+                ? Icon(Icons.person_outline, size: 20, color: AppTheme.kColorTextSecondary)
                 : null,
           ),
           const SizedBox(width: 12),
@@ -491,7 +491,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
                     Flexible(
                       child: Text(
                         playerDisplay.name ?? "Waiting...",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.kColorTextPrimary),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.kColorTextPrimary),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -621,13 +621,13 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Text("Game Options", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.kColorTextPrimary)),
+                Text("Game Options", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.kColorTextPrimary)),
                 const SizedBox(height: 20),
 
 
                 ListTile(
                   leading: Icon(Icons.handshake_outlined, color: AppTheme.kColorAccent),
-                  title: Text(drawOffered ? 'Draw Offered (Waiting)' : 'Offer Draw', style: const TextStyle(color: AppTheme.kColorTextPrimary)),
+                  title: Text(drawOffered ? 'Draw Offered (Waiting)' : 'Offer Draw', style: TextStyle(color: AppTheme.kColorTextPrimary)),
                   enabled: !drawOffered,
                   onTap: () {
                     Navigator.pop(modalContext);
@@ -1091,16 +1091,16 @@ class _DisconnectionOverlayState extends State<DisconnectionOverlay> {
                 const Text('Opponent Disconnected', style: TextStyle(fontSize: 24, color: Colors.white)),
                 const SizedBox(height: 20),
                 if (_isClaiming) ...[
-                   const Text('Claiming victory...', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
+                   Text('Claiming victory...', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
                    const SizedBox(height: 10),
                    const CircularProgressIndicator(color: Colors.white),
                 ]
                 else if (!_canClaim) ...[
-                   const Text('Claim victory in:', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
+                   Text('Claim victory in:', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
 
                    Text('$_secondsRemaining', style: TextStyle(fontSize: 48, color: Colors.white, fontWeight: FontWeight.bold)),
                 ] else ...[
-                   const Text('Opponent failed to reconnect.', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
+                   Text('Opponent failed to reconnect.', style: TextStyle(fontSize: 16, color: AppTheme.kColorTextSecondary)),
                    const SizedBox(height: 20),
 
                    ElevatedButton(

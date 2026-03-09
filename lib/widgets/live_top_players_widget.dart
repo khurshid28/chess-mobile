@@ -49,7 +49,7 @@ class LiveTopPlayersWidget extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           'Top Players',
           style: TextStyle(
               fontSize: 20,
@@ -72,7 +72,7 @@ class LiveTopPlayersWidget extends StatelessWidget {
         ),
         const Spacer(),
 
-        const Icon(Icons.arrow_forward_ios, color: AppTheme.kColorTextSecondary, size: 16),
+        Icon(Icons.arrow_forward_ios, color: AppTheme.kColorTextSecondary, size: 16),
       ],
     );
   }

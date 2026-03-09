@@ -138,7 +138,7 @@ class _LeaderboardList extends StatelessWidget {
                   color: AppTheme.kColorTextSecondary.withOpacity(0.5),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'No players yet',
                   style: TextStyle(color: AppTheme.kColorTextSecondary),
                 ),
@@ -323,7 +323,7 @@ class _PlayerTile extends StatelessWidget {
                     Flexible(
                       child: Text(
                         player.displayName,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 15,
                             color: AppTheme.kColorTextPrimary),

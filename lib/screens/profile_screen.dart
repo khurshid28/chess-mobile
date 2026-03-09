@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
     final topPadding = MediaQuery.of(context).padding.top + 60;
 
     if (user == null) {
-      return const Center(
+      return Center(
         child: Text(
           'Not logged in',
           style: TextStyle(color: AppTheme.kColorTextSecondary),
@@ -289,7 +289,7 @@ class _LogoutButton extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Text(
+                      Text(
                         'Sign Out',
                         style: TextStyle(
                           color: AppTheme.kColorTextPrimary,
@@ -298,7 +298,7 @@ class _LogoutButton extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const Text(
+                      Text(
                         'Are you sure you want to sign out of your account?',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -319,7 +319,7 @@ class _LogoutButton extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () => Navigator.pop(context),
-                              child: const Text(
+                              child: Text(
                                 'Cancel',
                                 style: TextStyle(color: AppTheme.kColorTextPrimary),
                               ),
@@ -458,7 +458,7 @@ class _QuickStatItem extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: AppTheme.kColorTextPrimary,
@@ -567,7 +567,7 @@ class _DetailStatTile extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 color: AppTheme.kColorTextPrimary,
               ),
@@ -575,7 +575,7 @@ class _DetailStatTile extends StatelessWidget {
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: AppTheme.kColorTextPrimary,

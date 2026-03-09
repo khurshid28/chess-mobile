@@ -734,7 +734,7 @@ class _BotGameViewState extends State<BotGameView> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Resign Game?',
               style: TextStyle(
                 color: AppTheme.kColorTextPrimary,
@@ -743,7 +743,7 @@ class _BotGameViewState extends State<BotGameView> {
               ),
             ),
             const SizedBox(height: 12),
-            const Text(
+            Text(
               'If you leave now, you will resign and lose the game.',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -764,7 +764,7 @@ class _BotGameViewState extends State<BotGameView> {
                       ),
                     ),
                     onPressed: () => Navigator.pop(ctx),
-                    child: const Text(
+                    child: Text(
                       'Continue',
                       style: TextStyle(color: AppTheme.kColorTextPrimary),
                     ),
@@ -824,7 +824,7 @@ class _BotGameViewState extends State<BotGameView> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Resign?',
               style: TextStyle(
                 color: AppTheme.kColorTextPrimary,
@@ -833,7 +833,7 @@ class _BotGameViewState extends State<BotGameView> {
               ),
             ),
             const SizedBox(height: 12),
-            const Text(
+            Text(
               'Are you sure you want to resign this game?',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -854,7 +854,7 @@ class _BotGameViewState extends State<BotGameView> {
                       ),
                     ),
                     onPressed: () => Navigator.pop(ctx),
-                    child: const Text(
+                    child: Text(
                       'Cancel',
                       style: TextStyle(color: AppTheme.kColorTextPrimary),
                     ),

@@ -240,7 +240,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           backgroundColor: Colors.white24,
           backgroundImage: image != null ? CachedNetworkImageProvider(image) : null,
           child: image == null
-              ? const Icon(Icons.person_outline, color: AppTheme.kColorTextSecondary)
+              ? Icon(Icons.person_outline, color: AppTheme.kColorTextSecondary)
               : null,
         ),
         const SizedBox(width: 12),
@@ -252,7 +252,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 children: [
                   Text(
                     name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppTheme.kColorTextPrimary,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -279,7 +279,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               ),
               Text(
                 'ELO: ${elo ?? "..."}',
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppTheme.kColorTextSecondary,
                   fontSize: 14,
                 ),
@@ -369,7 +369,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               child: Text(
                 'Game completed\nFinal position: ${widget.game.fen}',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppTheme.kColorTextSecondary,
                   fontSize: 14,
                 ),
@@ -403,7 +403,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               _currentMoveIndex < 0 
                   ? 'Start' 
                   : 'Move ${_currentMoveIndex + 1} / ${_moveHistory.length}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.kColorTextPrimary,
                 fontWeight: FontWeight.bold,
               ),
@@ -436,7 +436,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Move History',
               style: TextStyle(
                 color: AppTheme.kColorTextPrimary,
@@ -471,7 +471,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         ),
                         child: Text(
                           '$moveNumber. $whiteMove${blackMove != null ? " $blackMove" : ""}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.kColorTextPrimary,
                             fontSize: 14,
                           ),
@@ -498,7 +498,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Game Information',
               style: TextStyle(
                 color: AppTheme.kColorTextPrimary,
@@ -557,14 +557,14 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppTheme.kColorTextSecondary,
               fontSize: 14,
             ),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppTheme.kColorTextPrimary,
               fontSize: 14,
               fontWeight: FontWeight.bold,

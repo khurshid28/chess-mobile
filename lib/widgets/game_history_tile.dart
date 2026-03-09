@@ -68,7 +68,7 @@ class GameHistoryTile extends StatelessWidget {
             ? CachedNetworkImageProvider(opponentImage)
             : null,
         child: opponentImage == null
-            ? const Icon(
+            ? Icon(
                 Icons.person_outline,
                 size: 24,
                 color: AppTheme.kColorTextSecondary,
@@ -128,7 +128,7 @@ class GameHistoryTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(
+          Icon(
             Icons.chevron_right,
             color: AppTheme.kColorTextSecondary,
             size: 20,
