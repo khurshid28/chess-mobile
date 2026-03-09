@@ -12,9 +12,9 @@ class AppTheme {
     _currentColors = colors;
   }
 
-  // Const colors for widgets that require const (fallback)
-  static const Color kColorTextPrimary = Colors.white;
-  static const Color kColorTextSecondary = Color.fromRGBO(255, 255, 255, 0.75);
+  // Dynamic text colors based on theme
+  static Color get kColorTextPrimary => _currentColors.textPrimary;
+  static Color get kColorTextSecondary => _currentColors.textSecondary;
   static const Color kColorLoss = Color(0xFFF44336);
 
   // Dynamic color accessors - USE THESE for accent colors
@@ -26,6 +26,8 @@ class AppTheme {
   static Color get kBgColor1 => _currentColors.bgColor1;
   static Color get kBgColor2 => _currentColors.bgColor2;
   static Color get kBgColor3 => _currentColors.bgColor3;
+  
+  static bool get isLight => _currentColors.isLight;
 
   static BoxDecoration get backgroundDecoration => _currentColors.backgroundDecoration;
 
@@ -34,43 +36,61 @@ class AppTheme {
     final bgColor1 = _currentColors.bgColor1;
     final bgColor2 = _currentColors.bgColor2;
     final bgColor3 = _currentColors.bgColor3;
+    final isLightTheme = _currentColors.isLight;
+    final textPrimary = _currentColors.textPrimary;
+    final textSecondary = _currentColors.textSecondary;
     
-    final TextTheme baseTextTheme = ThemeData(brightness: Brightness.dark).textTheme;
+    final brightness = isLightTheme ? Brightness.light : Brightness.dark;
+    final TextTheme baseTextTheme = ThemeData(brightness: brightness).textTheme;
 
     return ThemeData(
-      brightness: Brightness.dark,
+      brightness: brightness,
       primaryColor: accent,
       scaffoldBackgroundColor: bgColor2,
-      cardColor: Colors.white.withAlpha(26),
-      dividerColor: Colors.white.withAlpha(38),
-      colorScheme: ColorScheme.dark(
-        primary: accent,
-        secondary: accent,
-        surface: bgColor2,
-        onPrimary: Colors.black,
-        onSecondary: Colors.black,
-        onSurface: kColorTextPrimary,
-        error: kColorLoss,
-        onError: Colors.white,
-      ),
+      cardColor: isLightTheme ? Colors.black.withAlpha(13) : Colors.white.withAlpha(26),
+      dividerColor: isLightTheme ? Colors.black.withAlpha(20) : Colors.white.withAlpha(38),
+      colorScheme: isLightTheme 
+          ? ColorScheme.light(
+              primary: accent,
+              secondary: accent,
+              surface: bgColor2,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              onSurface: textPrimary,
+              error: kColorLoss,
+              onError: Colors.white,
+            )
+          : ColorScheme.dark(
+              primary: accent,
+              secondary: accent,
+              surface: bgColor2,
+              onPrimary: Colors.black,
+              onSecondary: Colors.black,
+              onSurface: textPrimary,
+              error: kColorLoss,
+              onError: Colors.white,
+            ),
       textTheme: baseTextTheme.copyWith(
-        headlineSmall: baseTextTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-        titleLarge: baseTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        headlineSmall: baseTextTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
+        titleLarge: baseTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
+        bodyMedium: baseTextTheme.bodyMedium?.copyWith(color: textPrimary),
+        bodyLarge: baseTextTheme.bodyLarge?.copyWith(color: textPrimary),
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         titleTextStyle: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: kColorTextPrimary,
+          color: textPrimary,
         ),
-        iconTheme: IconThemeData(color: kColorTextPrimary),
+        iconTheme: IconThemeData(color: textPrimary),
       ),
+      iconTheme: IconThemeData(color: textPrimary),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: accent,
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kBorderRadius),
           ),
@@ -94,7 +114,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withAlpha(26),
+        fillColor: isLightTheme ? Colors.black.withAlpha(13) : Colors.white.withAlpha(26),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(kBorderRadius),
           borderSide: BorderSide.none,
@@ -103,7 +123,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(kBorderRadius),
           borderSide: BorderSide(color: accent, width: 1.5),
         ),
-        labelStyle: const TextStyle(color: kColorTextSecondary),
+        labelStyle: TextStyle(color: textSecondary),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: bgColor3,

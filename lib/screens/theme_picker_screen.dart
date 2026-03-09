@@ -171,10 +171,10 @@ class _ThemeCard extends StatelessWidget {
                     // Theme name
                     Text(
                       theme.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: theme.textPrimary,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -183,7 +183,7 @@ class _ThemeCard extends StatelessWidget {
                       theme.nameUz,
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.white.withOpacity(0.6),
+                        color: theme.textSecondary,
                       ),
                     ),
                   ],

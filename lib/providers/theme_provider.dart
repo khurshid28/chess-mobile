@@ -10,6 +10,7 @@ enum AppThemeType {
   gold,
   rose,
   snow,
+  light,
 }
 
 /// Theme color scheme data
@@ -23,6 +24,7 @@ class AppThemeColors {
   final Color bgColor3;
   final Color surfaceColor;
   final Color glassColor;
+  final bool isLight;
 
   const AppThemeColors({
     required this.name,
@@ -34,6 +36,7 @@ class AppThemeColors {
     required this.bgColor3,
     required this.surfaceColor,
     required this.glassColor,
+    this.isLight = false,
   });
 
   BoxDecoration get backgroundDecoration => BoxDecoration(
@@ -44,6 +47,11 @@ class AppThemeColors {
           stops: const [0.0, 0.3, 1.0],
         ),
       );
+
+  Color get textPrimary => isLight ? const Color(0xFF1a1a1a) : Colors.white;
+  Color get textSecondary => isLight 
+      ? const Color(0xFF1a1a1a).withOpacity(0.7) 
+      : Colors.white.withOpacity(0.75);
 }
 
 /// All available themes
@@ -132,6 +140,19 @@ class AppThemes {
     glassColor: Color(0xFF5B8DEF),
   );
 
+  static const light = AppThemeColors(
+    name: 'Light',
+    nameUz: 'Oq',
+    emoji: '☀️',
+    accent: Color(0xFF4A7C59),
+    bgColor1: Color(0xFFf5f5f5),
+    bgColor2: Color(0xFFe8e8e8),
+    bgColor3: Color(0xFFdcdcdc),
+    surfaceColor: Color(0xFFf0f0f0),
+    glassColor: Color(0xFF4A7C59),
+    isLight: true,
+  );
+
   static List<AppThemeColors> get all => [
         forest,
         ocean,
@@ -140,6 +161,7 @@ class AppThemes {
         gold,
         rose,
         snow,
+        light,
       ];
 
   static AppThemeColors fromType(AppThemeType type) {
@@ -158,6 +180,8 @@ class AppThemes {
         return rose;
       case AppThemeType.snow:
         return snow;
+      case AppThemeType.light:
+        return light;
     }
   }
 
