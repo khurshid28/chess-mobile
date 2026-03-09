@@ -82,7 +82,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.email, size: 40, color: AppTheme.kColorAccent),
+              Icon(Icons.email, size: 40, color: AppTheme.kColorAccent),
 
               const SizedBox(height: 20),
               Text(

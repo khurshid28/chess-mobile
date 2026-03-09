@@ -395,7 +395,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
 
                 if (isParticipant && gameProvider.isClaimPending)
                   _buildOverlay(
-                    child: const Column(
+                    child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CircularProgressIndicator(color: AppTheme.kColorAccent),
@@ -408,7 +408,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
 
                 if (isParticipant && game.status == GameStatus.waiting)
                    _buildOverlay(
-                     child: const Column(
+                     child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CircularProgressIndicator(color: AppTheme.kColorAccent),
@@ -626,7 +626,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
 
 
                 ListTile(
-                  leading: const Icon(Icons.handshake_outlined, color: AppTheme.kColorAccent),
+                  leading: Icon(Icons.handshake_outlined, color: AppTheme.kColorAccent),
                   title: Text(drawOffered ? 'Draw Offered (Waiting)' : 'Offer Draw', style: const TextStyle(color: AppTheme.kColorTextPrimary)),
                   enabled: !drawOffered,
                   onTap: () {
@@ -706,7 +706,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
             builder: (consumerContext, provider, child) {
               final latestGame = provider.gameModel;
               if (latestGame == null) {
-                return const AlertDialog(content: Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent)));
+                return AlertDialog(content: Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent)));
               }
 
               Widget? rematchButton;

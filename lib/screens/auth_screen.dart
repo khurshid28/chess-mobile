@@ -330,7 +330,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   padding: EdgeInsets.zero,
                                   minimumSize: const Size(0, 36),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'Forgot Password?',
                                   style: TextStyle(
                                     color: AppTheme.kColorAccent,
@@ -392,7 +392,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         onPressed: _switchAuthMode,
                         child: Text(
                           _isLogin ? 'Sign Up' : 'Sign In',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.kColorAccent,
                             fontWeight: FontWeight.w600,
                             fontSize: 14,

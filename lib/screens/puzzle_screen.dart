@@ -144,7 +144,7 @@ class _PuzzleViewState extends State<PuzzleView> {
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 provider.isPlayerTurn ? "Your move" : "Opponent moving...",
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppTheme.kColorAccent, fontWeight: FontWeight.bold),
               ),
             ),

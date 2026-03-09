@@ -80,7 +80,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: _isRefreshing
-                        ? const SizedBox(
+                        ? SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
@@ -88,7 +88,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                               color: AppTheme.kColorAccent,
                             ),
                           )
-                        : const Icon(
+                        : Icon(
                             Icons.refresh_rounded,
                             color: AppTheme.kColorAccent,
                             size: 20,
@@ -120,7 +120,7 @@ class _LeaderboardList extends StatelessWidget {
       future: playersFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
+          return Center(
             child: Padding(
               padding: EdgeInsets.all(32.0),
               child: CircularProgressIndicator(color: AppTheme.kColorAccent),
@@ -360,7 +360,7 @@ class _PlayerTile extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   player.elo.toString(),
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppTheme.kColorAccent,
                       fontSize: 14,
                       fontWeight: FontWeight.bold),

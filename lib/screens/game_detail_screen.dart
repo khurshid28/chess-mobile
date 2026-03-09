@@ -266,7 +266,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         color: AppTheme.kColorAccent.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: const Text(
+                      child: Text(
                         'YOU',
                         style: TextStyle(
                           color: AppTheme.kColorAccent,
@@ -288,7 +288,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           ),
         ),
         if (isWinner)
-          const Icon(
+          Icon(
             Icons.emoji_events,
             color: AppTheme.kColorWin,
             size: 28,

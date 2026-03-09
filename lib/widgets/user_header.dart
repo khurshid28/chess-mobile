@@ -34,7 +34,7 @@ class UserHeader extends StatelessWidget {
                 ? CachedNetworkImageProvider(user.profileImage!)
                 : null,
             child: user.profileImage == null
-                ? const Icon(
+                ? Icon(
                     Icons.person_rounded,
                     size: 28,
                     color: AppTheme.kColorAccent,
@@ -95,11 +95,11 @@ class UserHeader extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.star_rounded, color: AppTheme.kColorAccent, size: 18),
+                Icon(Icons.star_rounded, color: AppTheme.kColorAccent, size: 18),
                 const SizedBox(width: 4),
                 Text(
                   user.elo.toString(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.kColorAccent,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,

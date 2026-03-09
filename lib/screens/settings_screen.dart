@@ -73,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
                         color: AppTheme.kColorAccent.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.settings_rounded,
                         color: AppTheme.kColorAccent,
                         size: 22,

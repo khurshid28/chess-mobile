@@ -12,14 +12,14 @@ class AppTheme {
     _currentColors = colors;
   }
 
-  // Const colors for widgets that require const
-  static const Color kColorAccent = Color(0xFF4CAF50); // Default green - use Theme.of(context).colorScheme.primary for dynamic
+  // Const colors for widgets that require const (fallback)
   static const Color kColorTextPrimary = Colors.white;
   static const Color kColorTextSecondary = Color.fromRGBO(255, 255, 255, 0.75);
-  static const Color kColorWin = Color(0xFF4CAF50);
   static const Color kColorLoss = Color(0xFFF44336);
 
-  // Dynamic color accessors (use these for non-const contexts)
+  // Dynamic color accessors - USE THESE for accent colors
+  static Color get kColorAccent => _currentColors.accent;
+  static Color get kColorWin => _currentColors.accent;
   static Color get accentColor => _currentColors.accent;
   static Color get winColor => _currentColors.accent;
 
@@ -30,18 +30,23 @@ class AppTheme {
   static BoxDecoration get backgroundDecoration => _currentColors.backgroundDecoration;
 
   static ThemeData get darkTheme {
+    final accent = _currentColors.accent;
+    final bgColor1 = _currentColors.bgColor1;
+    final bgColor2 = _currentColors.bgColor2;
+    final bgColor3 = _currentColors.bgColor3;
+    
     final TextTheme baseTextTheme = ThemeData(brightness: Brightness.dark).textTheme;
 
     return ThemeData(
       brightness: Brightness.dark,
-      primaryColor: kColorAccent,
-      scaffoldBackgroundColor: kBgColor2,
+      primaryColor: accent,
+      scaffoldBackgroundColor: bgColor2,
       cardColor: Colors.white.withAlpha(26),
       dividerColor: Colors.white.withAlpha(38),
       colorScheme: ColorScheme.dark(
-        primary: kColorAccent,
-        secondary: kColorAccent,
-        surface: kBgColor2,
+        primary: accent,
+        secondary: accent,
+        surface: bgColor2,
         onPrimary: Colors.black,
         onSecondary: Colors.black,
         onSurface: kColorTextPrimary,
@@ -64,7 +69,7 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: kColorAccent,
+          backgroundColor: accent,
           foregroundColor: Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kBorderRadius),
@@ -74,15 +79,15 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: kColorAccent,
-          side: BorderSide(color: kColorAccent),
+          foregroundColor: accent,
+          side: BorderSide(color: accent),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kBorderRadius),
           ),
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: kBgColor1,
+        backgroundColor: bgColor1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kBorderRadius),
         ),
@@ -96,12 +101,12 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(kBorderRadius),
-          borderSide: BorderSide(color: kColorAccent, width: 1.5),
+          borderSide: BorderSide(color: accent, width: 1.5),
         ),
         labelStyle: const TextStyle(color: kColorTextSecondary),
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: kBgColor3,
+        backgroundColor: bgColor3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(kBorderRadius)),
         ),

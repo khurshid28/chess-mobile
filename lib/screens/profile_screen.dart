@@ -126,7 +126,7 @@ class _ProfileHeader extends StatelessWidget {
                       ? CachedNetworkImageProvider(user.profileImage!)
                       : null,
                   child: user.profileImage == null
-                      ? const Icon(
+                      ? Icon(
                           Icons.person_rounded,
                           size: 48,
                           color: AppTheme.kColorAccent,

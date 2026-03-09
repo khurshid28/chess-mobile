@@ -362,7 +362,7 @@ class _BotGameViewState extends State<BotGameView> {
                 color: AppTheme.kColorAccent.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.smart_toy,
                 color: AppTheme.kColorAccent,
                 size: 32,
@@ -453,7 +453,7 @@ class _BotGameViewState extends State<BotGameView> {
                 color: AppTheme.kColorAccent.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.person,
                 color: AppTheme.kColorAccent,
                 size: 32,

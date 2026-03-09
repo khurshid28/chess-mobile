@@ -58,7 +58,7 @@ class LiveTopPlayersWidget extends StatelessWidget {
         ),
         const SizedBox(width: 8),
 
-        const CircleAvatar(backgroundColor: AppTheme.kColorAccent, radius: 5),
+        CircleAvatar(backgroundColor: AppTheme.kColorAccent, radius: 5),
         const SizedBox(width: 6),
         Text(
           'LIVE',

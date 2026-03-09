@@ -133,7 +133,7 @@ class _TournamentsScreenState extends State<TournamentsScreen>
 
   Widget _buildUpcomingTab(TournamentProvider provider, String? userId) {
     if (provider.isLoading) {
-      return const Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent));
+      return Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent));
     }
 
     if (provider.error != null) {
@@ -192,7 +192,7 @@ class _TournamentsScreenState extends State<TournamentsScreen>
 
   Widget _buildLiveTab(TournamentProvider provider, String? userId) {
     if (provider.isLoading) {
-      return const Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent));
+      return Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent));
     }
 
     final tournaments = provider.activeTournaments;

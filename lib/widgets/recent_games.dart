@@ -346,7 +346,7 @@ class _RecentGamesState extends State<RecentGames> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Icon(Icons.history, color: AppTheme.kColorAccent, size: 22),
+        Icon(Icons.history, color: AppTheme.kColorAccent, size: 22),
         const SizedBox(width: 8),
         const Expanded(
           child: Text(
@@ -365,7 +365,7 @@ class _RecentGamesState extends State<RecentGames> {
               color: AppTheme.kColorAccent.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.refresh_rounded, color: AppTheme.kColorAccent, size: 18),
+            child: Icon(Icons.refresh_rounded, color: AppTheme.kColorAccent, size: 18),
           ),
         ),
         const SizedBox(width: 8),
@@ -375,7 +375,7 @@ class _RecentGamesState extends State<RecentGames> {
               builder: (_) => GameHistoryScreen(userId: widget.userId),
             ));
           },
-          child: const Row(
+          child: Row(
             children: [
               Text(
                 'View All',
