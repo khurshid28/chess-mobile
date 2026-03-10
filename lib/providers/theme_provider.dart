@@ -243,7 +243,14 @@ class ThemeProvider with ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       final themeIndex = prefs.getInt(_themeKey) ?? 0;
-      _currentThemeType = AppThemes.typeFromIndex(themeIndex);
+      // Ensure index is valid for current theme count
+      if (themeIndex >= 0 && themeIndex < AppThemeType.values.length) {
+        _currentThemeType = AppThemeType.values[themeIndex];
+      } else {
+        // Reset to default if saved index is out of range
+        _currentThemeType = AppThemeType.goldDark;
+        await prefs.setInt(_themeKey, 0);
+      }
       _isLoaded = true;
       notifyListeners();
     } catch (e) {

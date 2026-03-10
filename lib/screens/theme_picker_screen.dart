@@ -42,11 +42,11 @@ class ThemePickerScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Dark Themes Section
+                      // All Themes Section
                       _SectionHeader(
-                        title: 'Dark Themes',
-                        subtitle: 'Elegant dark backgrounds',
-                        icon: Icons.dark_mode_rounded,
+                        title: 'Select Theme',
+                        subtitle: 'Choose your preferred style',
+                        icon: Icons.palette_rounded,
                       ),
                       const SizedBox(height: 12),
                       GridView.builder(
@@ -58,44 +58,10 @@ class ThemePickerScreen extends StatelessWidget {
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
                         ),
-                        itemCount: 4, // First 4 are dark themes
+                        itemCount: AppThemes.all.length,
                         itemBuilder: (context, index) {
                           final theme = AppThemes.all[index];
                           final themeType = AppThemeType.values[index];
-                          final isSelected = currentThemeType == themeType;
-
-                          return _ThemeCard(
-                            theme: theme,
-                            isSelected: isSelected,
-                            onTap: () {
-                              HapticFeedback.lightImpact();
-                              themeProvider.setTheme(themeType);
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      // Light Themes Section
-                      _SectionHeader(
-                        title: 'Light Themes',
-                        subtitle: 'Clean and bright',
-                        icon: Icons.light_mode_rounded,
-                      ),
-                      const SizedBox(height: 12),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.85,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemCount: 4, // Last 4 are light themes
-                        itemBuilder: (context, index) {
-                          final actualIndex = index + 4; // Offset for light themes
-                          final theme = AppThemes.all[actualIndex];
-                          final themeType = AppThemeType.values[actualIndex];
                           final isSelected = currentThemeType == themeType;
 
                           return _ThemeCard(
