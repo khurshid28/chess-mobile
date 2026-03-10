@@ -20,8 +20,8 @@ class AppIcons {
   // ═══════════════════════════════════════════════════════════════════
   // NAVIGATION ICONS
   // ═══════════════════════════════════════════════════════════════════
-  static const IconData home = LucideIcons.house;
-  static const IconData homeOutline = LucideIcons.house;
+  static const IconData home = LucideIcons.home;
+  static const IconData homeOutline = LucideIcons.home;
   static const IconData leaderboard = LucideIcons.trophy;
   static const IconData leaderboardOutline = LucideIcons.trophy;
   static const IconData games = LucideIcons.gamepad2;
@@ -44,7 +44,7 @@ class AppIcons {
   // GAME ACTION ICONS
   // ═══════════════════════════════════════════════════════════════════
   static const IconData resign = LucideIcons.flag;
-  static const IconData draw = LucideIcons.handshake;
+  static const IconData draw = LucideIcons.handMetal;
   static const IconData hint = LucideIcons.lightbulb;
   static const IconData next = LucideIcons.arrowRight;
   static const IconData previous = LucideIcons.arrowLeft;
@@ -80,7 +80,7 @@ class AppIcons {
   // ═══════════════════════════════════════════════════════════════════
   static const IconData theme = LucideIcons.palette;
   static const IconData sound = LucideIcons.volume2;
-  static const IconData soundOff = LucideIcons.volumeOff;
+  static const IconData soundOff = LucideIcons.volumeX;
   static const IconData language = LucideIcons.globe2;
   static const IconData notifications = LucideIcons.bell;
   static const IconData notificationsOff = LucideIcons.bellOff;
@@ -124,7 +124,7 @@ class AppIcons {
   // ═══════════════════════════════════════════════════════════════════
   // CHESS SPECIFIC ICONS
   // ═══════════════════════════════════════════════════════════════════
-  static const IconData chessBoard = LucideIcons.grid3x3;
+  static const IconData chessBoard = LucideIcons.layoutGrid;
   static const IconData history = LucideIcons.history;
   static const IconData analysis = LucideIcons.barChart2;
   static const IconData time = LucideIcons.clock;
