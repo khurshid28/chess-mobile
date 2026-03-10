@@ -41,65 +41,81 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final topPadding = MediaQuery.of(context).padding.top + 60;
-
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: ListView(
-        padding: EdgeInsets.fromLTRB(20.0, topPadding, 20.0, 120.0),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.amber.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.emoji_events_rounded,
-                    color: Colors.amber,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Leaderboard',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: _isRefreshing ? null : _refresh,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppTheme.kColorAccent.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
+      body: Container(
+        decoration: AppTheme.backgroundDecoration,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header with back button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
+                      onPressed: () => Navigator.of(context).pop(),
                     ),
-                    child: _isRefreshing
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: AppTheme.kColorAccent,
-                            ),
-                          )
-                        : Icon(
-                            Icons.refresh_rounded,
-                            color: AppTheme.kColorAccent,
-                            size: 20,
-                          ),
-                  ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.emoji_events_rounded,
+                        color: Colors.amber,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Leaderboard',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: _isRefreshing ? null : _refresh,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppTheme.kColorAccent.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: _isRefreshing
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppTheme.kColorAccent,
+                                ),
+                              )
+                            : Icon(
+                                Icons.refresh_rounded,
+                                color: AppTheme.kColorAccent,
+                                size: 20,
+                              ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              // Leaderboard list
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  children: [
+                    _LeaderboardList(playersFuture: _playersFuture),
+                  ],
+                ),
+              ),
+            ],
           ),
-          _LeaderboardList(playersFuture: _playersFuture),
-        ],
+        ),
       ),
     );
   }

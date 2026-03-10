@@ -120,11 +120,11 @@ class FirestoreService {
     });
   }
 
-  Future<List<UserModel>> getTopPlayers() async {
+  Future<List<UserModel>> getTopPlayers({int limit = 100}) async {
     final snapshot = await _db
         .collection('users')
         .orderBy('elo', descending: true)
-        .limit(100)
+        .limit(limit)
         .get();
     return snapshot.docs
         .map((doc) => UserModel.fromMap(doc.data(), doc.id))

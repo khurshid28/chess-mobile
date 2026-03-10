@@ -22,74 +22,95 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final user = authProvider.userModel;
-    final topPadding = MediaQuery.of(context).padding.top + 60;
 
     if (user == null) {
-      return Center(
-        child: Text(
-          'Not logged in',
-          style: TextStyle(color: AppTheme.kColorTextSecondary),
+      return Scaffold(
+        body: Container(
+          decoration: AppTheme.backgroundDecoration,
+          child: Center(
+            child: Text(
+              'Not logged in',
+              style: TextStyle(color: AppTheme.kColorTextSecondary),
+            ),
+          ),
         ),
       );
     }
 
-
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: ListView(
-        padding: EdgeInsets.fromLTRB(20.0, topPadding, 20.0, 120.0),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppTheme.kColorAccent.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    Icons.person_rounded,
-                    color: AppTheme.kColorAccent,
-                    size: 24,
-                  ),
+      body: Container(
+        decoration: AppTheme.backgroundDecoration,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header with back button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.kColorAccent.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.person_rounded,
+                        color: AppTheme.kColorAccent,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Profile',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const Spacer(),
+                    // Settings button
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppTheme.containerBgColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.settings_rounded, color: AppTheme.kColorTextPrimary),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const SettingsScreen(),
+                          ));
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                Text(
-                  'Profile',
-                  style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              // Content
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  children: [
+                    _ProfileHeader(user: user),
+                    _kVerticalSpacer,
+                    _QuickStatsRow(user: user),
+                    _kVerticalSpacer,
+                    // Game History Section
+                    RecentGames(userId: user.id),
+                    _kVerticalSpacer,
+                    _DetailedStats(user: user),
+                    _kVerticalSpacer,
+                    _LogoutButton(),
+                  ],
                 ),
-                const Spacer(),
-                // Settings button
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppTheme.containerBgColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.settings_rounded, color: AppTheme.kColorTextPrimary),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const SettingsScreen(),
-                      ));
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          _ProfileHeader(user: user),
-          _kVerticalSpacer,
-          _QuickStatsRow(user: user),
-          _kVerticalSpacer,
-          // Game History Section
-          RecentGames(userId: user.id),
-          _kVerticalSpacer,
-          _DetailedStats(user: user),
-          _kVerticalSpacer,
-          _LogoutButton(),
-        ],
+        ),
       ),
     );
   }
