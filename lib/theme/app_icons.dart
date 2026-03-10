@@ -139,6 +139,8 @@ class AppIcons {
   static const IconData crown = LucideIcons.crown;
   static const IconData medal = LucideIcons.medal;
   static const IconData award = LucideIcons.award;
+  static const IconData tournament = LucideIcons.swords;
+  static const IconData live = LucideIcons.radio;
 }
 
 /// Icon widget with consistent styling

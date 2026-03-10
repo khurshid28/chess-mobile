@@ -6,6 +6,7 @@ import 'package:chess_park/screens/online_games_screen.dart';
 import 'package:chess_park/screens/profile_screen.dart';
 import 'package:chess_park/screens/puzzle_lobby_screen.dart';
 import 'package:chess_park/screens/invite_friends_screen.dart';
+import 'package:chess_park/screens/tournaments_screen.dart';
 import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/theme/app_icons.dart';
@@ -14,6 +15,7 @@ import 'package:chess_park/widgets/user_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -68,6 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   // User Header - tappable to go to profile
                   if (user != null)
                     UserHeader(user: user, onTap: _goToProfile),
+                  const SizedBox(height: 24),
+
+                  // Daily Tournament Card
+                  const _DailyTournamentCard(),
                   const SizedBox(height: 24),
 
                   // Play Section
@@ -375,6 +381,202 @@ class _LeaderboardRow extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Daily Tournament Card - Shows upcoming/live tournament info
+class _DailyTournamentCard extends StatefulWidget {
+  const _DailyTournamentCard();
+
+  @override
+  State<_DailyTournamentCard> createState() => _DailyTournamentCardState();
+}
+
+class _DailyTournamentCardState extends State<_DailyTournamentCard> {
+  Timer? _timer;
+  late DateTime _tournamentTime;
+  bool _isLive = false;
+  Duration _timeRemaining = Duration.zero;
+
+  // Daily tournament time: 11:00 Tashkent time (UTC+5)
+  static const int tournamentHour = 11;
+  static const int tournamentMinute = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateTournamentTime();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _calculateTournamentTime() {
+    final now = DateTime.now();
+    // Tournament at 21:00 local time
+    _tournamentTime = DateTime(now.year, now.month, now.day, tournamentHour, tournamentMinute);
+    
+    // If today's tournament has passed, show tomorrow's
+    if (now.isAfter(_tournamentTime.add(const Duration(hours: 2)))) {
+      _tournamentTime = _tournamentTime.add(const Duration(days: 1));
+    }
+    
+    _updateStatus();
+  }
+
+  void _updateStatus() {
+    final now = DateTime.now();
+    final tournamentEnd = _tournamentTime.add(const Duration(hours: 2));
+    
+    if (now.isAfter(_tournamentTime) && now.isBefore(tournamentEnd)) {
+      // Tournament is live
+      _isLive = true;
+      _timeRemaining = tournamentEnd.difference(now);
+    } else if (now.isBefore(_tournamentTime)) {
+      // Tournament is upcoming
+      _isLive = false;
+      _timeRemaining = _tournamentTime.difference(now);
+    } else {
+      // Tournament ended, calculate next one
+      _tournamentTime = _tournamentTime.add(const Duration(days: 1));
+      _isLive = false;
+      _timeRemaining = _tournamentTime.difference(now);
+    }
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        _updateStatus();
+      });
+    });
+  }
+
+  String _formatDuration(Duration d) {
+    final hours = d.inHours;
+    final minutes = d.inMinutes.remainder(60);
+    final seconds = d.inSeconds.remainder(60);
+    
+    if (hours > 0) {
+      return '${hours}h ${minutes}m ${seconds}s';
+    } else if (minutes > 0) {
+      return '${minutes}m ${seconds}s';
+    } else {
+      return '${seconds}s';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const TournamentsScreen()),
+        );
+      },
+      child: GlassPanel(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            // Left side - Icon
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: _isLive 
+                    ? Colors.red.withOpacity(0.15) 
+                    : AppTheme.kColorAccent.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(
+                _isLive ? AppIcons.live : AppIcons.tournament,
+                color: _isLive ? Colors.red : AppTheme.kColorAccent,
+                size: 28,
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Middle - Text
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        _isLive ? 'LIVE NOW' : 'DAILY TOURNAMENT',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: _isLive ? Colors.red : AppTheme.kColorAccent,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      if (_isLive) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.red.withOpacity(0.5),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _isLive 
+                        ? 'Tournament in progress!'
+                        : 'Daily at $tournamentHour:00',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.kColorTextPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    _isLive 
+                        ? 'Ends in: ${_formatDuration(_timeRemaining)}'
+                        : 'Starts in: ${_formatDuration(_timeRemaining)}',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppTheme.kColorTextSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Right side - Arrow
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: AppTheme.kColorAccent.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                AppIcons.chevronRight,
+                color: AppTheme.kColorAccent,
+                size: 20,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

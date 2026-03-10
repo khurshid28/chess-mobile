@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../theme/app_icons.dart';
 
 class StarDisplay extends StatelessWidget {
   final int stars;
@@ -19,8 +20,8 @@ class StarDisplay extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
-          Icons.star,
-          color: Colors.amber,
+          AppIcons.rating,
+          color: AppTheme.kColorAccent,
           size: size,
         ),
         if (showLabel) ...[
@@ -30,7 +31,7 @@ class StarDisplay extends StatelessWidget {
             style: TextStyle(
               fontSize: size * 0.8,
               fontWeight: FontWeight.bold,
-              color: Colors.amber[700],
+              color: AppTheme.kColorAccent,
             ),
           ),
         ],
@@ -54,17 +55,8 @@ class StarCounter extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.amber[400]!, Colors.amber[700]!],
-        ),
+        color: AppTheme.kColorAccent.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.amber.withOpacity(0.4),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -73,17 +65,17 @@ class StarCounter extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                Icons.star,
-                color: AppTheme.kColorTextPrimary,
+                AppIcons.rating,
+                color: AppTheme.kColorAccent,
                 size: 32,
               ),
               const SizedBox(width: 8),
               Text(
                 stars.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppTheme.kColorAccent,
                 ),
               ),
             ],
@@ -93,7 +85,7 @@ class StarCounter extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.white.withOpacity(0.9),
+              color: AppTheme.kColorTextSecondary,
             ),
           ),
         ],

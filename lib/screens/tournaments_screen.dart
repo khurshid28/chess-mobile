@@ -4,8 +4,8 @@ import '../models/tournament_model.dart';
 import '../providers/tournament_provider.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/tournament_card.dart';
-import '../widgets/star_display.dart';
 import '../theme/app_theme.dart';
+import '../theme/app_icons.dart';
 import 'tournament_detail_screen.dart';
 
 class TournamentsScreen extends StatefulWidget {
@@ -45,51 +45,119 @@ class _TournamentsScreenState extends State<TournamentsScreen>
     final user = authProvider.userModel;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tournaments'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Upcoming', icon: Icon(Icons.schedule)),
-            Tab(text: 'Live', icon: Icon(Icons.play_circle)),
-          ],
-        ),
-        actions: [
-          if (user != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Center(
-                child: StarCounter(
-                  stars: user.stars,
-                  label: 'Stars',
+      backgroundColor: AppTheme.kBgColor2,
+      body: Container(
+        decoration: AppTheme.backgroundDecoration,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Custom AppBar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(AppIcons.back, color: AppTheme.kColorTextPrimary),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    Text(
+                      'Tournaments',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: AppTheme.kColorTextPrimary,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (user != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.kColorAccent.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(AppIcons.rating, color: AppTheme.kColorAccent, size: 18),
+                            const SizedBox(width: 6),
+                            Text(
+                              '${user.elo}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.kColorAccent,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    const SizedBox(width: 8),
+                  ],
                 ),
               ),
-            ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Category filter
-          _buildCategoryFilter(),
-          // Tab content
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildUpcomingTab(tournamentProvider, user?.id),
-                _buildLiveTab(tournamentProvider, user?.id),
-              ],
-            ),
+              // Tab bar
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: AppTheme.kBgColor1.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TabBar(
+                  controller: _tabController,
+                  indicator: BoxDecoration(
+                    color: AppTheme.kColorAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: AppTheme.kColorTextSecondary,
+                  dividerColor: Colors.transparent,
+                  tabs: [
+                    Tab(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(AppIcons.timer, size: 18),
+                          const SizedBox(width: 8),
+                          const Text('Upcoming'),
+                        ],
+                      ),
+                    ),
+                    Tab(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(AppIcons.live, size: 18),
+                          const SizedBox(width: 8),
+                          const Text('Live'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Category filter
+              _buildCategoryFilter(),
+              // Tab content
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildUpcomingTab(tournamentProvider, user?.id),
+                    _buildLiveTab(tournamentProvider, user?.id),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildCategoryFilter() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Colors.grey[100],
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -112,21 +180,34 @@ class _TournamentsScreenState extends State<TournamentsScreen>
     final isSelected = _selectedCategory == category;
     final tournamentProvider = context.read<TournamentProvider>();
 
-    return FilterChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (selected) {
+    return GestureDetector(
+      onTap: () {
         setState(() {
-          _selectedCategory = selected ? category : null;
+          _selectedCategory = isSelected ? null : category;
         });
         tournamentProvider.setSelectedCategory(_selectedCategory);
       },
-      selectedColor: category != null
-          ? _getCategoryColor(category)
-          : Theme.of(context).primaryColor,
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : null,
-        fontWeight: isSelected ? FontWeight.bold : null,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected 
+              ? AppTheme.kColorAccent 
+              : AppTheme.kBgColor1.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected 
+                ? AppTheme.kColorAccent 
+                : AppTheme.kColorTextSecondary.withOpacity(0.3),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : AppTheme.kColorTextPrimary,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            fontSize: 13,
+          ),
+        ),
       ),
     );
   }
@@ -299,18 +380,5 @@ class _TournamentsScreenState extends State<TournamentsScreen>
 
   String _formatTime(DateTime time) {
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-  }
-
-  Color _getCategoryColor(TournamentCategory category) {
-    switch (category) {
-      case TournamentCategory.a:
-        return Colors.blue[600]!;
-      case TournamentCategory.b:
-        return Colors.purple[600]!;
-      case TournamentCategory.c:
-        return Colors.orange[600]!;
-      case TournamentCategory.d:
-        return Colors.red[600]!;
-    }
   }
 }
