@@ -127,6 +127,7 @@ class ChessPark extends StatelessWidget {
           // Update AppTheme colors when theme changes
           AppTheme.updateColors(themeProvider.currentTheme);
           return MaterialApp(
+            key: ValueKey(themeProvider.currentThemeType), // Force rebuild on theme change
             debugShowCheckedModeBanner: false,
             title: AppConstants.appName,
             theme: AppTheme.darkTheme,
