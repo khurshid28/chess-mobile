@@ -78,12 +78,7 @@ class AppThemeColors {
   });
 
   BoxDecoration get backgroundDecoration => BoxDecoration(
-        gradient: RadialGradient(
-          center: Alignment.center,
-          radius: 1.0,
-          colors: [bgColor1, bgColor2, bgColor3],
-          stops: const [0.0, 0.3, 1.0],
-        ),
+        color: bgColor2,
       );
 
   Color get textPrimary => isLight ? const Color(0xFF1a1a1a) : Colors.white;
