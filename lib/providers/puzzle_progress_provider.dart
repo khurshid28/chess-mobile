@@ -15,12 +15,19 @@ class PuzzleProgressProvider extends ChangeNotifier {
   PuzzleLoadState _state = PuzzleLoadState.initial;
   String? _errorMessage;
   int _loadingProgress = 0; // Current loading progress
+  bool _isLoadingMore = false;
+  bool _hasMore = true;
   
-  static const int totalPuzzleCount = 15;
+  static const int initialPuzzleCount = 10; // Initial load
+  static const int loadMoreCount = 5; // Load 5 more at a time
+  static const int maxPuzzleCount = 50; // Maximum puzzles
   static const String _puzzlesCacheKey = 'cached_puzzles';
   static const String _solvedPuzzlesKey = 'solved_puzzle_ids';
   static const String _unlockedCountKey = 'unlocked_puzzle_count';
   static const String _lastCacheDateKey = 'puzzles_cache_date';
+  
+  // Keep for backward compatibility
+  static const int totalPuzzleCount = initialPuzzleCount;
   
   PuzzleProgressProvider(this._puzzleService);
   
@@ -30,6 +37,8 @@ class PuzzleProgressProvider extends ChangeNotifier {
   PuzzleLoadState get state => _state;
   String? get errorMessage => _errorMessage;
   int get loadingProgress => _loadingProgress;
+  bool get isLoadingMore => _isLoadingMore;
+  bool get hasMore => _hasMore && _puzzles.length < maxPuzzleCount;
   
   bool isPuzzleUnlocked(int index) => index < _unlockedCount;
   bool isPuzzleSolved(int index) {
@@ -58,7 +67,8 @@ class PuzzleProgressProvider extends ChangeNotifier {
       if (cachedPuzzlesJson != null && lastCacheDate == today) {
         // Use cached puzzles
         _puzzles = _decodePuzzles(cachedPuzzlesJson);
-        if (_puzzles.length >= totalPuzzleCount) {
+        _hasMore = _puzzles.length < maxPuzzleCount;
+        if (_puzzles.length >= initialPuzzleCount) {
           _state = PuzzleLoadState.loaded;
           notifyListeners();
           return;
@@ -77,9 +87,10 @@ class PuzzleProgressProvider extends ChangeNotifier {
   }
   
   /// Fetch puzzles from Lichess API and cache them
-  Future<void> _fetchAndCachePuzzles(SharedPreferences prefs) async {
+  Future<void> _fetchAndCachePuzzles(SharedPreferences prefs, {int count = initialPuzzleCount}) async {
     _puzzles = [];
     _loadingProgress = 0;
+    _hasMore = true;
     notifyListeners();
     
     // First get daily puzzle
@@ -94,7 +105,7 @@ class PuzzleProgressProvider extends ChangeNotifier {
     
     // Fetch remaining puzzles
     int attempts = 0;
-    while (_puzzles.length < totalPuzzleCount && attempts < totalPuzzleCount + 5) {
+    while (_puzzles.length < count && attempts < count + 5) {
       attempts++;
       try {
         final puzzle = await _puzzleService.getRandomPuzzle();
@@ -121,6 +132,51 @@ class PuzzleProgressProvider extends ChangeNotifier {
       await prefs.setString(_puzzlesCacheKey, puzzlesJson);
       await prefs.setString(_lastCacheDateKey, today);
     }
+  }
+  
+  /// Load more puzzles
+  Future<void> loadMorePuzzles() async {
+    if (_isLoadingMore || !hasMore) return;
+    
+    _isLoadingMore = true;
+    notifyListeners();
+    
+    try {
+      int loaded = 0;
+      int attempts = 0;
+      final targetCount = _puzzles.length + loadMoreCount;
+      
+      while (_puzzles.length < targetCount && attempts < loadMoreCount + 3) {
+        attempts++;
+        try {
+          final puzzle = await _puzzleService.getRandomPuzzle();
+          // Avoid duplicates
+          if (!_puzzles.any((p) => p.id == puzzle.id)) {
+            _puzzles.add(puzzle);
+            loaded++;
+            notifyListeners();
+          }
+        } catch (e) {
+          await Future.delayed(const Duration(milliseconds: 200));
+        }
+      }
+      
+      // If we couldn't load any new puzzles, we're out
+      if (loaded == 0) {
+        _hasMore = false;
+      }
+      
+      // Update cache
+      final prefs = await SharedPreferences.getInstance();
+      final puzzlesJson = _encodePuzzles(_puzzles);
+      await prefs.setString(_puzzlesCacheKey, puzzlesJson);
+      
+    } catch (e) {
+      // Silent fail for load more
+    }
+    
+    _isLoadingMore = false;
+    notifyListeners();
   }
   
   /// Load progress from SharedPreferences

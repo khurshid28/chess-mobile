@@ -193,18 +193,56 @@ class PuzzleLobbyView extends StatelessWidget {
           ),
         );
       case PuzzleLoadState.loaded:
-        return GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 5,
-            childAspectRatio: 1.0,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-          ),
-          itemCount: provider.puzzles.length,
-          itemBuilder: (context, index) {
-            return _buildPuzzleTile(context, provider, index);
-          },
+        return Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  childAspectRatio: 1.0,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: provider.puzzles.length,
+                itemBuilder: (context, index) {
+                  return _buildPuzzleTile(context, provider, index);
+                },
+              ),
+            ),
+            // Load More Button
+            if (provider.hasMore)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: provider.isLoadingMore ? null : () => provider.loadMorePuzzles(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.kColorAccent,
+                      foregroundColor: AppTheme.kButtonTextColor,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: provider.isLoadingMore
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppTheme.kButtonTextColor,
+                            ),
+                          )
+                        : const Text(
+                            'Load More Puzzles',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                  ),
+                ),
+              ),
+          ],
         );
     }
   }
