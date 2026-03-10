@@ -6,7 +6,7 @@ class AppTheme {
   static const double kBorderRadius = 10.0;
 
   // Current theme colors (updated by ThemeProvider)
-  static AppThemeColors _currentColors = AppThemes.forest;
+  static AppThemeColors _currentColors = AppThemes.goldDark;
 
   // Update current theme colors
   static void updateColors(AppThemeColors colors) {
