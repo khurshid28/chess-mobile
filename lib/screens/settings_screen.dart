@@ -1,6 +1,7 @@
 import 'package:chess_park/providers/auth_provider.dart';import 'package:chess_park/providers/theme_provider.dart';
 import 'package:chess_park/screens/theme_picker_screen.dart';import 'package:chess_park/theme/app_constants.dart';
 import 'package:chess_park/theme/app_theme.dart';
+import 'package:chess_park/theme/app_icons.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       child: IconButton(
                         icon: Icon(
-                          Icons.arrow_back_ios_new_rounded,
+                          AppIcons.back,
                           color: AppTheme.kColorTextPrimary,
                           size: 20,
                         ),
@@ -74,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        Icons.settings_rounded,
+                        AppIcons.settings,
                         color: AppTheme.kColorAccent,
                         size: 22,
                       ),
@@ -91,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
                 child: ListView(
                   padding: const EdgeInsets.all(20.0),
                   children: [
-                    _buildSectionHeader('Profile', theme, Icons.person_rounded),
+                    _buildSectionHeader('Profile', theme, AppIcons.profile),
 
                     GlassPanel(
                       padding: EdgeInsets.zero,
@@ -105,12 +106,12 @@ class SettingsScreen extends StatelessWidget {
                           leading: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.blueAccent.withOpacity(0.15),
+                              color: AppTheme.kSecondaryColor.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Icon(
-                              Icons.public_rounded,
-                              color: Colors.blueAccent,
+                            child: Icon(
+                              AppIcons.language,
+                              color: AppTheme.kSecondaryColor,
                               size: 22,
                             ),
                           ),
@@ -140,7 +141,7 @@ class SettingsScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Icon(
-                                    Icons.chevron_right_rounded,
+                                    AppIcons.chevronRight,
                                     color: AppTheme.kColorTextSecondary,
                                   ),
                                 ),
@@ -149,9 +150,9 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 24),
 
-                    _buildSectionHeader('Appearance', theme, Icons.palette_rounded),
+                    _buildSectionHeader('Appearance', theme, AppIcons.theme),
 
                     // App Theme Picker
                     GlassPanel(
@@ -170,7 +171,7 @@ class SettingsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Icon(
-                              Icons.color_lens_rounded,
+                              AppIcons.theme,
                               color: AppTheme.kColorAccent,
                               size: 22,
                             ),
@@ -193,7 +194,7 @@ class SettingsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Icon(
-                              Icons.chevron_right_rounded,
+                              AppIcons.chevronRight,
                               color: AppTheme.kColorTextSecondary,
                             ),
                           ),
@@ -215,8 +216,8 @@ class SettingsScreen extends StatelessWidget {
                         children: [
                           _buildDropdownSelector(
                             context,
-                            icon: Icons.grid_view_rounded,
-                            iconColor: Colors.teal,
+                            icon: AppIcons.chessBoard,
+                            iconColor: AppTheme.kSecondaryColor,
                             label: 'Board Theme',
                             currentValue: settingsProvider.boardThemeName,
                             items: SettingsProvider.boardThemeMap.keys.toList()
@@ -236,8 +237,8 @@ class SettingsScreen extends StatelessWidget {
                           const SizedBox(height: 16),
                           _buildDropdownSelector(
                             context,
-                            icon: Icons.extension_rounded,
-                            iconColor: Colors.orange,
+                            icon: AppIcons.puzzles,
+                            iconColor: AppTheme.kColorAccent,
                             label: 'Piece Set',
                             currentValue: settingsProvider.pieceSetName,
                             items: SettingsProvider.pieceSetMap.keys.toList()..sort(),
@@ -260,7 +261,7 @@ class SettingsScreen extends StatelessWidget {
 
                     const SizedBox(height: 28),
 
-                    _buildSectionHeader('Gameplay', theme, Icons.sports_esports_rounded),
+                    _buildSectionHeader('Gameplay', theme, AppIcons.games),
 
                     GlassPanel(
                       padding: EdgeInsets.zero,
@@ -288,12 +289,12 @@ class SettingsScreen extends StatelessWidget {
                           secondary: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.purpleAccent.withOpacity(0.15),
+                              color: AppTheme.kPrimaryColor.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Icon(
-                              Icons.speed_rounded,
-                              color: Colors.purpleAccent,
+                            child: Icon(
+                              AppIcons.blitz,
+                              color: AppTheme.kPrimaryColor,
                               size: 22,
                             ),
                           ),
@@ -303,7 +304,7 @@ class SettingsScreen extends StatelessWidget {
 
                     const SizedBox(height: 28),
 
-                    _buildSectionHeader('About', theme, Icons.info_outline_rounded),
+                    _buildSectionHeader('About', theme, AppIcons.about),
 
                     GlassPanel(
                       padding: EdgeInsets.zero,
@@ -319,12 +320,12 @@ class SettingsScreen extends StatelessWidget {
                               leading: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: Colors.cyan.withOpacity(0.15),
+                                  color: AppTheme.kSecondaryColor.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
-                                  Icons.shield_outlined,
-                                  color: Colors.cyan,
+                                child: Icon(
+                                  AppIcons.privacy,
+                                  color: AppTheme.kSecondaryColor,
                                   size: 22,
                                 ),
                               ),
@@ -336,7 +337,7 @@ class SettingsScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
-                                  Icons.open_in_new_rounded,
+                                  AppIcons.forward,
                                   color: AppTheme.kColorTextSecondary,
                                   size: 18,
                                 ),
@@ -361,12 +362,12 @@ class SettingsScreen extends StatelessWidget {
                               leading: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: Colors.amber.withOpacity(0.15),
+                                  color: AppTheme.kColorAccent.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
-                                  Icons.article_outlined,
-                                  color: Colors.amber,
+                                child: Icon(
+                                  AppIcons.help,
+                                  color: AppTheme.kColorAccent,
                                   size: 22,
                                 ),
                               ),
@@ -378,7 +379,7 @@ class SettingsScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
-                                  Icons.open_in_new_rounded,
+                                  AppIcons.forward,
                                   color: AppTheme.kColorTextSecondary,
                                   size: 18,
                                 ),
@@ -403,12 +404,12 @@ class SettingsScreen extends StatelessWidget {
                               leading: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.15),
+                                  color: AppTheme.kColorSuccess.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
-                                  Icons.share_rounded,
-                                  color: Colors.green,
+                                child: Icon(
+                                  AppIcons.share,
+                                  color: AppTheme.kColorSuccess,
                                   size: 22,
                                 ),
                               ),
@@ -427,7 +428,7 @@ class SettingsScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
-                                  Icons.arrow_forward_ios_rounded,
+                                  AppIcons.chevronRight,
                                   color: AppTheme.kColorTextSecondary,
                                   size: 18,
                                 ),
@@ -504,7 +505,7 @@ class SettingsScreen extends StatelessWidget {
                   dropdownColor: AppTheme.kBgColor1,
                   borderRadius: BorderRadius.circular(12),
                   icon: Icon(
-                    Icons.keyboard_arrow_down_rounded,
+                    AppIcons.expand,
                     color: AppTheme.kColorTextSecondary,
                   ),
                   items: items.map((String value) {
@@ -548,7 +549,7 @@ class SettingsScreen extends StatelessWidget {
         inputDecoration: InputDecoration(
           hintText: 'Search...',
           hintStyle: TextStyle(color: AppTheme.kColorTextSecondary),
-          prefixIcon: Icon(Icons.search_rounded, color: AppTheme.kColorTextSecondary),
+          prefixIcon: Icon(AppIcons.search, color: AppTheme.kColorTextSecondary),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,

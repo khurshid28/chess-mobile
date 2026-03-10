@@ -8,6 +8,7 @@ import 'package:chess_park/screens/puzzle_lobby_screen.dart';
 import 'package:chess_park/screens/invite_friends_screen.dart';
 import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/theme/app_theme.dart';
+import 'package:chess_park/theme/app_icons.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:chess_park/widgets/user_header.dart';
 import 'package:flutter/material.dart';
@@ -70,33 +71,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 24),
 
                   // Play Section
-                  _SectionTitle(title: 'Play', icon: Icons.play_arrow_rounded),
+                  _SectionTitle(title: 'Play', icon: AppIcons.play),
                   const SizedBox(height: 12),
                   _MenuListItem(
-                    icon: Icons.public_rounded,
+                    icon: AppIcons.onlineGame,
                     title: 'Online Game',
                     subtitle: 'Play with players worldwide',
-                    color: Colors.blue,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const OnlineGamesScreen()),
                     ),
                   ),
                   const SizedBox(height: 12),
                   _MenuListItem(
-                    icon: Icons.smart_toy_rounded,
+                    icon: AppIcons.playBot,
                     title: 'Play Bot',
                     subtitle: 'Practice against AI',
-                    color: Colors.purple,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const BotSelectionScreen()),
                     ),
                   ),
                   const SizedBox(height: 12),
                   _MenuListItem(
-                    icon: Icons.person_add_rounded,
+                    icon: AppIcons.invite,
                     title: 'Invite Friends',
                     subtitle: 'Play with your friends',
-                    color: Colors.green,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const InviteFriendsScreen()),
                     ),
@@ -105,13 +103,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 28),
 
                   // Puzzles Section
-                  _SectionTitle(title: 'Puzzles', icon: Icons.extension_rounded),
+                  _SectionTitle(title: 'Puzzles', icon: AppIcons.puzzles),
                   const SizedBox(height: 12),
                   _MenuListItem(
-                    icon: Icons.extension_rounded,
+                    icon: AppIcons.puzzles,
                     title: 'Puzzles',
                     subtitle: 'Daily chess puzzles',
-                    color: Colors.orange,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const PuzzleLobbyScreen()),
                     ),
@@ -122,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Leaderboard Section
                   _SectionTitle(
                     title: 'Leaderboard',
-                    icon: Icons.emoji_events_rounded,
+                    icon: AppIcons.leaderboard,
                     trailing: TextButton(
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
@@ -182,14 +179,12 @@ class _MenuListItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  final Color color;
   final VoidCallback onTap;
 
   const _MenuListItem({
     required this.icon,
     required this.title,
     required this.subtitle,
-    required this.color,
     required this.onTap,
   });
 
@@ -208,10 +203,10 @@ class _MenuListItem extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: AppTheme.kColorAccent.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: color, size: 26),
+              child: Icon(icon, color: AppTheme.kColorAccent, size: 26),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -238,7 +233,7 @@ class _MenuListItem extends StatelessWidget {
               ),
             ),
             Icon(
-              Icons.chevron_right_rounded,
+              AppIcons.chevronRight,
               color: AppTheme.kColorTextSecondary,
             ),
           ],
@@ -314,18 +309,18 @@ class _LeaderboardRow extends StatelessWidget {
   Color get _rankColor {
     switch (rank) {
       case 1:
-        return Colors.amber;
+        return AppTheme.kColorAccent; // Gold/accent for 1st
       case 2:
-        return Colors.grey[400]!;
+        return AppTheme.kColorTextSecondary; // Silver
       case 3:
-        return Colors.brown[400]!;
+        return AppTheme.kSecondaryColor; // Bronze
       default:
         return AppTheme.kColorTextSecondary;
     }
   }
 
   IconData? get _rankIcon {
-    if (rank <= 3) return Icons.emoji_events_rounded;
+    if (rank <= 3) return AppIcons.crown;
     return null;
   }
 

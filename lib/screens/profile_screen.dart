@@ -5,6 +5,7 @@ import 'package:chess_park/providers/auth_provider.dart';
 import 'package:chess_park/screens/settings_screen.dart';
 import 'package:chess_park/theme/app_constants.dart';
 import 'package:chess_park/theme/app_theme.dart';
+import 'package:chess_park/theme/app_icons.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:chess_park/widgets/recent_games.dart';
 import 'package:country_flags/country_flags.dart';
@@ -50,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
+                      icon: Icon(AppIcons.back, color: AppTheme.kColorTextPrimary),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Container(
@@ -60,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        Icons.person_rounded,
+                        AppIcons.profile,
                         color: AppTheme.kColorAccent,
                         size: 24,
                       ),
@@ -78,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: IconButton(
-                        icon: Icon(Icons.settings_rounded, color: AppTheme.kColorTextPrimary),
+                        icon: Icon(AppIcons.settings, color: AppTheme.kColorTextPrimary),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => const SettingsScreen(),
@@ -148,7 +149,7 @@ class _ProfileHeader extends StatelessWidget {
                       : null,
                   child: user.profileImage == null
                       ? Icon(
-                          Icons.person_rounded,
+                          AppIcons.profile,
                           size: 48,
                           color: AppTheme.kColorAccent,
                         )
@@ -173,10 +174,10 @@ class _ProfileHeader extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: const Icon(
-                      Icons.camera_alt_rounded,
+                    child: Icon(
+                      AppIcons.camera,
                       size: 16,
-                      color: Colors.black,
+                      color: AppTheme.kButtonTextColor,
                     ),
                   ),
                 ),
@@ -216,7 +217,7 @@ class _ProfileHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                Icons.mail_outline_rounded,
+                AppIcons.email,
                 size: 14,
                 color: AppTheme.kColorTextSecondary,
               ),
@@ -236,7 +237,7 @@ class _ProfileHeader extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: () => _shareProfile(user),
-              icon: const Icon(Icons.share_rounded, size: 18),
+              icon: Icon(AppIcons.share, size: 18),
               label: const Text('Share Profile'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppTheme.kColorAccent,
@@ -300,12 +301,12 @@ class _LogoutButton extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.redAccent.withOpacity(0.15),
+                          color: AppTheme.kColorError.withOpacity(0.15),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
-                          Icons.logout_rounded,
-                          color: Colors.redAccent,
+                        child: Icon(
+                          AppIcons.logout,
+                          color: AppTheme.kColorError,
                           size: 40,
                         ),
                       ),
@@ -334,7 +335,7 @@ class _LogoutButton extends StatelessWidget {
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 14),
-                                side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                                side: BorderSide(color: AppTheme.kBorderColor),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -350,8 +351,8 @@ class _LogoutButton extends StatelessWidget {
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.redAccent,
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppTheme.kColorError,
+                                foregroundColor: AppTheme.kColorTextPrimary,
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -381,22 +382,22 @@ class _LogoutButton extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.redAccent.withOpacity(0.15),
+                    color: AppTheme.kColorError.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(
-                    Icons.logout_rounded,
-                    color: Colors.redAccent,
+                  child: Icon(
+                    AppIcons.logout,
+                    color: AppTheme.kColorError,
                     size: 20,
                   ),
                 ),
                 const SizedBox(width: 12),
-                const Text(
+                Text(
                   'Sign Out',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.redAccent,
+                    color: AppTheme.kColorError,
                   ),
                 ),
               ],
@@ -424,7 +425,7 @@ class _QuickStatsRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _QuickStatItem(
-            icon: Icons.star_rounded,
+            icon: AppIcons.rating,
             value: user.elo.toString(),
             label: 'Rating',
             color: AppTheme.kColorAccent,
@@ -435,10 +436,10 @@ class _QuickStatsRow extends StatelessWidget {
             color: AppTheme.dividerColor,
           ),
           _QuickStatItem(
-            icon: Icons.games_rounded,
+            icon: AppIcons.gamesPlayed,
             value: totalGames.toString(),
             label: 'Games',
-            color: Colors.blueAccent,
+            color: AppTheme.kSecondaryColor,
           ),
           Container(
             width: 1,
@@ -446,10 +447,10 @@ class _QuickStatsRow extends StatelessWidget {
             color: AppTheme.dividerColor,
           ),
           _QuickStatItem(
-            icon: Icons.percent_rounded,
+            icon: AppIcons.streak,
             value: '$winRate%',
             label: 'Win Rate',
-            color: Colors.greenAccent,
+            color: AppTheme.kColorSuccess,
           ),
         ],
       ),
@@ -515,7 +516,7 @@ class _DetailedStats extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  Icons.analytics_rounded,
+                  AppIcons.analysis,
                   color: AppTheme.kColorAccent,
                   size: 18,
                 ),
@@ -532,22 +533,22 @@ class _DetailedStats extends StatelessWidget {
             ),
           ),
           _DetailStatTile(
-            icon: Icons.emoji_events_rounded,
-            iconColor: Colors.amber,
+            icon: AppIcons.wins,
+            iconColor: AppTheme.kColorSuccess,
             label: 'Wins',
             value: user.wins.toString(),
           ),
           Divider(color: AppTheme.dividerColor, height: 1),
           _DetailStatTile(
-            icon: Icons.close_rounded,
-            iconColor: Colors.redAccent,
+            icon: AppIcons.losses,
+            iconColor: AppTheme.kColorError,
             label: 'Losses',
             value: user.losses.toString(),
           ),
           Divider(color: AppTheme.dividerColor, height: 1),
           _DetailStatTile(
-            icon: Icons.handshake_rounded,
-            iconColor: Colors.blueGrey,
+            icon: AppIcons.draw,
+            iconColor: AppTheme.kColorTextSecondary,
             label: 'Draws',
             value: user.draws.toString(),
           ),
