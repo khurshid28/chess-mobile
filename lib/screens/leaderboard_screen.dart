@@ -42,7 +42,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppTheme.kBgColor2,
       body: Container(
         decoration: AppTheme.backgroundDecoration,
         child: SafeArea(

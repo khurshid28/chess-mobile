@@ -5,7 +5,7 @@ import 'package:chess_park/models/puzzle_model.dart';
 class PuzzleService {
     final String _baseUrl = 'https://lichess.org/api/puzzle';
     DateTime? _lastRequestTime;
-    static const _requestDelay = Duration(milliseconds: 700);
+    static const _requestDelay = Duration(milliseconds: 400);
 
   
   Future<PuzzleModel> getDailyPuzzle() async {

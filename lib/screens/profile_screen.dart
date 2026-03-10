@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppTheme.kBgColor2,
       body: Container(
         decoration: AppTheme.backgroundDecoration,
         child: SafeArea(

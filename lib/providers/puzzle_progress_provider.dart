@@ -16,7 +16,7 @@ class PuzzleProgressProvider extends ChangeNotifier {
   String? _errorMessage;
   int _loadingProgress = 0; // Current loading progress
   
-  static const int totalPuzzleCount = 50;
+  static const int totalPuzzleCount = 15;
   static const String _puzzlesCacheKey = 'cached_puzzles';
   static const String _solvedPuzzlesKey = 'solved_puzzle_ids';
   static const String _unlockedCountKey = 'unlocked_puzzle_count';
@@ -79,32 +79,38 @@ class PuzzleProgressProvider extends ChangeNotifier {
   /// Fetch puzzles from Lichess API and cache them
   Future<void> _fetchAndCachePuzzles(SharedPreferences prefs) async {
     _puzzles = [];
+    _loadingProgress = 0;
+    notifyListeners();
     
     // First get daily puzzle
     try {
       final daily = await _puzzleService.getDailyPuzzle();
       _puzzles.add(daily);
+      _loadingProgress = _puzzles.length;
+      notifyListeners();
     } catch (e) {
       // Continue even if daily fails
     }
     
     // Fetch remaining puzzles
     int attempts = 0;
-    while (_puzzles.length < totalPuzzleCount && attempts < totalPuzzleCount + 10) {
+    while (_puzzles.length < totalPuzzleCount && attempts < totalPuzzleCount + 5) {
       attempts++;
       try {
         final puzzle = await _puzzleService.getRandomPuzzle();
         // Avoid duplicates
         if (!_puzzles.any((p) => p.id == puzzle.id)) {
           _puzzles.add(puzzle);
+          _loadingProgress = _puzzles.length;
+          notifyListeners();
         }
       } catch (e) {
-        // If we have at least some puzzles, continue
-        if (_puzzles.length >= 10) {
+        // If we have at least some puzzles, stop
+        if (_puzzles.length >= 5) {
           break;
         }
         // Wait a bit and retry
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 300));
       }
     }
     

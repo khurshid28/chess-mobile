@@ -28,6 +28,7 @@ class PuzzleLobbyView extends StatelessWidget {
     final provider = context.watch<PuzzleProgressProvider>();
 
     return Scaffold(
+      backgroundColor: AppTheme.kBgColor2,
       body: Container(
         decoration: AppTheme.backgroundDecoration,
         child: SafeArea(
@@ -153,7 +154,7 @@ class PuzzleLobbyView extends StatelessWidget {
               CircularProgressIndicator(color: AppTheme.kColorAccent),
               const SizedBox(height: 16),
               Text(
-                'Loading... ${provider.puzzles.length}/50',
+                'Loading puzzles... ${provider.loadingProgress}/${PuzzleProgressProvider.totalPuzzleCount}',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppTheme.kColorTextSecondary),
               ),

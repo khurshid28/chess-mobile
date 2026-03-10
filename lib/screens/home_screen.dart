@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ? SystemUiOverlayStyle.dark 
           : SystemUiOverlayStyle.light,
       child: Scaffold(
+        backgroundColor: AppTheme.kBgColor2,
         body: Container(
           decoration: AppTheme.backgroundDecoration,
           child: RefreshIndicator(
@@ -109,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _MenuListItem(
                     icon: Icons.extension_rounded,
                     title: 'Puzzles',
-                    subtitle: '50 daily puzzles to solve',
+                    subtitle: 'Daily chess puzzles',
                     color: Colors.orange,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const PuzzleLobbyScreen()),
