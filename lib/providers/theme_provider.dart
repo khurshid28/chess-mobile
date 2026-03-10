@@ -8,11 +8,14 @@ enum AppThemeType {
   ocean,
   midnight,
   roseDark,
+  goldDark,
+  woodClassic,
   // Light themes
   cream,
   sky,
   peach,
   mint,
+  glassLight,
 }
 
 /// Theme color scheme data
@@ -27,6 +30,27 @@ class AppThemeColors {
   final Color glassColor;
   final bool isLight;
 
+  // Extended color properties (JSON mapping)
+  final Color? primaryColor;      // colors.primary -> Primary buttons
+  final Color? primaryDark;       // colors.primaryDark
+  final Color? secondaryColor;    // colors.secondary -> Secondary buttons
+  final Color? accentHighlight;   // colors.accent -> Highlights
+  
+  final Color? cardColor;         // background.card -> Cards
+  final Color? borderDefault;     // border.default
+  final Color? borderDivider;     // border.divider
+  
+  final Color? appBarColor;       // ui.appBar -> AppBar
+  final Color? navigationColor;   // ui.navigation -> BottomNavigationBar
+  final Color? menuItemColor;     // ui.menuItem -> Menu items
+  
+  final Color? boardLightSquare;  // chessBoard.light
+  final Color? boardDarkSquare;   // chessBoard.dark
+  final Color? boardHighlight;    // chessBoard.highlight
+  
+  final Color? buttonText;        // buttons.text
+  final Color? textAccent;        // text.accent
+
   const AppThemeColors({
     required this.name,
     required this.emoji,
@@ -37,6 +61,22 @@ class AppThemeColors {
     required this.surfaceColor,
     required this.glassColor,
     this.isLight = false,
+    // Extended properties (optional for backward compatibility)
+    this.primaryColor,
+    this.primaryDark,
+    this.secondaryColor,
+    this.accentHighlight,
+    this.cardColor,
+    this.borderDefault,
+    this.borderDivider,
+    this.appBarColor,
+    this.navigationColor,
+    this.menuItemColor,
+    this.boardLightSquare,
+    this.boardDarkSquare,
+    this.boardHighlight,
+    this.buttonText,
+    this.textAccent,
   });
 
   BoxDecoration get backgroundDecoration => BoxDecoration(
@@ -52,6 +92,15 @@ class AppThemeColors {
   Color get textSecondary => isLight 
       ? const Color(0xFF1a1a1a).withOpacity(0.7) 
       : Colors.white.withOpacity(0.75);
+
+  // Getters with fallback to existing properties
+  Color get primary => primaryColor ?? accent;
+  Color get secondary => secondaryColor ?? accent.withOpacity(0.7);
+  Color get card => cardColor ?? surfaceColor;
+  Color get appBar => appBarColor ?? Colors.transparent;
+  Color get navigation => navigationColor ?? (isLight ? Colors.black.withOpacity(0.05) : Colors.white.withOpacity(0.1));
+  Color get menuItem => menuItemColor ?? surfaceColor;
+  Color get highlight => accentHighlight ?? accent;
 }
 
 /// All available themes
@@ -150,17 +199,105 @@ class AppThemes {
     isLight: true,
   );
 
+  // === PREMIUM THEMES ===
+  static const goldDark = AppThemeColors(
+    name: 'Gold Dark',
+    emoji: '🏆',
+    accent: Color(0xFFCFA24A),
+    bgColor1: Color(0xFF1A1A1D),
+    bgColor2: Color(0xFF0F0F10),
+    bgColor3: Color(0xFF0F0F10),
+    surfaceColor: Color(0xFF1A1A1D),
+    glassColor: Color(0xFFCFA24A),
+    isLight: false,
+    // Extended properties from JSON
+    primaryColor: Color(0xFFCFA24A),
+    primaryDark: Color(0xFF8A5E1A),
+    secondaryColor: Color(0xFFF5C76B),
+    accentHighlight: Color(0xFFFFD978),
+    cardColor: Color(0xFF222225),
+    borderDefault: Color(0xFF3A3A3D),
+    borderDivider: Color(0xFF2A2A2C),
+    appBarColor: Color(0xFF1A1A1D),
+    navigationColor: Color(0xFF141416),
+    menuItemColor: Color(0xFF222225),
+    boardLightSquare: Color(0xFFF2D7A3),
+    boardDarkSquare: Color(0xFF8B5A2B),
+    boardHighlight: Color(0xFFFFD978),
+    buttonText: Color(0xFF000000),
+    textAccent: Color(0xFFFFD978),
+  );
+
+  static const woodClassic = AppThemeColors(
+    name: 'Classic Wood',
+    emoji: '🪵',
+    accent: Color(0xFF8B5A2B),
+    bgColor1: Color(0xFF5A3A1F),
+    bgColor2: Color(0xFF3A2414),
+    bgColor3: Color(0xFF3A2414),
+    surfaceColor: Color(0xFF5A3A1F),
+    glassColor: Color(0xFF8B5A2B),
+    isLight: false,
+    // Extended properties from JSON
+    primaryColor: Color(0xFF8B5A2B),
+    primaryDark: Color(0xFF5E3A1A),
+    secondaryColor: Color(0xFFC79A63),
+    accentHighlight: Color(0xFFE3B77B),
+    cardColor: Color(0xFF6B4423),
+    borderDefault: Color(0xFF7A4F2A),
+    borderDivider: Color(0xFF5A3A1F),
+    appBarColor: Color(0xFF4A2E1A),
+    navigationColor: Color(0xFF3A2414),
+    menuItemColor: Color(0xFF5A3A1F),
+    boardLightSquare: Color(0xFFF0D9B5),
+    boardDarkSquare: Color(0xFFB58863),
+    boardHighlight: Color(0xFFE3B77B),
+    buttonText: Color(0xFFFFFFFF),
+    textAccent: Color(0xFFFFD28A),
+  );
+
+  static const glassLight = AppThemeColors(
+    name: 'Glass Light',
+    emoji: '💎',
+    accent: Color(0xFF7BA7A6),
+    bgColor1: Color(0xFFF4F7F9),
+    bgColor2: Color(0xFFE9F0F3),
+    bgColor3: Color(0xFFE9F0F3),
+    surfaceColor: Color(0xFFF4F7F9),
+    glassColor: Color(0xFF7BA7A6),
+    isLight: true,
+    // Extended properties from JSON
+    primaryColor: Color(0xFF7BA7A6),
+    primaryDark: Color(0xFF5C8F8D),
+    secondaryColor: Color(0xFFA6C8C6),
+    accentHighlight: Color(0xFF8FD0CE),
+    cardColor: Color(0xFFFFFFFF),
+    borderDefault: Color(0xFFD6E1E6),
+    borderDivider: Color(0xFFE3EDF2),
+    appBarColor: Color(0xFFF4F7F9),
+    navigationColor: Color(0xFFE9F0F3),
+    menuItemColor: Color(0xFFFFFFFF),
+    boardLightSquare: Color(0xFFEEEED2),
+    boardDarkSquare: Color(0xFF769656),
+    boardHighlight: Color(0xFF8FD0CE),
+    buttonText: Color(0xFFFFFFFF),
+    textAccent: Color(0xFF4C9A97),
+  );
+
   static List<AppThemeColors> get all => [
         // Dark themes first
         forest,
         ocean,
         midnight,
         roseDark,
+        goldDark,
+        woodClassic,
         // Light themes
         cream,
         sky,
         peach,
         mint,
+        glassLight,
       ];
 
   static AppThemeColors fromType(AppThemeType type) {
@@ -173,6 +310,10 @@ class AppThemes {
         return midnight;
       case AppThemeType.roseDark:
         return roseDark;
+      case AppThemeType.goldDark:
+        return goldDark;
+      case AppThemeType.woodClassic:
+        return woodClassic;
       case AppThemeType.cream:
         return cream;
       case AppThemeType.sky:
@@ -181,6 +322,8 @@ class AppThemes {
         return peach;
       case AppThemeType.mint:
         return mint;
+      case AppThemeType.glassLight:
+        return glassLight;
     }
   }
 

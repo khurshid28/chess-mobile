@@ -139,7 +139,7 @@ class _GlassyBottomNavBar extends StatelessWidget {
               currentIndex: selectedIndex,
               onTap: onTap,
 
-             backgroundColor: Colors.white.withAlpha(26),
+              backgroundColor: AppTheme.kNavigationColor,
               elevation: 0,
               selectedItemColor: AppTheme.kColorAccent,
               unselectedItemColor: AppTheme.kColorTextSecondary,

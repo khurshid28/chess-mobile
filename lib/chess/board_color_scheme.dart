@@ -745,4 +745,81 @@ class ChessboardColorScheme {
     validMoves: Color(0x4014551e),
     validPremoves: Color(0x40203085),
   );
+
+  // === PREMIUM THEME BOARD SCHEMES ===
+  
+  /// Gold Dark theme board - warm gold tones
+  static const goldDark = ChessboardColorScheme(
+    lightSquare: Color(0xffF2D7A3),
+    darkSquare: Color(0xff8B5A2B),
+    background: SolidColorChessboardBackground(
+      lightSquare: Color(0xffF2D7A3),
+      darkSquare: Color(0xff8B5A2B),
+    ),
+    whiteCoordBackground: SolidColorChessboardBackground(
+      lightSquare: Color(0xffF2D7A3),
+      darkSquare: Color(0xff8B5A2B),
+      coordinates: true,
+    ),
+    blackCoordBackground: SolidColorChessboardBackground(
+      lightSquare: Color(0xffF2D7A3),
+      darkSquare: Color(0xff8B5A2B),
+      coordinates: true,
+      orientation: Side.black,
+    ),
+    lastMove: HighlightDetails(solidColor: Color(0x80FFD978)),
+    selected: HighlightDetails(solidColor: Color(0x60CFA24A)),
+    validMoves: Color(0x40CFA24A),
+    validPremoves: Color(0x408A5E1A),
+  );
+
+  /// Wood Classic theme board - traditional wooden style
+  static const woodClassic = ChessboardColorScheme(
+    lightSquare: Color(0xffF0D9B5),
+    darkSquare: Color(0xffB58863),
+    background: SolidColorChessboardBackground(
+      lightSquare: Color(0xffF0D9B5),
+      darkSquare: Color(0xffB58863),
+    ),
+    whiteCoordBackground: SolidColorChessboardBackground(
+      lightSquare: Color(0xffF0D9B5),
+      darkSquare: Color(0xffB58863),
+      coordinates: true,
+    ),
+    blackCoordBackground: SolidColorChessboardBackground(
+      lightSquare: Color(0xffF0D9B5),
+      darkSquare: Color(0xffB58863),
+      coordinates: true,
+      orientation: Side.black,
+    ),
+    lastMove: HighlightDetails(solidColor: Color(0x80E3B77B)),
+    selected: HighlightDetails(solidColor: Color(0x608B5A2B)),
+    validMoves: Color(0x408B5A2B),
+    validPremoves: Color(0x405E3A1A),
+  );
+
+  /// Glass Light theme board - soft modern colors
+  static const glassLight = ChessboardColorScheme(
+    lightSquare: Color(0xffEEEED2),
+    darkSquare: Color(0xff769656),
+    background: SolidColorChessboardBackground(
+      lightSquare: Color(0xffEEEED2),
+      darkSquare: Color(0xff769656),
+    ),
+    whiteCoordBackground: SolidColorChessboardBackground(
+      lightSquare: Color(0xffEEEED2),
+      darkSquare: Color(0xff769656),
+      coordinates: true,
+    ),
+    blackCoordBackground: SolidColorChessboardBackground(
+      lightSquare: Color(0xffEEEED2),
+      darkSquare: Color(0xff769656),
+      coordinates: true,
+      orientation: Side.black,
+    ),
+    lastMove: HighlightDetails(solidColor: Color(0x808FD0CE)),
+    selected: HighlightDetails(solidColor: Color(0x607BA7A6)),
+    validMoves: Color(0x407BA7A6),
+    validPremoves: Color(0x405C8F8D),
+  );
 }

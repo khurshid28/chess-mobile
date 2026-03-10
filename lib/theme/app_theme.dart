@@ -29,6 +29,26 @@ class AppTheme {
   
   static bool get isLight => _currentColors.isLight;
 
+  // Extended theme color accessors (for new premium themes)
+  static Color get kPrimaryColor => _currentColors.primary;
+  static Color get kSecondaryColor => _currentColors.secondary;
+  static Color get kCardColor => _currentColors.card;
+  static Color get kAppBarColor => _currentColors.appBar;
+  static Color get kNavigationColor => _currentColors.navigation;
+  static Color get kMenuItemColor => _currentColors.menuItem;
+  static Color get kHighlightColor => _currentColors.highlight;
+  
+  // Chess board colors (nullable, returns null for themes without board colors)
+  static Color? get kBoardLightSquare => _currentColors.boardLightSquare;
+  static Color? get kBoardDarkSquare => _currentColors.boardDarkSquare;
+  static Color? get kBoardHighlight => _currentColors.boardHighlight;
+  
+  // Button text color
+  static Color get kButtonTextColor => _currentColors.buttonText ?? (isLight ? Colors.white : Colors.black);
+  
+  // Text accent color
+  static Color get kTextAccent => _currentColors.textAccent ?? _currentColors.accent;
+
   // Theme-aware container background color (use instead of Colors.white.withOpacity(0.1))
   static Color get containerBgColor => isLight 
       ? Colors.black.withOpacity(0.05) 
@@ -43,39 +63,45 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     final accent = _currentColors.accent;
+    final primary = _currentColors.primary;
+    final secondary = _currentColors.secondary;
     final bgColor1 = _currentColors.bgColor1;
     final bgColor2 = _currentColors.bgColor2;
     final bgColor3 = _currentColors.bgColor3;
+    final cardBgColor = _currentColors.card;
+    final appBarBgColor = _currentColors.appBar;
+    final navigationBgColor = _currentColors.navigation;
     final isLightTheme = _currentColors.isLight;
     final textPrimary = _currentColors.textPrimary;
     final textSecondary = _currentColors.textSecondary;
+    final buttonTextColor = _currentColors.buttonText ?? (isLightTheme ? Colors.white : Colors.black);
     
     final brightness = isLightTheme ? Brightness.light : Brightness.dark;
     final TextTheme baseTextTheme = ThemeData(brightness: brightness).textTheme;
 
     return ThemeData(
       brightness: brightness,
-      primaryColor: accent,
+      primaryColor: primary,
       scaffoldBackgroundColor: bgColor2,
-      cardColor: isLightTheme ? Colors.black.withAlpha(13) : Colors.white.withAlpha(26),
-      dividerColor: isLightTheme ? Colors.black.withAlpha(20) : Colors.white.withAlpha(38),
+      cardColor: cardBgColor,
+      dividerColor: _currentColors.borderDivider ?? (isLightTheme ? Colors.black.withAlpha(20) : Colors.white.withAlpha(38)),
       colorScheme: isLightTheme 
           ? ColorScheme.light(
-              primary: accent,
-              secondary: accent,
+              primary: primary,
+              secondary: secondary,
               surface: bgColor2,
-              onPrimary: Colors.white,
-              onSecondary: Colors.white,
+              onPrimary: buttonTextColor,
+              onSecondary: buttonTextColor,
               onSurface: textPrimary,
               error: kColorLoss,
               onError: Colors.white,
             )
           : ColorScheme.dark(
-              primary: accent,
-              secondary: accent,
+              primary: primary,
+              secondary: secondary,
               surface: bgColor2,
-              onPrimary: Colors.black,
-              onSecondary: Colors.black,
+              onPrimary: buttonTextColor,
+              onSecondary: buttonTextColor,
               onSurface: textPrimary,
               error: kColorLoss,
               onError: Colors.white,
@@ -87,8 +113,8 @@ class AppTheme {
         bodyLarge: baseTextTheme.bodyLarge?.copyWith(color: textPrimary),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor: appBarBgColor,
+        elevation: appBarBgColor == Colors.transparent ? 0 : 0.5,
         titleTextStyle: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -99,8 +125,8 @@ class AppTheme {
       iconTheme: IconThemeData(color: textPrimary),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: accent,
-          foregroundColor: Colors.white,
+          backgroundColor: primary,
+          foregroundColor: buttonTextColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kBorderRadius),
           ),
@@ -109,8 +135,8 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: accent,
-          side: BorderSide(color: accent),
+          foregroundColor: primary,
+          side: BorderSide(color: _currentColors.borderDefault ?? primary),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kBorderRadius),
           ),
@@ -124,14 +150,14 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: isLightTheme ? Colors.black.withAlpha(13) : Colors.white.withAlpha(26),
+        fillColor: cardBgColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(kBorderRadius),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(kBorderRadius),
-          borderSide: BorderSide(color: accent, width: 1.5),
+          borderSide: BorderSide(color: primary, width: 1.5),
         ),
         labelStyle: TextStyle(color: textSecondary),
       ),
@@ -140,6 +166,13 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(kBorderRadius)),
         ),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: navigationBgColor,
+        selectedItemColor: accent,
+        unselectedItemColor: textSecondary,
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
       ),
     );
   }
