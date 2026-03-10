@@ -1,15 +1,12 @@
 import 'package:chess_park/models/user_model.dart';
 import 'package:chess_park/providers/auth_provider.dart';
-import 'package:chess_park/providers/puzzle_lobby_provider.dart';
 import 'package:chess_park/screens/bot_selection_screen.dart';
 import 'package:chess_park/screens/leaderboard_screen.dart';
 import 'package:chess_park/screens/online_games_screen.dart';
 import 'package:chess_park/screens/profile_screen.dart';
 import 'package:chess_park/screens/puzzle_lobby_screen.dart';
-import 'package:chess_park/screens/puzzle_screen.dart';
 import 'package:chess_park/screens/invite_friends_screen.dart';
 import 'package:chess_park/services/firestore_services.dart';
-import 'package:chess_park/services/puzzle_service.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:chess_park/widgets/user_header.dart';
@@ -63,11 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
             onRefresh: _refreshData,
             color: AppTheme.kColorAccent,
             backgroundColor: AppTheme.kBgColor1,
-            child: ChangeNotifierProvider(
-              create: (_) => PuzzleLobbyProvider(PuzzleService())..loadPuzzles(),
-              child: ListView(
-                padding: EdgeInsets.fromLTRB(20, topPadding, 20, 40),
-                children: [
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(20, topPadding, 20, 40),
+              children: [
                   // User Header - tappable to go to profile
                   if (user != null)
                     UserHeader(user: user, onTap: _goToProfile),
@@ -112,16 +107,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   _SectionTitle(title: 'Puzzles', icon: Icons.extension_rounded),
                   const SizedBox(height: 12),
                   _MenuListItem(
-                    icon: Icons.grid_view_rounded,
-                    title: 'Daily Puzzles',
-                    subtitle: 'Solve chess puzzles',
+                    icon: Icons.extension_rounded,
+                    title: 'Puzzles',
+                    subtitle: '50 daily puzzles to solve',
                     color: Colors.orange,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const PuzzleLobbyScreen()),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const _DailyPuzzleItem(),
 
                   const SizedBox(height: 28),
 
@@ -148,8 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -219,109 +211,6 @@ class _MenuListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: color, size: 26),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.kColorTextPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AppTheme.kColorTextSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: AppTheme.kColorTextSecondary,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DailyPuzzleItem extends StatelessWidget {
-  const _DailyPuzzleItem();
-
-  @override
-  Widget build(BuildContext context) {
-    final puzzleProvider = context.watch<PuzzleLobbyProvider>();
-
-    String title = 'Daily Puzzle';
-    String subtitle = 'Solve today\'s challenge';
-    IconData icon = Icons.calendar_today_rounded;
-    VoidCallback? onTap;
-    bool isLoading = false;
-
-    switch (puzzleProvider.state) {
-      case LobbyState.loading:
-        subtitle = 'Loading...';
-        isLoading = true;
-        break;
-      case LobbyState.loaded:
-        if (puzzleProvider.puzzles.isNotEmpty) {
-          final dailyPuzzle = puzzleProvider.puzzles.first;
-          subtitle = 'Rating: ${dailyPuzzle.rating}';
-          onTap = () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => PuzzleScreen(puzzle: dailyPuzzle),
-            ));
-          };
-        } else {
-          subtitle = 'Tap to retry';
-          icon = Icons.refresh_rounded;
-          onTap = () => puzzleProvider.refreshPuzzles();
-        }
-        break;
-      case LobbyState.error:
-        subtitle = 'Tap to retry';
-        icon = Icons.refresh_rounded;
-        onTap = () => puzzleProvider.refreshPuzzles();
-        break;
-    }
-
-    return GestureDetector(
-      onTap: onTap != null
-          ? () {
-              HapticFeedback.lightImpact();
-              onTap!();
-            }
-          : null,
-      child: GlassPanel(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: isLoading
-                  ? Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.amber,
-                      ),
-                    )
-                  : Icon(icon, color: Colors.amber, size: 26),
             ),
             const SizedBox(width: 16),
             Expanded(
