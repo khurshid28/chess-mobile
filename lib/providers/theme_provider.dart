@@ -50,6 +50,11 @@ class AppThemeColors {
   
   final Color? buttonText;        // buttons.text
   final Color? textAccent;        // text.accent
+  
+  // UI component card colors
+  final Color? leaderboardCardColor;  // ui.leaderboardCard
+  final Color? profileCardColor;      // ui.profileCard
+  final Color? buttonHoverColor;      // buttons.hover
 
   const AppThemeColors({
     required this.name,
@@ -77,6 +82,9 @@ class AppThemeColors {
     this.boardHighlight,
     this.buttonText,
     this.textAccent,
+    this.leaderboardCardColor,
+    this.profileCardColor,
+    this.buttonHoverColor,
   });
 
   BoxDecoration get backgroundDecoration => BoxDecoration(
@@ -98,6 +106,9 @@ class AppThemeColors {
   Color get secondary => secondaryColor ?? accent.withOpacity(0.7);
   Color get card => cardColor ?? surfaceColor;
   Color get appBar => appBarColor ?? Colors.transparent;
+  Color get leaderboardCard => leaderboardCardColor ?? card;
+  Color get profileCard => profileCardColor ?? card;
+  Color get buttonHover => buttonHoverColor ?? primary.withOpacity(0.8);
   Color get navigation => navigationColor ?? (isLight ? Colors.black.withOpacity(0.05) : Colors.white.withOpacity(0.1));
   Color get menuItem => menuItemColor ?? surfaceColor;
   Color get highlight => accentHighlight ?? accent;
@@ -226,6 +237,9 @@ class AppThemes {
     boardHighlight: Color(0xFFFFD978),
     buttonText: Color(0xFF000000),
     textAccent: Color(0xFFFFD978),
+    leaderboardCardColor: Color(0xFF1F1F22),
+    profileCardColor: Color(0xFF1C1C1F),
+    buttonHoverColor: Color(0xFFE6B85A),
   );
 
   static const woodClassic = AppThemeColors(
@@ -254,6 +268,9 @@ class AppThemes {
     boardHighlight: Color(0xFFE3B77B),
     buttonText: Color(0xFFFFFFFF),
     textAccent: Color(0xFFFFD28A),
+    leaderboardCardColor: Color(0xFF6B4423),
+    profileCardColor: Color(0xFF5A3A1F),
+    buttonHoverColor: Color(0xFFA36B37),
   );
 
   static const glassLight = AppThemeColors(
@@ -282,6 +299,9 @@ class AppThemes {
     boardHighlight: Color(0xFF8FD0CE),
     buttonText: Color(0xFFFFFFFF),
     textAccent: Color(0xFF4C9A97),
+    leaderboardCardColor: Color(0xFFFFFFFF),
+    profileCardColor: Color(0xFFFFFFFF),
+    buttonHoverColor: Color(0xFF8EC1BF),
   );
 
   static List<AppThemeColors> get all => [
