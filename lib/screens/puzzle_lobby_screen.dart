@@ -3,6 +3,7 @@ import 'package:chess_park/providers/puzzle_progress_provider.dart';
 import 'package:chess_park/screens/puzzle_screen.dart';
 import 'package:chess_park/services/puzzle_service.dart';
 import 'package:chess_park/theme/app_theme.dart';
+import 'package:chess_park/theme/app_icons.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,14 +41,14 @@ class PuzzleLobbyView extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back),
+                      icon: Icon(AppIcons.back, color: AppTheme.kColorTextPrimary),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text('Puzzles', style: Theme.of(context).textTheme.titleLarge),
                     const Spacer(),
                     if (provider.state != PuzzleLoadState.loading)
                       IconButton(
-                        icon: const Icon(Icons.refresh),
+                        icon: Icon(AppIcons.refresh, color: AppTheme.kColorTextPrimary),
                         onPressed: () => provider.refreshPuzzles(),
                       ),
                   ],
@@ -70,7 +71,7 @@ class PuzzleLobbyView extends StatelessWidget {
                               color: AppTheme.kColorAccent.withOpacity(0.2),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.extension, color: Colors.amber, size: 24),
+                            child: Icon(AppIcons.puzzles, color: AppTheme.kColorAccent, size: 24),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -330,7 +331,7 @@ class PuzzleLobbyView extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
-                  color: isUnlocked ? Colors.white.withOpacity(0.7) : Colors.grey.withOpacity(0.5),
+                  color: isUnlocked ? AppTheme.kColorTextPrimary.withOpacity(0.9) : Colors.grey.withOpacity(0.5),
                 ),
               ),
             ),

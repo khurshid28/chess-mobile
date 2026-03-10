@@ -7,6 +7,7 @@ const _pieceSetsPath = 'assets/piece_sets';
 
 /// A piece set and its corresponding piece assets.
 enum PieceSet {
+  staunton('Staunton Modern', PieceSet.stauntonAssets),
   cburnett('Colin M.L. Burnett', PieceSet.cburnettAssets),
   merida('Merida', PieceSet.meridaAssets),
   pirouetti('Pirouetti', PieceSet.pirouettiAssets),
@@ -51,6 +52,22 @@ enum PieceSet {
 
   /// The [PieceAssets] for this [PieceSet].
   final PieceAssets assets;
+
+  /// The [PieceAssets] for the 'Staunton Modern' piece set.
+  static const PieceAssets stauntonAssets = IMapConst({
+    PieceKind.blackRook: AssetImage('$_pieceSetsPath/staunton/bR.png'),
+    PieceKind.blackPawn: AssetImage('$_pieceSetsPath/staunton/bP.png'),
+    PieceKind.blackKnight: AssetImage('$_pieceSetsPath/staunton/bN.png'),
+    PieceKind.blackBishop: AssetImage('$_pieceSetsPath/staunton/bB.png'),
+    PieceKind.blackQueen: AssetImage('$_pieceSetsPath/staunton/bQ.png'),
+    PieceKind.blackKing: AssetImage('$_pieceSetsPath/staunton/bK.png'),
+    PieceKind.whiteRook: AssetImage('$_pieceSetsPath/staunton/wR.png'),
+    PieceKind.whitePawn: AssetImage('$_pieceSetsPath/staunton/wP.png'),
+    PieceKind.whiteKnight: AssetImage('$_pieceSetsPath/staunton/wN.png'),
+    PieceKind.whiteBishop: AssetImage('$_pieceSetsPath/staunton/wB.png'),
+    PieceKind.whiteQueen: AssetImage('$_pieceSetsPath/staunton/wQ.png'),
+    PieceKind.whiteKing: AssetImage('$_pieceSetsPath/staunton/wK.png'),
+  });
 
   /// The [PieceAssets] for the 'Alpha' piece set.
   static const PieceAssets alphaAssets = IMapConst({

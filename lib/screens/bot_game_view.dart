@@ -71,8 +71,8 @@ class _BotGameViewState extends State<BotGameView> {
       return Scaffold(
         body: Container(
           decoration: AppTheme.backgroundDecoration,
-          child: const Center(
-            child: CircularProgressIndicator(color: Colors.white),
+          child: Center(
+            child: CircularProgressIndicator(color: AppTheme.kColorAccent),
           ),
         ),
       );
@@ -251,7 +251,7 @@ class _BotGameViewState extends State<BotGameView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
             onPressed: () {
               if (botGameProvider.isGameOver) {
                 Navigator.pop(context);
@@ -262,14 +262,14 @@ class _BotGameViewState extends State<BotGameView> {
           ),
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppTheme.kColorTextPrimary,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
+            icon: Icon(Icons.more_vert, color: AppTheme.kColorTextPrimary),
             onPressed: () => _showGameMenu(context),
           ),
         ],
@@ -284,11 +284,11 @@ class _BotGameViewState extends State<BotGameView> {
     return GlassPanel(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: moves.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
                 'No moves yet',
                 style: TextStyle(
-                  color: Colors.white54,
+                  color: AppTheme.kColorTextSecondary,
                   fontSize: 13,
                 ),
               ),
@@ -309,7 +309,7 @@ class _BotGameViewState extends State<BotGameView> {
                   decoration: BoxDecoration(
                     color: isLastMove
                         ? AppTheme.kColorAccent.withOpacity(0.3)
-                        : Colors.white.withOpacity(0.05),
+                        : AppTheme.kColorTextPrimary.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(6),
                     border: isLastMove
                         ? Border.all(color: AppTheme.kColorAccent, width: 2)
@@ -322,7 +322,7 @@ class _BotGameViewState extends State<BotGameView> {
                         Text(
                           '$moveNumber. ',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
+                            color: AppTheme.kColorTextSecondary,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
@@ -330,7 +330,7 @@ class _BotGameViewState extends State<BotGameView> {
                       Text(
                         moves[index],
                         style: TextStyle(
-                          color: isLastMove ? AppTheme.kColorAccent : Colors.white,
+                          color: isLastMove ? AppTheme.kColorAccent : AppTheme.kColorTextPrimary,
                           fontSize: 13,
                           fontWeight: isLastMove ? FontWeight.bold : FontWeight.w500,
                         ),
@@ -378,8 +378,8 @@ class _BotGameViewState extends State<BotGameView> {
                       Flexible(
                         child: Text(
                           name,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: AppTheme.kColorTextPrimary,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -390,7 +390,7 @@ class _BotGameViewState extends State<BotGameView> {
                       Text(
                         '($rating)',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
+                          color: AppTheme.kColorTextSecondary,
                           fontSize: 13,
                         ),
                       ),
@@ -414,14 +414,14 @@ class _BotGameViewState extends State<BotGameView> {
                 border: Border.all(
                   color: isBotTurn && !botGameProvider.isGameOver 
                       ? Colors.orange 
-                      : (timeLeft < 60 ? Colors.red : Colors.white.withOpacity(0.5)),
+                      : (timeLeft < 60 ? Colors.red : AppTheme.kColorTextSecondary),
                   width: 2,
                 ),
               ),
               child: Text(
                 '$minutes:$seconds',
                 style: TextStyle(
-                  color: timeLeft < 60 ? Colors.red : Colors.white,
+                  color: timeLeft < 60 ? Colors.red : AppTheme.kColorTextPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   fontFeatures: const [FontFeature.tabularFigures()],
@@ -469,8 +469,8 @@ class _BotGameViewState extends State<BotGameView> {
                       Flexible(
                         child: Text(
                           name,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: AppTheme.kColorTextPrimary,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -481,7 +481,7 @@ class _BotGameViewState extends State<BotGameView> {
                       Text(
                         '($rating)',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
+                          color: AppTheme.kColorTextSecondary,
                           fontSize: 13,
                         ),
                       ),
@@ -505,14 +505,14 @@ class _BotGameViewState extends State<BotGameView> {
                 border: Border.all(
                   color: isUserTurn && !botGameProvider.isGameOver 
                       ? Colors.green 
-                      : (timeLeft < 60 ? Colors.red : Colors.white.withOpacity(0.5)),
+                      : (timeLeft < 60 ? Colors.red : AppTheme.kColorTextSecondary),
                   width: 2,
                 ),
               ),
               child: Text(
                 '$minutes:$seconds',
                 style: TextStyle(
-                  color: timeLeft < 60 ? Colors.red : Colors.white,
+                  color: timeLeft < 60 ? Colors.red : AppTheme.kColorTextPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   fontFeatures: const [FontFeature.tabularFigures()],
@@ -667,9 +667,9 @@ class _BotGameViewState extends State<BotGameView> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        title: const Text(
+        title: Text(
           'Choose Piece',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: AppTheme.kColorTextPrimary),
           textAlign: TextAlign.center,
         ),
         content: Row(
@@ -699,9 +699,9 @@ class _BotGameViewState extends State<BotGameView> {
         child: Center(
           child: Text(
             symbol,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 42,
-              color: Colors.white,
+              color: AppTheme.kColorTextPrimary,
             ),
           ),
         ),
@@ -758,7 +758,7 @@ class _BotGameViewState extends State<BotGameView> {
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                      side: BorderSide(color: AppTheme.kColorTextSecondary),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -848,7 +848,7 @@ class _BotGameViewState extends State<BotGameView> {
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                      side: BorderSide(color: AppTheme.kColorTextSecondary),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

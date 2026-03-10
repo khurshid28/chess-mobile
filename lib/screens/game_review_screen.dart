@@ -200,19 +200,19 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 60,
                     height: 60,
                     child: CircularProgressIndicator(
                       strokeWidth: 4,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.kColorAccent),
                     ),
                   ),
                   const SizedBox(height: 24),
                   Text(
                     'Analyzing game...',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: AppTheme.kColorTextPrimary,
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                     ),
@@ -329,7 +329,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                icon: Icon(Icons.arrow_back, color: AppTheme.kColorTextPrimary),
                 onPressed: () => Navigator.pop(context),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -337,8 +337,8 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
               Expanded(
                 child: Text(
                   'Game Analysis',
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: AppTheme.kColorTextPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -393,8 +393,8 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
           children: [
             Text(
               name,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: AppTheme.kColorTextPrimary,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),
@@ -407,7 +407,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
               Text(
                 'Рейтинг: $rating',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
+                  color: AppTheme.kColorTextSecondary,
                   fontSize: 11,
                 ),
               ),
@@ -429,7 +429,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                     Text(
                       'Точность:',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: AppTheme.kColorTextSecondary,
                         fontSize: 10,
                       ),
                     ),
@@ -464,18 +464,18 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 12.0, top: 8.0, bottom: 4.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0, top: 8.0, bottom: 4.0),
             child: Text(
               'Yurishlar',
               style: TextStyle(
-                color: Colors.white,
+                color: AppTheme.kColorTextPrimary,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const Divider(height: 1, color: Colors.white24, thickness: 1),
+          Divider(height: 1, color: AppTheme.kColorTextSecondary.withOpacity(0.3), thickness: 1),
           Expanded(
             child: ListView.builder(
               controller: _moveScrollController,
@@ -513,16 +513,16 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                           children: [
                             Text(
                               '$moveIndex. ',
-                              style: const TextStyle(
-                                color: Colors.white70,
+                              style: TextStyle(
+                                color: AppTheme.kColorTextSecondary,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               move,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: AppTheme.kColorTextPrimary,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -649,8 +649,8 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
             children: [
               Text(
                 'Yurish ${_currentMoveIndex} / ${widget.moveHistory.length}',
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: AppTheme.kColorTextPrimary,
                   fontSize: 14,
                 ),
               ),
@@ -659,24 +659,24 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.first_page, color: Colors.white),
+                    icon: Icon(Icons.first_page, color: AppTheme.kColorTextPrimary),
                     onPressed: _currentMoveIndex > 0 ? _goToStart : null,
                     iconSize: 32,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.chevron_left, color: Colors.white),
+                    icon: Icon(Icons.chevron_left, color: AppTheme.kColorTextPrimary),
                     onPressed: _currentMoveIndex > 0 ? _goToPrevious : null,
                     iconSize: 32,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.chevron_right, color: Colors.white),
+                    icon: Icon(Icons.chevron_right, color: AppTheme.kColorTextPrimary),
                     onPressed: _currentMoveIndex < _positions.length - 1
                         ? _goToNext
                         : null,
                     iconSize: 32,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.last_page, color: Colors.white),
+                    icon: Icon(Icons.last_page, color: AppTheme.kColorTextPrimary),
                     onPressed: _currentMoveIndex < _positions.length - 1
                         ? _goToEnd
                         : null,

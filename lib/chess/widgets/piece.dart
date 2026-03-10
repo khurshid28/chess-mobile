@@ -13,6 +13,7 @@ class PieceWidget extends StatelessWidget {
     this.opacity,
     this.blindfoldMode = false,
     this.upsideDown = false,
+    this.pieceScale = 0.82,
   });
 
   /// Specifies the role and color of the piece.
@@ -20,6 +21,10 @@ class PieceWidget extends StatelessWidget {
 
   /// Size of the board square the piece will occupy.
   final double size;
+
+  /// Scale factor for piece size relative to square size.
+  /// Default is 0.82 (piece size = squareSize * 0.82).
+  final double pieceScale;
 
   /// Piece set assets.
   final PieceAssets pieceAssets;
@@ -42,6 +47,7 @@ class PieceWidget extends StatelessWidget {
       return SizedBox(width: size, height: size);
     }
 
+    final pieceSize = size * pieceScale;
     final fromCache = ChessgroundImages.instance.get(imageProvider);
 
     final image =
@@ -49,17 +55,24 @@ class PieceWidget extends StatelessWidget {
             ? RawImage(
               image: fromCache,
               debugImageLabel: 'PieceWidgetCache(${imageProvider.assetName})',
-              width: size,
-              height: size,
+              width: pieceSize,
+              height: pieceSize,
               opacity: opacity,
             )
             : Image(
               image: imageProvider,
-              width: size,
-              height: size,
+              width: pieceSize,
+              height: pieceSize,
               opacity: opacity,
             );
 
-    return upsideDown ? Transform.flip(flipY: true, child: image) : image;
+    final piece = upsideDown ? Transform.flip(flipY: true, child: image) : image;
+
+    // Center the smaller piece within the square
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Center(child: piece),
+    );
   }
 }

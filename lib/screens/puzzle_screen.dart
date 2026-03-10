@@ -83,7 +83,7 @@ class _PuzzleViewState extends State<PuzzleView> {
   Widget _buildBody(BuildContext context, PuzzleProvider provider, SettingsProvider settingsProvider) {
 
     if (provider.state == PuzzleState.loading) {
-      return const Center(child: CircularProgressIndicator(color: Colors.white));
+      return Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent));
     }
 
 

@@ -191,7 +191,7 @@ class _GameViewState extends State<GameView> with WidgetsBindingObserver {
       return Scaffold(
         body: Container(
           decoration: AppTheme.backgroundDecoration,
-          child: const Center(child: CircularProgressIndicator(color: Colors.white,))
+          child: Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent))
         ),
       );
     }

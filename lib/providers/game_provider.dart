@@ -53,7 +53,6 @@ class GameProvider with ChangeNotifier {
   NormalMove? _localPromotionMove;
   NormalMove? _currentPremove;
   NormalMove? _lastMove;
-  String _previousFen = '';
   bool _isDisposed = false;
   bool _isMovePending = false;
   bool _isGameOverHandled = false;

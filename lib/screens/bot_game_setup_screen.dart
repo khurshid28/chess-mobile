@@ -33,8 +33,6 @@ class _BotGameSetupScreenState extends State<BotGameSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       body: Container(
         decoration: AppTheme.backgroundDecoration,

@@ -6,7 +6,7 @@ class SettingsProvider with ChangeNotifier {
   final FirestoreService _firestoreService = FirestoreService();
 
   String _boardThemeName = 'brown';
-  String _pieceSetName = 'cburnett';
+  String _pieceSetName = 'tatiana';
   bool _enablePremove = true;
 
   String get boardThemeName => _boardThemeName;
@@ -23,15 +23,19 @@ class SettingsProvider with ChangeNotifier {
 
 
   static final Map<String, PieceSet> pieceSetMap = {
+    'staunton': PieceSet.staunton,
     'cburnett': PieceSet.cburnett,
     'merida': PieceSet.merida,
     'fantasy': PieceSet.fantasy,
-
-
+    'tatiana': PieceSet.tatiana,
+    'maestro': PieceSet.maestro,
+    'alpha': PieceSet.alpha,
+    'california': PieceSet.california,
+    'cardinal': PieceSet.cardinal,
   };
 
   ChessboardColorScheme get currentBoardTheme => boardThemeMap[_boardThemeName] ?? ChessboardColorScheme.brown;
-  PieceAssets get currentPieceAssets => (pieceSetMap[_pieceSetName] ?? PieceSet.cburnett).assets;
+  PieceAssets get currentPieceAssets => (pieceSetMap[_pieceSetName] ?? PieceSet.staunton).assets;
 
   bool _isLoading = false;
   bool _isLoaded = false;
@@ -47,7 +51,7 @@ class SettingsProvider with ChangeNotifier {
       final prefs = await _firestoreService.getUserPreferences(userId);
       if (prefs != null) {
         _boardThemeName = prefs['boardTheme'] ?? 'brown';
-        _pieceSetName = prefs['pieceSet'] ?? 'cburnett';
+        _pieceSetName = prefs['pieceSet'] ?? 'staunton';
 
         if (prefs['enablePremove'] is bool) {
           _enablePremove = prefs['enablePremove'];
@@ -58,7 +62,7 @@ class SettingsProvider with ChangeNotifier {
       } else {
 
         _boardThemeName = 'brown';
-        _pieceSetName = 'cburnett';
+        _pieceSetName = 'staunton';
         _enablePremove = true;
       }
       _isLoaded = true;
@@ -74,7 +78,7 @@ class SettingsProvider with ChangeNotifier {
     _isLoaded = false;
     _isLoading = false;
     _boardThemeName = 'brown';
-    _pieceSetName = 'cburnett';
+    _pieceSetName = 'staunton';
     _enablePremove = true;
   }
 

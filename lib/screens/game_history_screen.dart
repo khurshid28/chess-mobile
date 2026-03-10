@@ -74,8 +74,8 @@ class _GameHistoryList extends StatelessWidget {
       future: _fetchAllGames(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(color: Colors.white),
+          return Center(
+            child: CircularProgressIndicator(color: AppTheme.kColorAccent),
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -97,7 +97,7 @@ class _GameHistoryList extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemCount: games.length,
               separatorBuilder: (context, index) =>
-                  Divider(color: Colors.white.withAlpha(230), height: 1),
+                  Divider(color: AppTheme.kColorTextSecondary.withOpacity(0.3), height: 1),
               itemBuilder: (context, index) {
                 final game = games[index];
                 

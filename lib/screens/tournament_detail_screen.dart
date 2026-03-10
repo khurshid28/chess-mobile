@@ -46,7 +46,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     if (provider.isLoading || tournament == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Loading...')),
-        body: const Center(child: CircularProgressIndicator(color: Colors.white)),
+        body: Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent)),
       );
     }
 
@@ -176,18 +176,18 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: AppTheme.kColorTextPrimary.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: Colors.white),
+          Icon(icon, size: 16, color: AppTheme.kColorTextPrimary),
           const SizedBox(width: 4),
           Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppTheme.kColorTextPrimary,
               fontWeight: FontWeight.bold,
             ),
           ),

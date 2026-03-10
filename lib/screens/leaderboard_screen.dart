@@ -223,7 +223,7 @@ class _LeaderboardList extends StatelessWidget {
                       ),
                     ),
                     Divider(color: AppTheme.dividerColor, height: 1, indent: 16, endIndent: 16),
-                    _PlayerTile(player: userInList, rank: userRank!, isCurrentUser: true),
+                    _PlayerTile(player: userInList, rank: userRank, isCurrentUser: true),
                   ],
                 ),
               ),

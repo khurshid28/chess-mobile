@@ -153,10 +153,10 @@ class _AuthScreenState extends State<AuthScreen> {
     InputDecoration customInputDecoration(String label, IconData icon) {
       return InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: Colors.white54, size: 20),
-        labelStyle: const TextStyle(color: Colors.white70),
+        prefixIcon: Icon(icon, color: AppTheme.kColorTextSecondary, size: 20),
+        labelStyle: TextStyle(color: AppTheme.kColorTextSecondary),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.08),
+        fillColor: AppTheme.kColorTextPrimary.withOpacity(0.08),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -212,7 +212,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ],
                     ),
                     child: Image.asset(
-                      'assets/piece_sets/cburnett/wP.png',
+                      'assets/piece_sets/staunton/wP.png',
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -221,7 +221,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     AppConstants.appName,
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppTheme.kColorTextPrimary,
                       letterSpacing: 1,
                     ),
                   ),
@@ -229,7 +229,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Text(
                     _isLogin ? 'Sign in to continue' : 'Create your account',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.6),
+                      color: AppTheme.kColorTextSecondary,
                       fontSize: 14,
                     ),
                   ),
@@ -247,7 +247,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           if (!_isLogin) ...[
                             TextFormField(
                               key: const ValueKey('displayName'),
-                              style: const TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppTheme.kColorTextPrimary),
                               decoration: customInputDecoration('Username', Icons.person_outline),
                               validator: (value) => (value ?? '').isEmpty ? 'Please enter a username' : null,
                               onSaved: (value) => _displayName = value ?? '',
@@ -259,7 +259,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             key: const ValueKey('email'),
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: AppTheme.kColorTextPrimary),
                             decoration: customInputDecoration('Email Address', Icons.email_outlined),
                             validator: (value) => !(value ?? '').contains('@') ? 'Enter a valid email' : null,
                             onSaved: (value) => _email = value ?? '',
@@ -269,7 +269,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           TextFormField(
                             key: const ValueKey('password'),
                             obscureText: true,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: AppTheme.kColorTextPrimary),
                             decoration: customInputDecoration('Password', Icons.lock_outline),
                             validator: (value) => (value ?? '').length < 6 ? 'Minimum 6 characters' : null,
                             onSaved: (value) => _password = value ?? '',
@@ -292,18 +292,18 @@ class _AuthScreenState extends State<AuthScreen> {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.08),
+                                  color: AppTheme.kColorTextPrimary.withOpacity(0.08),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.flag_outlined, color: Colors.white54, size: 20),
+                                    Icon(Icons.flag_outlined, color: AppTheme.kColorTextSecondary, size: 20),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         _selectedCountry?.name ?? 'Select Country (Optional)',
                                         style: TextStyle(
-                                          color: _selectedCountry != null ? Colors.white : Colors.white70,
+                                          color: _selectedCountry != null ? AppTheme.kColorTextPrimary : AppTheme.kColorTextSecondary,
                                           fontSize: 16,
                                         ),
                                       ),
@@ -313,7 +313,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         _selectedCountry!.flagEmoji,
                                         style: const TextStyle(fontSize: 20),
                                       ),
-                                    const Icon(Icons.keyboard_arrow_down, color: Colors.white54),
+                                    Icon(Icons.keyboard_arrow_down, color: AppTheme.kColorTextSecondary),
                                   ],
                                 ),
                               ),
@@ -384,7 +384,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       Text(
                         _isLogin ? "Don't have an account?" : 'Already have an account?',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
+                          color: AppTheme.kColorTextSecondary,
                           fontSize: 14,
                         ),
                       ),
