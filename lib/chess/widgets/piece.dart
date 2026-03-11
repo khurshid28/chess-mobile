@@ -1,5 +1,6 @@
 import 'package:dartchess/dartchess.dart' show Piece;
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../models.dart';
 import '../images.dart';
 
@@ -41,6 +42,9 @@ class PieceWidget extends StatelessWidget {
   /// [AssetImage] provider for the piece.
   AssetImage get imageProvider => pieceAssets[piece.kind]!;
 
+  /// Returns true when the asset path uses an SVG file.
+  bool get _isSvg => imageProvider.assetName.endsWith('.svg');
+
   @override
   Widget build(BuildContext context) {
     if (blindfoldMode) {
@@ -48,23 +52,39 @@ class PieceWidget extends StatelessWidget {
     }
 
     final pieceSize = size * pieceScale;
-    final fromCache = ChessgroundImages.instance.get(imageProvider);
 
-    final image =
-        fromCache != null
-            ? RawImage(
+    final Widget image;
+    if (_isSvg) {
+      // SVG pieces — rendered natively via flutter_svg, no raster cache needed.
+      final svgWidget = SvgPicture.asset(
+        imageProvider.assetName,
+        width: pieceSize,
+        height: pieceSize,
+      );
+      image = opacity != null
+          ? AnimatedBuilder(
+              animation: opacity!,
+              builder: (_, __) =>
+                  Opacity(opacity: opacity!.value, child: svgWidget),
+            )
+          : svgWidget;
+    } else {
+      final fromCache = ChessgroundImages.instance.get(imageProvider);
+      image = fromCache != null
+          ? RawImage(
               image: fromCache,
               debugImageLabel: 'PieceWidgetCache(${imageProvider.assetName})',
               width: pieceSize,
               height: pieceSize,
               opacity: opacity,
             )
-            : Image(
+          : Image(
               image: imageProvider,
               width: pieceSize,
               height: pieceSize,
               opacity: opacity,
             );
+    }
 
     final piece = upsideDown ? Transform.flip(flipY: true, child: image) : image;
 

@@ -97,16 +97,6 @@
   ]
 },
 {
-  "collectionGroup": "participants",
-  "queryScope": "COLLECTION_GROUP",
-  "fields": [
-    {
-      "fieldPath": "seed",
-      "order": "ASCENDING"
-    }
-  ]
-},
-{
   "collectionGroup": "users",
   "queryScope": "COLLECTION",
   "fields": [

@@ -1216,51 +1216,51 @@ enum PieceSet {
   /// The [PieceAssets] for the 'Maestro' piece set.
   static const PieceAssets maestroAssets = IMapConst({
     PieceKind.blackRook: AssetImage(
-      '$_pieceSetsPath/maestro/bR.png',
+      '$_pieceSetsPath/maestro/bR.svg',
       
     ),
     PieceKind.blackPawn: AssetImage(
-      '$_pieceSetsPath/maestro/bP.png',
+      '$_pieceSetsPath/maestro/bP.svg',
       
     ),
     PieceKind.blackKnight: AssetImage(
-      '$_pieceSetsPath/maestro/bN.png',
+      '$_pieceSetsPath/maestro/bN.svg',
       
     ),
     PieceKind.blackBishop: AssetImage(
-      '$_pieceSetsPath/maestro/bB.png',
+      '$_pieceSetsPath/maestro/bB.svg',
       
     ),
     PieceKind.blackQueen: AssetImage(
-      '$_pieceSetsPath/maestro/bQ.png',
+      '$_pieceSetsPath/maestro/bQ.svg',
       
     ),
     PieceKind.blackKing: AssetImage(
-      '$_pieceSetsPath/maestro/bK.png',
+      '$_pieceSetsPath/maestro/bK.svg',
       
     ),
     PieceKind.whiteRook: AssetImage(
-      '$_pieceSetsPath/maestro/wR.png',
+      '$_pieceSetsPath/maestro/wR.svg',
       
     ),
     PieceKind.whitePawn: AssetImage(
-      '$_pieceSetsPath/maestro/wP.png',
+      '$_pieceSetsPath/maestro/wP.svg',
       
     ),
     PieceKind.whiteKnight: AssetImage(
-      '$_pieceSetsPath/maestro/wN.png',
+      '$_pieceSetsPath/maestro/wN.svg',
       
     ),
     PieceKind.whiteBishop: AssetImage(
-      '$_pieceSetsPath/maestro/wB.png',
+      '$_pieceSetsPath/maestro/wB.svg',
       
     ),
     PieceKind.whiteQueen: AssetImage(
-      '$_pieceSetsPath/maestro/wQ.png',
+      '$_pieceSetsPath/maestro/wQ.svg',
       
     ),
     PieceKind.whiteKing: AssetImage(
-      '$_pieceSetsPath/maestro/wK.png',
+      '$_pieceSetsPath/maestro/wK.svg',
       
     ),
   });
@@ -1788,51 +1788,51 @@ enum PieceSet {
   /// The [PieceAssets] for the 'Staunty' piece set.
   static const PieceAssets stauntyAssets = IMapConst({
     PieceKind.blackRook: AssetImage(
-      '$_pieceSetsPath/staunty/bR.png',
+      '$_pieceSetsPath/staunty/bR.svg',
       
     ),
     PieceKind.blackPawn: AssetImage(
-      '$_pieceSetsPath/staunty/bP.png',
+      '$_pieceSetsPath/staunty/bP.svg',
       
     ),
     PieceKind.blackKnight: AssetImage(
-      '$_pieceSetsPath/staunty/bN.png',
+      '$_pieceSetsPath/staunty/bN.svg',
       
     ),
     PieceKind.blackBishop: AssetImage(
-      '$_pieceSetsPath/staunty/bB.png',
+      '$_pieceSetsPath/staunty/bB.svg',
       
     ),
     PieceKind.blackQueen: AssetImage(
-      '$_pieceSetsPath/staunty/bQ.png',
+      '$_pieceSetsPath/staunty/bQ.svg',
       
     ),
     PieceKind.blackKing: AssetImage(
-      '$_pieceSetsPath/staunty/bK.png',
+      '$_pieceSetsPath/staunty/bK.svg',
       
     ),
     PieceKind.whiteRook: AssetImage(
-      '$_pieceSetsPath/staunty/wR.png',
+      '$_pieceSetsPath/staunty/wR.svg',
       
     ),
     PieceKind.whitePawn: AssetImage(
-      '$_pieceSetsPath/staunty/wP.png',
+      '$_pieceSetsPath/staunty/wP.svg',
       
     ),
     PieceKind.whiteKnight: AssetImage(
-      '$_pieceSetsPath/staunty/wN.png',
+      '$_pieceSetsPath/staunty/wN.svg',
       
     ),
     PieceKind.whiteBishop: AssetImage(
-      '$_pieceSetsPath/staunty/wB.png',
+      '$_pieceSetsPath/staunty/wB.svg',
       
     ),
     PieceKind.whiteQueen: AssetImage(
-      '$_pieceSetsPath/staunty/wQ.png',
+      '$_pieceSetsPath/staunty/wQ.svg',
       
     ),
     PieceKind.whiteKing: AssetImage(
-      '$_pieceSetsPath/staunty/wK.png',
+      '$_pieceSetsPath/staunty/wK.svg',
       
     ),
   });
@@ -1840,51 +1840,51 @@ enum PieceSet {
   /// The [PieceAssets] for the 'Tatiana' piece set.
   static const PieceAssets tatianaAssets = IMapConst({
     PieceKind.blackRook: AssetImage(
-      '$_pieceSetsPath/tatiana/bR.png',
+      '$_pieceSetsPath/tatiana/bR.svg',
       
     ),
     PieceKind.blackPawn: AssetImage(
-      '$_pieceSetsPath/tatiana/bP.png',
+      '$_pieceSetsPath/tatiana/bP.svg',
       
     ),
     PieceKind.blackKnight: AssetImage(
-      '$_pieceSetsPath/tatiana/bN.png',
+      '$_pieceSetsPath/tatiana/bN.svg',
       
     ),
     PieceKind.blackBishop: AssetImage(
-      '$_pieceSetsPath/tatiana/bB.png',
+      '$_pieceSetsPath/tatiana/bB.svg',
       
     ),
     PieceKind.blackQueen: AssetImage(
-      '$_pieceSetsPath/tatiana/bQ.png',
+      '$_pieceSetsPath/tatiana/bQ.svg',
       
     ),
     PieceKind.blackKing: AssetImage(
-      '$_pieceSetsPath/tatiana/bK.png',
+      '$_pieceSetsPath/tatiana/bK.svg',
       
     ),
     PieceKind.whiteRook: AssetImage(
-      '$_pieceSetsPath/tatiana/wR.png',
+      '$_pieceSetsPath/tatiana/wR.svg',
       
     ),
     PieceKind.whitePawn: AssetImage(
-      '$_pieceSetsPath/tatiana/wP.png',
+      '$_pieceSetsPath/tatiana/wP.svg',
       
     ),
     PieceKind.whiteKnight: AssetImage(
-      '$_pieceSetsPath/tatiana/wN.png',
+      '$_pieceSetsPath/tatiana/wN.svg',
       
     ),
     PieceKind.whiteBishop: AssetImage(
-      '$_pieceSetsPath/tatiana/wB.png',
+      '$_pieceSetsPath/tatiana/wB.svg',
       
     ),
     PieceKind.whiteQueen: AssetImage(
-      '$_pieceSetsPath/tatiana/wQ.png',
+      '$_pieceSetsPath/tatiana/wQ.svg',
       
     ),
     PieceKind.whiteKing: AssetImage(
-      '$_pieceSetsPath/tatiana/wK.png',
+      '$_pieceSetsPath/tatiana/wK.svg',
       
     ),
   });

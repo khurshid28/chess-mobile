@@ -90,7 +90,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
           child: const Icon(
             Icons.people,
             size: 50,
-            color: Colors.amber,
+            color: Color(0xFFCFA24A),
           ),
         ),
         const SizedBox(height: 20),
@@ -323,9 +323,9 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
             color: AppTheme.kColorAccent.withOpacity(0.2),
             shape: BoxShape.circle,
           ),
-          child: const Center(
+          child: Center(
             child: CircularProgressIndicator(
-              color: Colors.amber,
+              color: AppTheme.kGoldColor,
               strokeWidth: 3,
             ),
           ),

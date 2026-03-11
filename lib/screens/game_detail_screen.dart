@@ -512,19 +512,19 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.amber.withOpacity(0.3), Colors.orange.withOpacity(0.3)],
+                    colors: [AppTheme.kGoldColor.withOpacity(0.3), AppTheme.kColorAccent.withOpacity(0.3)],
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(Icons.emoji_events, color: Colors.amber, size: 20),
-                    SizedBox(width: 8),
+                  children: [
+                    Icon(Icons.emoji_events, color: AppTheme.kGoldColor, size: 20),
+                    const SizedBox(width: 8),
                     Text(
                       'Tournament Match',
                       style: TextStyle(
-                        color: Colors.amber,
+                        color: AppTheme.kGoldColor,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),

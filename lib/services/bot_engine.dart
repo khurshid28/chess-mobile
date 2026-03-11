@@ -237,6 +237,7 @@ class BotEngine {
   }
 
   /// Minimax algorithm with alpha-beta pruning
+  // ignore: unused_element
   int _minimax(
     Position position,
     int depth,

@@ -170,7 +170,7 @@ class BotSelectionScreen extends StatelessWidget {
                                 Icon(
                                   Icons.star_rounded,
                                   size: 12,
-                                  color: Colors.amber,
+                                  color: AppTheme.kGoldColor,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(

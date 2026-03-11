@@ -76,13 +76,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Verify Email')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.email, size: 40, color: AppTheme.kColorAccent),
+      body: Container(
+        decoration: AppTheme.backgroundDecoration,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.email, size: 40, color: AppTheme.kColorAccent),
 
               const SizedBox(height: 20),
               Text(
@@ -111,6 +113,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 },
               ),
             ],
+            ),
           ),
         ),
       ),

@@ -29,7 +29,7 @@ class PuzzleLobbyView extends StatelessWidget {
     final provider = context.watch<PuzzleProgressProvider>();
 
     return Scaffold(
-      backgroundColor: AppTheme.kBgColor2,
+      backgroundColor: AppTheme.isWoodClassic ? Colors.transparent : AppTheme.kBgColor2,
       body: Container(
         decoration: AppTheme.backgroundDecoration,
         child: SafeArea(

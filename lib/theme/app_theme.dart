@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:chess_park/providers/theme_provider.dart';
 import 'package:chess_park/theme/theme_colors.dart';
+import 'package:chess_park/theme/wood_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const double kBorderRadius = 10.0;
@@ -12,6 +14,12 @@ class AppTheme {
   static void updateColors(AppThemeColors colors) {
     _currentColors = colors;
   }
+
+  /// True when the active theme is Classic Wood
+  static bool get isWoodClassic => identical(_currentColors, AppThemes.woodClassic);
+
+  /// Gold/trophy accent: amber for dark/light themes, real gold for wood
+  static Color get kGoldColor => isWoodClassic ? WoodColors.gold : const Color(0xFFCFA24A);
 
   // ═══════════════════════════════════════════════════════════════════
   // TEXT COLORS
@@ -91,9 +99,11 @@ class AppTheme {
   // HELPER COLORS (theme-aware)
   // ═══════════════════════════════════════════════════════════════════
   /// Theme-aware container background color (use instead of Colors.white.withOpacity(0.1))
-  static Color get containerBgColor => isLight 
-      ? Colors.black.withOpacity(0.05) 
-      : Colors.white.withOpacity(0.1);
+  static Color get containerBgColor => isWoodClassic
+      ? WoodColors.woodDark
+      : (isLight
+          ? Colors.black.withOpacity(0.05)
+          : Colors.white.withOpacity(0.1));
   
   /// Theme-aware divider color
   static Color get dividerColor => kDividerColor;
@@ -104,7 +114,9 @@ class AppTheme {
   // ═══════════════════════════════════════════════════════════════════
   // DECORATIONS
   // ═══════════════════════════════════════════════════════════════════
-  static BoxDecoration get backgroundDecoration => _currentColors.backgroundDecoration;
+  static BoxDecoration get backgroundDecoration => isWoodClassic
+      ? const BoxDecoration() // WoodBackground widget handles painting
+      : _currentColors.backgroundDecoration;
   
   /// Card decoration with proper theme colors
   static BoxDecoration get cardDecoration => BoxDecoration(
@@ -150,10 +162,34 @@ class AppTheme {
     final brightness = isLightTheme ? Brightness.light : Brightness.dark;
     final TextTheme baseTextTheme = ThemeData(brightness: brightness).textTheme;
 
+    // Wood Classic: use serif typography across all screens
+    final TextTheme woodTextTheme = isWoodClassic ? TextTheme(
+      displayLarge:  GoogleFonts.cinzel(fontSize: 32, fontWeight: FontWeight.bold, color: textPrimary),
+      displayMedium: GoogleFonts.cinzel(fontSize: 28, fontWeight: FontWeight.bold, color: textPrimary),
+      displaySmall:  GoogleFonts.cinzel(fontSize: 24, fontWeight: FontWeight.bold, color: textPrimary),
+      headlineLarge: GoogleFonts.cinzel(fontSize: 22, fontWeight: FontWeight.bold, color: textPrimary),
+      headlineMedium: GoogleFonts.playfairDisplay(fontSize: 20, fontWeight: FontWeight.bold, color: textPrimary),
+      headlineSmall: GoogleFonts.playfairDisplay(fontSize: 18, fontWeight: FontWeight.bold, color: textPrimary),
+      titleLarge:  GoogleFonts.playfairDisplay(fontSize: 16, fontWeight: FontWeight.w600, color: textPrimary),
+      titleMedium: GoogleFonts.playfairDisplay(fontSize: 14, fontWeight: FontWeight.w600, color: textPrimary),
+      titleSmall:  GoogleFonts.playfairDisplay(fontSize: 12, fontWeight: FontWeight.w600, color: textPrimary),
+      bodyLarge:  GoogleFonts.playfairDisplay(fontSize: 16, color: textPrimary),
+      bodyMedium: GoogleFonts.playfairDisplay(fontSize: 14, color: textPrimary),
+      bodySmall:  GoogleFonts.playfairDisplay(fontSize: 12, color: textSecondary),
+      labelLarge:  GoogleFonts.cinzel(fontSize: 14, fontWeight: FontWeight.bold, color: textPrimary),
+      labelMedium: GoogleFonts.cinzel(fontSize: 12, fontWeight: FontWeight.w600, color: textPrimary),
+      labelSmall:  GoogleFonts.cinzel(fontSize: 10, color: textSecondary),
+    ) : baseTextTheme.copyWith(
+      headlineSmall: baseTextTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
+      titleLarge: baseTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
+      bodyMedium: baseTextTheme.bodyMedium?.copyWith(color: textPrimary),
+      bodyLarge: baseTextTheme.bodyLarge?.copyWith(color: textPrimary),
+    );
+
     return ThemeData(
       brightness: brightness,
       primaryColor: primary,
-      scaffoldBackgroundColor: bgColor2,
+      scaffoldBackgroundColor: isWoodClassic ? Colors.transparent : bgColor2,
       cardColor: cardBgColor,
       dividerColor: _currentColors.borderDivider ?? (isLightTheme ? Colors.black.withAlpha(20) : Colors.white.withAlpha(38)),
       colorScheme: isLightTheme 
@@ -177,21 +213,14 @@ class AppTheme {
               error: kColorLoss,
               onError: Colors.white,
             ),
-      textTheme: baseTextTheme.copyWith(
-        headlineSmall: baseTextTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
-        titleLarge: baseTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
-        bodyMedium: baseTextTheme.bodyMedium?.copyWith(color: textPrimary),
-        bodyLarge: baseTextTheme.bodyLarge?.copyWith(color: textPrimary),
-      ),
+      textTheme: woodTextTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: appBarBgColor,
-        elevation: appBarBgColor == Colors.transparent ? 0 : 0.5,
-        titleTextStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: textPrimary,
-        ),
-        iconTheme: IconThemeData(color: textPrimary),
+        backgroundColor: isWoodClassic ? WoodColors.woodDark : appBarBgColor,
+        elevation: 0,
+        titleTextStyle: isWoodClassic
+            ? GoogleFonts.cinzel(fontSize: 18, fontWeight: FontWeight.bold, color: textPrimary)
+            : TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textPrimary),
+        iconTheme: IconThemeData(color: isWoodClassic ? WoodColors.gold : textPrimary),
       ),
       iconTheme: IconThemeData(color: textPrimary),
       elevatedButtonTheme: ElevatedButtonThemeData(

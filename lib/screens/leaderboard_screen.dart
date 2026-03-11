@@ -42,7 +42,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.kBgColor2,
+      backgroundColor: AppTheme.isWoodClassic ? Colors.transparent : AppTheme.kBgColor2,
       body: Container(
         decoration: AppTheme.backgroundDecoration,
         child: SafeArea(
@@ -60,12 +60,12 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.amber.withOpacity(0.15),
+                        color: AppTheme.kGoldColor.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.emoji_events_rounded,
-                        color: Colors.amber,
+                        color: AppTheme.kGoldColor,
                         size: 24,
                       ),
                     ),
@@ -250,7 +250,7 @@ class _PlayerTile extends StatelessWidget {
   Color _getRankColor() {
     switch (rank) {
       case 1:
-        return Colors.amber;
+        return AppTheme.kGoldColor;
       case 2:
         return Colors.grey.shade400;
       case 3:

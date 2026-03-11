@@ -20,6 +20,7 @@ import 'package:chess_park/providers/auth_provider.dart';
 import 'package:chess_park/screens/auth_screen.dart';
 import 'package:chess_park/screens/home_screen.dart';
 import 'package:chess_park/theme/app_theme.dart';
+import 'package:chess_park/widgets/wood_background.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 
@@ -133,6 +134,12 @@ class ChessPark extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: AppConstants.appName,
             theme: AppTheme.darkTheme,
+            builder: (context, child) {
+              if (AppTheme.isWoodClassic) {
+                return WoodBackground(child: child!);
+              }
+              return child!;
+            },
             home: const NetworkAwareWidget(
               child: AuthWrapper(),
             ),

@@ -68,6 +68,7 @@ class GlassPanel extends StatelessWidget {
 }*/
 import 'dart:ui';
 import 'package:chess_park/theme/app_theme.dart';
+import 'package:chess_park/widgets/wood_panel.dart';
 import 'package:flutter/material.dart';
 
 class GlassPanel extends StatelessWidget {
@@ -86,6 +87,15 @@ class GlassPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ── Wood Classic theme: render as carved wood panel ──────────────
+    if (AppTheme.isWoodClassic) {
+      return WoodPanel(
+        padding: padding,
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: child,
+      );
+    }
+
     final BorderRadius radius = BorderRadius.circular(borderRadius);
     final bool isLight = AppTheme.isLight;
 

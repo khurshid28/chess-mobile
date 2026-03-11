@@ -45,7 +45,7 @@ class _TournamentsScreenState extends State<TournamentsScreen>
     final user = authProvider.userModel;
 
     return Scaffold(
-      backgroundColor: AppTheme.kBgColor2,
+      backgroundColor: AppTheme.isWoodClassic ? Colors.transparent : AppTheme.kBgColor2,
       body: Container(
         decoration: AppTheme.backgroundDecoration,
         child: SafeArea(

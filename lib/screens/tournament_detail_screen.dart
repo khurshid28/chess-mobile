@@ -54,7 +54,9 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
       appBar: AppBar(
         title: const Text('Tournament Details'),
       ),
-      body: Column(
+      body: Container(
+        decoration: AppTheme.backgroundDecoration,
+        child: Column(
         children: [
           // Tournament header
           _buildTournamentHeader(tournament),
@@ -79,6 +81,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
             ),
           ),
         ],
+        ),
       ),
     );
   }

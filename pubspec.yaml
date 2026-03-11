@@ -64,6 +64,7 @@ dependencies:
   path_provider: ^2.1.5
   logger: ^2.5.0
   lucide_icons: ^0.257.0
+  google_fonts: ^6.2.1
 
 
 
@@ -100,6 +101,7 @@ flutter:
     - assets/piece_sets/fantasy/
     - assets/piece_sets/tatiana/
     - assets/piece_sets/maestro/
+    - assets/piece_sets/staunty/
     - assets/piece_sets/alpha/
     - assets/piece_sets/california/
     - assets/piece_sets/cardinal/
