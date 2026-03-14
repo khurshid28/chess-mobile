@@ -15,15 +15,15 @@ class WhiteTheme {
   // ═══════════════════════════════════════════════════════════════════
   // RANGLAR (COLORS)
   // ═══════════════════════════════════════════════════════════════════
-  static const Color primary = Color(0xFF8A6DE9);       // Purple
+  static const Color primary = Color(0xFF7B5CD6);       // To'q Purple
   static const Color secondary = Color(0xFFF2F2F7);     // Och kulrang
   static const Color background = Color(0xFFFFFFFF);    // Oq
   static const Color surface = Color(0xFFFFFFFF);       // Oq (card lar)
   static const Color textColor = Color(0xFF1C1C1E);     // Qora
-  static const Color textColorSecondary = Color(0xFF6C6C70); // Kulrang
-  static const Color accent = Color(0xFF8A6DE9);        // Purple
+  static const Color textColorSecondary = Color(0xFF48484A); // To'q kulrang
+  static const Color accent = Color(0xFF7B5CD6);        // To'q Purple
+  static const Color borderColor = Color(0xFFD1D1D6);   // Aniq ko'rinadigan border
   static const Color dividerColor = Color(0xFFE5E5EA);  // Och kulrang chiziq
-  static const Color borderColor = Color(0xFFE5E5EA);   // Och kulrang border
   static const Color error = Color(0xFFF44336);
 
   // AppBar / Navigation
@@ -50,14 +50,16 @@ class WhiteTheme {
   static const double kListItemHeight = 56.0;
 
   // ═══════════════════════════════════════════════════════════════════
-  // SHADOWS (engil, oddiy)
+  // SHADOWS (minimal, deyarli yo'q)
   // ═══════════════════════════════════════════════════════════════════
   static const List<BoxShadow> cardShadow = [
-    BoxShadow(color: Color(0x0D000000), offset: Offset(0, 2), blurRadius: 10),
+    BoxShadow(color: Color(0x1F000000), offset: Offset(0, 2), blurRadius: 12),
+    BoxShadow(color: Color(0x0A000000), offset: Offset(0, 0), blurRadius: 4),
   ];
 
   static const List<BoxShadow> elevatedShadow = [
-    BoxShadow(color: Color(0x14000000), offset: Offset(0, 4), blurRadius: 16),
+    BoxShadow(color: Color(0x28000000), offset: Offset(0, 4), blurRadius: 16),
+    BoxShadow(color: Color(0x0D000000), offset: Offset(0, 1), blurRadius: 6),
   ];
 
   // ═══════════════════════════════════════════════════════════════════
@@ -66,7 +68,7 @@ class WhiteTheme {
   static BoxDecoration get cardDecoration => BoxDecoration(
     color: surface,
     borderRadius: BorderRadius.circular(kBorderRadius),
-    border: Border.all(color: borderColor, width: 0.5),
+    border: Border.all(color: borderColor, width: 1.0),
     boxShadow: cardShadow,
   );
 
@@ -217,7 +219,7 @@ class WhiteTheme {
         ),
       ),
 
-      iconTheme: const IconThemeData(color: textColor),
+      iconTheme: const IconThemeData(color: Color(0xFF1C1C1E), size: 24),
 
       dividerTheme: const DividerThemeData(
         color: dividerColor,

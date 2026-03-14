@@ -142,7 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Text(
                         'See All',
-                        style: WoodTextStyles.goldLabel.copyWith(fontSize: 13),
+                        style: isWood
+                            ? WoodTextStyles.goldLabel.copyWith(fontSize: 13)
+                            : TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.kColorAccent),
                       ),
                     ),
                   ),

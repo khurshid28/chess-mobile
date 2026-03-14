@@ -175,22 +175,22 @@ class AppThemes {
   static const glassLight = AppThemeColors(
     name: 'Clean White',
     emoji: '⬜',
-    accent: Color(0xFF8A6DE9),       // Purple
+    accent: Color(0xFF7B5CD6),       // To'q Purple
     bgColor1: Color(0xFFFFFFFF),     // Oq
     bgColor2: Color(0xFFFFFFFF),     // Oq
     bgColor3: Color(0xFFF2F2F7),     // Och kulrang
     surfaceColor: Color(0xFFFFFFFF), // Oq
-    glassColor: Color(0xFF8A6DE9),
+    glassColor: Color(0xFF7B5CD6),
     isLight: true,
     textPrimaryColor: Color(0xFF1C1C1E),   // Qora
-    textSecondaryColor: Color(0xFF6C6C70), // Kulrang
+    textSecondaryColor: Color(0xFF48484A), // To'q kulrang
     // Extended properties
-    primaryColor: Color(0xFF8A6DE9),  // Purple
-    primaryDark: Color(0xFF6B4FCC),
+    primaryColor: Color(0xFF7B5CD6),  // To'q Purple
+    primaryDark: Color(0xFF6347B8),
     secondaryColor: Color(0xFFF2F2F7), // Och kulrang
-    accentHighlight: Color(0xFF8A6DE9),
+    accentHighlight: Color(0xFF7B5CD6),
     cardColor: Color(0xFFFFFFFF),
-    borderDefault: Color(0xFFE5E5EA),
+    borderDefault: Color(0xFFD1D1D6),
     borderDivider: Color(0xFFE5E5EA),
     appBarColor: Color(0xFFFFFFFF),
     navigationColor: Color(0xFFF2F2F7),
@@ -199,10 +199,10 @@ class AppThemes {
     boardDarkSquare: Color(0xFF769656),
     boardHighlight: Color(0xFFB5AFEE),
     buttonText: Color(0xFFFFFFFF),
-    textAccent: Color(0xFF8A6DE9),
+    textAccent: Color(0xFF7B5CD6),
     leaderboardCardColor: Color(0xFFFFFFFF),
     profileCardColor: Color(0xFFFFFFFF),
-    buttonHoverColor: Color(0xFF9D84EE),
+    buttonHoverColor: Color(0xFF8E72DD),
   );
 
   static List<AppThemeColors> get all => [

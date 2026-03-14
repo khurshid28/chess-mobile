@@ -231,24 +231,24 @@ class ChessThemes {
     backgroundCard: Color(0xFFFFFFFF),
     
     // Colors
-    colorPrimary: Color(0xFF8A6DE9),
-    colorPrimaryDark: Color(0xFF6B4FCC),
+    colorPrimary: Color(0xFF7B5CD6),
+    colorPrimaryDark: Color(0xFF6347B8),
     colorSecondary: Color(0xFFF2F2F7),
-    colorAccent: Color(0xFF8A6DE9),
+    colorAccent: Color(0xFF7B5CD6),
     
     // Text
     textPrimary: Color(0xFF1C1C1E),
-    textSecondary: Color(0xFF6C6C70),
-    textAccent: Color(0xFF8A6DE9),
+    textSecondary: Color(0xFF48484A),
+    textAccent: Color(0xFF7B5CD6),
     
     // Buttons
-    buttonPrimary: Color(0xFF8A6DE9),
+    buttonPrimary: Color(0xFF7B5CD6),
     buttonSecondary: Color(0xFFF2F2F7),
-    buttonHover: Color(0xFF9D84EE),
+    buttonHover: Color(0xFF8E72DD),
     buttonText: Color(0xFFFFFFFF),
     
     // Borders
-    borderDefault: Color(0xFFE5E5EA),
+    borderDefault: Color(0xFFD1D1D6),
     borderDivider: Color(0xFFE5E5EA),
     
     // Chess Board

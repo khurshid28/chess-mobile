@@ -126,21 +126,21 @@ class AppTheme {
   static BoxDecoration get cardDecoration => BoxDecoration(
     color: kCardColor,
     borderRadius: BorderRadius.circular(kBorderRadius),
-    border: Border.all(color: kBorderColor, width: 0.5),
+    border: Border.all(color: kBorderColor, width: isLight ? 1.0 : 0.5),
   );
   
   /// Leaderboard card decoration
   static BoxDecoration get leaderboardCardDecoration => BoxDecoration(
     color: kLeaderboardCardColor,
     borderRadius: BorderRadius.circular(kBorderRadius),
-    border: Border.all(color: kBorderColor, width: 0.5),
+    border: Border.all(color: kBorderColor, width: isLight ? 1.0 : 0.5),
   );
   
   /// Profile card decoration
   static BoxDecoration get profileCardDecoration => BoxDecoration(
     color: kProfileCardColor,
     borderRadius: BorderRadius.circular(kBorderRadius),
-    border: Border.all(color: kBorderColor, width: 0.5),
+    border: Border.all(color: kBorderColor, width: isLight ? 1.0 : 0.5),
   );
 
   // ═══════════════════════════════════════════════════════════════════

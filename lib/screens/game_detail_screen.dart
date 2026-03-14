@@ -135,7 +135,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         label: const Text('Analyze Game'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.kColorAccent,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppTheme.kButtonTextColor,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -237,7 +237,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       children: [
         CircleAvatar(
           radius: 24,
-          backgroundColor: Colors.white24,
+          backgroundColor: AppTheme.containerBgColor,
           backgroundImage: image != null ? CachedNetworkImageProvider(image) : null,
           child: image == null
               ? Icon(Icons.person_outline, color: AppTheme.kColorTextSecondary)
@@ -466,7 +466,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.05),
+                          color: AppTheme.containerBgColor,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(

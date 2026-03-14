@@ -108,7 +108,7 @@ class _TournamentsScreenState extends State<TournamentsScreen>
                     borderRadius: BorderRadius.circular(10),
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
-                  labelColor: Colors.white,
+                  labelColor: AppTheme.kButtonTextColor,
                   unselectedLabelColor: AppTheme.kColorTextSecondary,
                   dividerColor: Colors.transparent,
                   tabs: [
@@ -203,7 +203,7 @@ class _TournamentsScreenState extends State<TournamentsScreen>
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : AppTheme.kColorTextPrimary,
+            color: isSelected ? AppTheme.kButtonTextColor : AppTheme.kColorTextPrimary,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             fontSize: 13,
           ),

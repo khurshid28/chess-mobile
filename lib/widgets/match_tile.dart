@@ -86,7 +86,7 @@ class MatchTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (isWinner && !alignLeft)
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(right: 4),
                 child: Icon(
                   Icons.emoji_events,

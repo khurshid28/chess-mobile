@@ -102,25 +102,25 @@ class GlassPanel extends StatelessWidget {
     final Color baseTint = backgroundColor ?? AppTheme.kBgColor1;
     
     if (isLight) {
-      // Premium light theme style with elegant shadow and gradient
+      // Premium light theme style with subtle shadow
       return Container(
         decoration: BoxDecoration(
           borderRadius: radius,
           color: Colors.white,
           border: Border.all(
-            color: AppTheme.kColorTextSecondary.withOpacity(0.2),
+            color: AppTheme.kBorderColor,
             width: 1.0,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withOpacity(0.10),
               blurRadius: 12,
-              offset: const Offset(0, 4),
+              offset: const Offset(0, 3),
             ),
             BoxShadow(
-              color: AppTheme.kColorAccent.withOpacity(0.05),
-              blurRadius: 20,
-              spreadRadius: -2,
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
             ),
           ],
         ),
