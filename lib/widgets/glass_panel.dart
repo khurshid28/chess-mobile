@@ -77,8 +77,7 @@ class GlassPanel extends StatelessWidget {
       required this.child,
       this.padding = const EdgeInsets.all(16.0),
       this.backgroundColor,
-
-      this.borderRadius = AppTheme.kBorderRadius});
+      this.borderRadius = 12.0});
 
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -109,7 +108,7 @@ class GlassPanel extends StatelessWidget {
           borderRadius: radius,
           color: Colors.white,
           border: Border.all(
-            color: Colors.grey.shade200,
+            color: AppTheme.kColorTextSecondary.withOpacity(0.2),
             width: 1.0,
           ),
           boxShadow: [

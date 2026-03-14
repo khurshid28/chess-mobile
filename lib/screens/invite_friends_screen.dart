@@ -118,10 +118,10 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.2),
+                        color: AppTheme.kColorWin.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.add, color: Colors.green, size: 22),
+                      child: Icon(Icons.add, color: AppTheme.kColorWin, size: 22),
                     ),
                     const SizedBox(width: 12),
                     const Text(
@@ -163,7 +163,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                   child: ElevatedButton(
                     onPressed: _isCreatingChallenge ? null : _createChallenge,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: AppTheme.kColorWin,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -223,10 +223,10 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.2),
+                        color: AppTheme.kColorInfo.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.login, color: Colors.blue, size: 22),
+                      child: Icon(Icons.login, color: AppTheme.kColorInfo, size: 22),
                     ),
                     const SizedBox(width: 12),
                     const Text(
@@ -279,7 +279,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
                   child: ElevatedButton(
                     onPressed: _isJoining ? null : _joinChallenge,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppTheme.kColorInfo,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -498,7 +498,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.kColorError,
           ),
         );
       }
@@ -531,7 +531,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Enter 6-digit code'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.kColorWarning,
         ),
       );
       return;
@@ -558,7 +558,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Game not found or expired'),
-              backgroundColor: Colors.orange,
+              backgroundColor: AppTheme.kColorWarning,
             ),
           );
         }
@@ -575,7 +575,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('You cannot join your own game'),
-              backgroundColor: Colors.orange,
+              backgroundColor: AppTheme.kColorWarning,
             ),
           );
         }
@@ -623,7 +623,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.kColorError,
           ),
         );
       }
@@ -656,7 +656,7 @@ class _InviteFriendsScreenState extends State<InviteFriendsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('Code copied!'),
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: AppTheme.kColorWin,
         duration: const Duration(seconds: 2),
       ),
     );

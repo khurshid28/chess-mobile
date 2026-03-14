@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/leaderboard_entry_model.dart';
+import '../theme/app_theme.dart';
 import 'star_display.dart';
 
 class LeaderboardPodium extends StatelessWidget {
@@ -37,7 +38,7 @@ class LeaderboardPodium extends StatelessWidget {
                 second,
                 2,
                 140,
-                Colors.grey[400]!,
+                const Color(0xFFC0C0C0),
               ),
             ),
           const SizedBox(width: 8),
@@ -49,7 +50,7 @@ class LeaderboardPodium extends StatelessWidget {
                 first,
                 1,
                 180,
-                Colors.amber[400]!,
+                AppTheme.kGoldColor,
               ),
             ),
           const SizedBox(width: 8),
@@ -61,7 +62,7 @@ class LeaderboardPodium extends StatelessWidget {
                 third,
                 3,
                 120,
-                Colors.brown[400]!,
+                const Color(0xFFCD7F32),
               ),
             ),
         ],

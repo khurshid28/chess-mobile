@@ -452,11 +452,11 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
   }
 
   Color _getAccuracyColor(int accuracy) {
-    if (accuracy >= 95) return Colors.green;
-    if (accuracy >= 85) return Colors.lightGreen;
-    if (accuracy >= 75) return Colors.yellow;
-    if (accuracy >= 60) return Colors.orange;
-    return Colors.red;
+    if (accuracy >= 95) return AppTheme.kColorWin;
+    if (accuracy >= 85) return const Color(0xFF8BC34A);
+    if (accuracy >= 75) return AppTheme.kColorWarning;
+    if (accuracy >= 60) return const Color(0xFFFF9800);
+    return AppTheme.kColorLoss;
   }
 
   Widget _buildMoveList() {
@@ -495,13 +495,13 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       color: _currentMoveIndex == moveIndex
-                          ? Colors.blue.withOpacity(0.4)
-                          : Colors.grey[800]?.withOpacity(0.5),
+                          ? AppTheme.kColorAccent.withOpacity(0.4)
+                          : AppTheme.containerBgColor,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: _currentMoveIndex == moveIndex
-                            ? Colors.blue
-                            : Colors.grey[700]!,
+                            ? AppTheme.kColorAccent
+                            : AppTheme.kBorderColor,
                         width: 2,
                       ),
                     ),
@@ -582,7 +582,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       // Blunder ❌
       return {
         'icon': Icons.cancel,
-        'color': Colors.red,
+        'color': AppTheme.kColorLoss,
         'text': 'Blunder',
         'type': 'blunder',
       };
@@ -590,7 +590,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       // Mistake ⚡
       return {
         'icon': Icons.flash_on,
-        'color': Colors.orange,
+        'color': const Color(0xFFFF9800),
         'text': 'Mistake',
         'type': 'mistake',
       };
@@ -598,7 +598,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       // Inaccuracy ⚠
       return {
         'icon': Icons.warning_amber_rounded,
-        'color': Colors.yellow[700],
+        'color': AppTheme.kColorWarning,
         'text': 'Inaccuracy',
         'type': 'inaccuracy',
       };
@@ -606,7 +606,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       // Book 📖
       return {
         'icon': Icons.menu_book_rounded,
-        'color': Colors.blue[300],
+        'color': AppTheme.kColorInfo,
         'text': 'Book',
         'type': 'book',
       };
@@ -614,7 +614,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       // Brilliant ✨
       return {
         'icon': Icons.auto_awesome,
-        'color': Colors.cyan,
+        'color': const Color(0xFF00BCD4),
         'text': 'Brilliant',
         'type': 'brilliant',
       };
@@ -622,7 +622,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       // Best ⭐
       return {
         'icon': Icons.star_rounded,
-        'color': Colors.green,
+        'color': AppTheme.kColorWin,
         'text': 'Best',
         'type': 'best',
       };
@@ -630,7 +630,7 @@ class _GameReviewScreenState extends State<GameReviewScreen> {
       // Good ✓
       return {
         'icon': Icons.check_circle_outline_rounded,
-        'color': Colors.lightGreen,
+        'color': const Color(0xFF8BC34A),
         'text': 'Good',
         'type': 'good',
       };

@@ -551,17 +551,17 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
               height: 56,
               decoration: BoxDecoration(
                 color: _isLive
-                    ? Colors.red.withOpacity(0.20)
+                    ? AppTheme.kColorLoss.withOpacity(0.20)
                     : WoodColors.gold.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: _isLive ? Colors.red.withOpacity(0.4) : WoodColors.border,
+                  color: _isLive ? AppTheme.kColorLoss.withOpacity(0.4) : WoodColors.border,
                   width: 1.5,
                 ),
               ),
               child: Icon(
                 _isLive ? AppIcons.live : AppIcons.tournament,
-                color: _isLive ? Colors.redAccent : WoodColors.gold,
+                color: _isLive ? AppTheme.kColorLoss : WoodColors.gold,
                 size: 28,
               ),
             ),
@@ -576,7 +576,7 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
                         _isLive ? 'LIVE NOW' : 'DAILY TOURNAMENT',
                         style: WoodTextStyles.goldLabel.copyWith(
                           fontSize: 11,
-                          color: _isLive ? Colors.redAccent : WoodColors.gold,
+                          color: _isLive ? AppTheme.kColorLoss : WoodColors.gold,
                           letterSpacing: 1.2,
                         ),
                       ),
@@ -585,8 +585,8 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
                         Container(
                           width: 8, height: 8,
                           decoration: BoxDecoration(
-                            color: Colors.red, shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: Colors.red.withOpacity(0.5), blurRadius: 6)],
+                            color: AppTheme.kColorLoss, shape: BoxShape.circle,
+                            boxShadow: [BoxShadow(color: AppTheme.kColorLoss.withOpacity(0.5), blurRadius: 6)],
                           ),
                         ),
                       ],
@@ -627,13 +627,13 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
               height: 56,
               decoration: BoxDecoration(
                 color: _isLive
-                    ? Colors.red.withOpacity(0.15)
+                    ? AppTheme.kColorLoss.withOpacity(0.15)
                     : AppTheme.kColorAccent.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(
                 _isLive ? AppIcons.live : AppIcons.tournament,
-                color: _isLive ? Colors.red : AppTheme.kColorAccent,
+                color: _isLive ? AppTheme.kColorLoss : AppTheme.kColorAccent,
                 size: 28,
               ),
             ),
@@ -648,7 +648,7 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
                         _isLive ? 'LIVE NOW' : 'DAILY TOURNAMENT',
                         style: TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w700,
-                          color: _isLive ? Colors.red : AppTheme.kColorAccent,
+                          color: _isLive ? AppTheme.kColorLoss : AppTheme.kColorAccent,
                           letterSpacing: 1,
                         ),
                       ),
@@ -657,8 +657,8 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
                         Container(
                           width: 8, height: 8,
                           decoration: BoxDecoration(
-                            color: Colors.red, shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: Colors.red.withOpacity(0.5), blurRadius: 6)],
+                            color: AppTheme.kColorLoss, shape: BoxShape.circle,
+                            boxShadow: [BoxShadow(color: AppTheme.kColorLoss.withOpacity(0.5), blurRadius: 6)],
                           ),
                         ),
                       ],

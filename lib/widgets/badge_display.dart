@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/badge_model.dart';
+import '../theme/app_theme.dart';
 
 class BadgeDisplay extends StatelessWidget {
   final BadgeModel badge;
@@ -51,11 +52,11 @@ class BadgeDisplay extends StatelessWidget {
   Color _getBadgeColor() {
     if (badge.isMonthly) {
       if (badge.type.toString().contains('Champion')) {
-        return Colors.amber[600]!;
+        return AppTheme.kGoldColor;
       } else if (badge.type.toString().contains('RunnerUp')) {
-        return Colors.grey[400]!;
+        return const Color(0xFFC0C0C0);
       } else {
-        return Colors.brown[400]!;
+        return const Color(0xFFCD7F32);
       }
     }
     
@@ -63,15 +64,15 @@ class BadgeDisplay extends StatelessWidget {
       case BadgeType.grandmaster:
         return Colors.purple[600]!;
       case BadgeType.tournamentWinner:
-        return Colors.amber[600]!;
+        return AppTheme.kGoldColor;
       case BadgeType.perfectScore:
-        return Colors.blue[600]!;
+        return AppTheme.kColorInfo;
       case BadgeType.speedster:
-        return Colors.orange[600]!;
+        return AppTheme.kColorWarning;
       case BadgeType.veteran:
-        return Colors.green[600]!;
+        return AppTheme.kColorWin;
       default:
-        return Colors.grey[600]!;
+        return AppTheme.kColorTextSecondary;
     }
   }
 }
@@ -102,14 +103,14 @@ class BadgeGrid extends StatelessWidget {
             height: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.grey[300],
+              color: AppTheme.kColorTextSecondary.withOpacity(0.3),
             ),
             child: Center(
               child: Text(
                 '+$remaining',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey[700],
+                  color: AppTheme.kColorTextSecondary,
                 ),
               ),
             ),

@@ -248,7 +248,7 @@ class _RecentGamesState extends State<RecentGames> {
       },
       leading: CircleAvatar(
         radius: 20,
-        backgroundColor: game.isBotGame ? Colors.purple.withOpacity(0.3) : Colors.blue.withOpacity(0.3),
+        backgroundColor: game.isBotGame ? Colors.purple.withOpacity(0.3) : AppTheme.kColorInfo.withOpacity(0.3),
         child: game.isBotGame
             ? Text(
                 _getBotAvatar(game.botId),
@@ -257,7 +257,7 @@ class _RecentGamesState extends State<RecentGames> {
             : Icon(
                 Icons.public,
                 size: 20,
-                color: Colors.blue,
+                color: AppTheme.kColorInfo,
               ),
       ),
       title: Row(
@@ -288,13 +288,13 @@ class _RecentGamesState extends State<RecentGames> {
           Row(
             children: [
               if (game.accuracy != null) ...[
-                const Icon(Icons.analytics, size: 12, color: Colors.blue),
+                Icon(Icons.analytics, size: 12, color: AppTheme.kColorInfo),
                 const SizedBox(width: 2),
                 Text(
                   '${game.accuracy}%',
                   style: const TextStyle(
                     fontSize: 11,
-                    color: Colors.blue,
+                    color: AppTheme.kColorInfo,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -304,13 +304,13 @@ class _RecentGamesState extends State<RecentGames> {
                 Icon(
                   game.ratingChange! > 0 ? Icons.arrow_upward : Icons.arrow_downward,
                   size: 12,
-                  color: game.ratingChange! > 0 ? Colors.green : Colors.red,
+                  color: game.ratingChange! > 0 ? AppTheme.kColorWin : AppTheme.kColorLoss,
                 ),
                 Text(
                   '${game.ratingChange! > 0 ? '+' : ''}${game.ratingChange}',
                   style: TextStyle(
                     fontSize: 11,
-                    color: game.ratingChange! > 0 ? Colors.green : Colors.red,
+                    color: game.ratingChange! > 0 ? AppTheme.kColorWin : AppTheme.kColorLoss,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

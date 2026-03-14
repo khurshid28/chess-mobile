@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/tournament_match_model.dart';
+import '../theme/app_theme.dart';
 
 class MatchTile extends StatelessWidget {
   final TournamentMatchModel match;
@@ -48,7 +49,7 @@ class MatchTile extends StatelessWidget {
                         'Armageddon',
                         style: TextStyle(
                           fontSize: 10,
-                          color: Colors.red,
+                          color: AppTheme.kColorLoss,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -89,7 +90,7 @@ class MatchTile extends StatelessWidget {
                 padding: EdgeInsets.only(right: 4),
                 child: Icon(
                   Icons.emoji_events,
-                  color: Colors.amber,
+                  color: AppTheme.kGoldColor,
                   size: 16,
                 ),
               ),
@@ -99,18 +100,18 @@ class MatchTile extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: isWinner ? FontWeight.bold : FontWeight.normal,
                   fontSize: 14,
-                  color: name == 'BYE' ? Colors.grey : null,
+                  color: name == 'BYE' ? AppTheme.kColorTextSecondary : null,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             if (isWinner && alignLeft)
-              const Padding(
-                padding: EdgeInsets.only(left: 4),
+              Padding(
+                padding: const EdgeInsets.only(left: 4),
                 child: Icon(
                   Icons.emoji_events,
-                  color: Colors.amber,
+                  color: AppTheme.kGoldColor,
                   size: 16,
                 ),
               ),

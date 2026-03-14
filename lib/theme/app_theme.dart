@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:chess_park/providers/theme_provider.dart';
 import 'package:chess_park/theme/theme_colors.dart';
-import 'package:chess_park/theme/wood_colors.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:chess_park/theme/wood_theme.dart';
+import 'package:chess_park/theme/white_theme.dart';
 
 class AppTheme {
-  static const double kBorderRadius = 10.0;
+  /// Border radius: 12 for wood, 16 for white, 10 for default
+  static double get kBorderRadius => isWoodClassic ? 12.0 : isWhiteClean ? 16.0 : 10.0;
 
   // Current theme colors (updated by ThemeProvider)
   static AppThemeColors _currentColors = AppThemes.goldDark;
@@ -18,8 +19,11 @@ class AppTheme {
   /// True when the active theme is Classic Wood
   static bool get isWoodClassic => identical(_currentColors, AppThemes.woodClassic);
 
+  /// True when the active theme is Clean White
+  static bool get isWhiteClean => identical(_currentColors, AppThemes.glassLight);
+
   /// Gold/trophy accent: amber for dark/light themes, real gold for wood
-  static Color get kGoldColor => isWoodClassic ? WoodColors.gold : const Color(0xFFCFA24A);
+  static Color get kGoldColor => isWoodClassic ? WoodTheme.accent : const Color(0xFFCFA24A);
 
   // ═══════════════════════════════════════════════════════════════════
   // TEXT COLORS
@@ -98,9 +102,9 @@ class AppTheme {
   // ═══════════════════════════════════════════════════════════════════
   // HELPER COLORS (theme-aware)
   // ═══════════════════════════════════════════════════════════════════
-  /// Theme-aware container background color (use instead of Colors.white.withOpacity(0.1))
+  /// Theme-aware container background color
   static Color get containerBgColor => isWoodClassic
-      ? WoodColors.woodDark
+      ? WoodTheme.surface
       : (isLight
           ? Colors.black.withOpacity(0.05)
           : Colors.white.withOpacity(0.1));
@@ -145,6 +149,10 @@ class AppTheme {
   static Color getRatingColor(int rating) => SemanticColors.getRatingColor(rating);
 
   static ThemeData get darkTheme {
+    // Use dedicated theme files for wood and white themes
+    if (isWoodClassic) return _buildWoodTheme();
+    if (isWhiteClean) return _buildWhiteTheme();
+
     final accent = _currentColors.accent;
     final primary = _currentColors.primary;
     final secondary = _currentColors.secondary;
@@ -162,24 +170,7 @@ class AppTheme {
     final brightness = isLightTheme ? Brightness.light : Brightness.dark;
     final TextTheme baseTextTheme = ThemeData(brightness: brightness).textTheme;
 
-    // Wood Classic: use serif typography across all screens
-    final TextTheme woodTextTheme = isWoodClassic ? TextTheme(
-      displayLarge:  GoogleFonts.cinzel(fontSize: 32, fontWeight: FontWeight.bold, color: textPrimary),
-      displayMedium: GoogleFonts.cinzel(fontSize: 28, fontWeight: FontWeight.bold, color: textPrimary),
-      displaySmall:  GoogleFonts.cinzel(fontSize: 24, fontWeight: FontWeight.bold, color: textPrimary),
-      headlineLarge: GoogleFonts.cinzel(fontSize: 22, fontWeight: FontWeight.bold, color: textPrimary),
-      headlineMedium: GoogleFonts.playfairDisplay(fontSize: 20, fontWeight: FontWeight.bold, color: textPrimary),
-      headlineSmall: GoogleFonts.playfairDisplay(fontSize: 18, fontWeight: FontWeight.bold, color: textPrimary),
-      titleLarge:  GoogleFonts.playfairDisplay(fontSize: 16, fontWeight: FontWeight.w600, color: textPrimary),
-      titleMedium: GoogleFonts.playfairDisplay(fontSize: 14, fontWeight: FontWeight.w600, color: textPrimary),
-      titleSmall:  GoogleFonts.playfairDisplay(fontSize: 12, fontWeight: FontWeight.w600, color: textPrimary),
-      bodyLarge:  GoogleFonts.playfairDisplay(fontSize: 16, color: textPrimary),
-      bodyMedium: GoogleFonts.playfairDisplay(fontSize: 14, color: textPrimary),
-      bodySmall:  GoogleFonts.playfairDisplay(fontSize: 12, color: textSecondary),
-      labelLarge:  GoogleFonts.cinzel(fontSize: 14, fontWeight: FontWeight.bold, color: textPrimary),
-      labelMedium: GoogleFonts.cinzel(fontSize: 12, fontWeight: FontWeight.w600, color: textPrimary),
-      labelSmall:  GoogleFonts.cinzel(fontSize: 10, color: textSecondary),
-    ) : baseTextTheme.copyWith(
+    final TextTheme defaultTextTheme = baseTextTheme.copyWith(
       headlineSmall: baseTextTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
       titleLarge: baseTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: textPrimary),
       bodyMedium: baseTextTheme.bodyMedium?.copyWith(color: textPrimary),
@@ -189,7 +180,7 @@ class AppTheme {
     return ThemeData(
       brightness: brightness,
       primaryColor: primary,
-      scaffoldBackgroundColor: isWoodClassic ? Colors.transparent : bgColor2,
+      scaffoldBackgroundColor: bgColor2,
       cardColor: cardBgColor,
       dividerColor: _currentColors.borderDivider ?? (isLightTheme ? Colors.black.withAlpha(20) : Colors.white.withAlpha(38)),
       colorScheme: isLightTheme 
@@ -213,14 +204,13 @@ class AppTheme {
               error: kColorLoss,
               onError: Colors.white,
             ),
-      textTheme: woodTextTheme,
+      textTheme: defaultTextTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: isWoodClassic ? WoodColors.woodDark : appBarBgColor,
+        backgroundColor: appBarBgColor,
         elevation: 0,
-        titleTextStyle: isWoodClassic
-            ? GoogleFonts.cinzel(fontSize: 18, fontWeight: FontWeight.bold, color: textPrimary)
-            : TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textPrimary),
-        iconTheme: IconThemeData(color: isWoodClassic ? WoodColors.gold : textPrimary),
+        toolbarHeight: 56,
+        titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textPrimary),
+        iconTheme: IconThemeData(color: textPrimary),
       ),
       iconTheme: IconThemeData(color: textPrimary),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -276,4 +266,10 @@ class AppTheme {
       ),
     );
   }
+
+  /// Wood theme - yog'och ranglarida, serif shriftlar bilan
+  static ThemeData _buildWoodTheme() => WoodTheme.themeData;
+
+  /// White theme - toza oq, purple accent bilan
+  static ThemeData _buildWhiteTheme() => WhiteTheme.themeData;
 }

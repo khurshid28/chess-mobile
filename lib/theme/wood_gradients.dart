@@ -9,45 +9,45 @@ abstract final class WoodGradients {
   WoodGradients._();
 
   // ─── Panel / card background ─────────────────────────────────────────
-  /// Main surface gradient: lighter top (light catch) → darker bottom (depth)
+  /// Main surface gradient: lighter top → slightly darker bottom
   static const LinearGradient panel = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [WoodColors.woodLight, Color(0xFF5A3319)],
+    colors: [WoodColors.woodHighlight, WoodColors.woodLight],
     stops: [0.0, 1.0],
   );
 
-  /// Dark variant for deep backgrounds and full-screen shells
+  /// Deeper variant for full backgrounds
   static const LinearGradient panelDark = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [WoodColors.woodMedium, WoodColors.woodDark],
+    colors: [WoodColors.woodLight, WoodColors.background],
     stops: [0.0, 1.0],
   );
 
   // ─── Button ──────────────────────────────────────────────────────────
-  /// Resting 3-D button face — bright top edge fades to dark bottom
+  /// Resting button face — warm wood gradient
   static const LinearGradient button = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [WoodColors.woodLight, Color(0xFF5A3319)],
+    colors: [Color(0xFF9A5B2F), Color(0xFF7A3F15)],
     stops: [0.0, 1.0],
   );
 
-  /// Pressed button — reversed and much darker
+  /// Pressed button — darker
   static const LinearGradient buttonPressed = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF4A2C18), Color(0xFF3A2010)],
+    colors: [Color(0xFF7A3F15), Color(0xFF5E2E10)],
     stops: [0.0, 1.0],
   );
 
   // ─── App background ──────────────────────────────────────────────────
-  /// Full-screen radial — warm core fades to deep periphery
+  /// Full-screen radial — warm center to edges
   static const RadialGradient appBackground = RadialGradient(
     center: Alignment.topCenter,
     radius: 1.4,
-    colors: [WoodColors.woodMedium, WoodColors.background],
+    colors: [WoodColors.woodHighlight, WoodColors.background],
     stops: [0.0, 1.0],
   );
 
@@ -56,7 +56,7 @@ abstract final class WoodGradients {
   static const LinearGradient boardFrame = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [WoodColors.woodHighlight, WoodColors.woodDark],
+    colors: [WoodColors.woodMedium, WoodColors.woodDark],
     stops: [0.0, 1.0],
   );
 
@@ -65,7 +65,7 @@ abstract final class WoodGradients {
   static const LinearGradient gold = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFFF0CA50), WoodColors.gold, Color(0xFF8A6A10)],
+    colors: [Color(0xFFDAA520), WoodColors.gold, Color(0xFFA67B3D)],
     stops: [0.0, 0.5, 1.0],
   );
 
@@ -82,7 +82,7 @@ abstract final class WoodGradients {
   static const LinearGradient navBar = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [WoodColors.woodDark, WoodColors.background],
+    colors: [WoodColors.background, WoodColors.woodLight],
     stops: [0.0, 1.0],
   );
 }

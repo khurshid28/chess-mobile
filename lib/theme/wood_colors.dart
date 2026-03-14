@@ -8,44 +8,44 @@ abstract final class WoodColors {
   WoodColors._();
 
   // ─── Primary wood palette ────────────────────────────────────────────
-  /// Deepest background — like the underside of a heavy board
-  static const Color background = Color(0xFF2B1A0F);
+  /// Warm wood background
+  static const Color background = Color(0xFFDEB887);
 
-  /// Default dark wood surface (app background panels)
-  static const Color woodDark = Color(0xFF4A2C18);
+  /// Primary dark wood (SaddleBrown)
+  static const Color woodDark = Color(0xFF8B4513);
 
   /// Mid-tone wood — containers, nav bar
-  static const Color woodMedium = Color(0xFF6B3E1F);
+  static const Color woodMedium = Color(0xFFCD853F);
 
   /// Light wood — cards, side panels
-  static const Color woodLight = Color(0xFF8C5A2B);
+  static const Color woodLight = Color(0xFFD2B48C);
 
   /// Highlight grain — raised surfaces, header bars
-  static const Color woodHighlight = Color(0xFFA8733A);
+  static const Color woodHighlight = Color(0xFFF4E4C1);
 
   // ─── Border / divider ────────────────────────────────────────────────
   /// Carved groove border between elements
-  static const Color border = Color(0xFF7A4F22);
+  static const Color border = Color(0xFFC4956A);
 
   /// Thin hairline divider
-  static const Color divider = Color(0xFF5A3A18);
+  static const Color divider = Color(0xFFA0522D);
 
   // ─── Text ────────────────────────────────────────────────────────────
-  /// Primary label colour — cream parchment
-  static const Color textPrimary = Color(0xFFF5E6C8);
+  /// Primary label colour — dark brown
+  static const Color textPrimary = Color(0xFF4A2C1A);
 
-  /// Secondary / caption — warm tan
-  static const Color textSecondary = Color(0xFFD1B38C);
+  /// Secondary / caption — medium brown
+  static const Color textSecondary = Color(0xFF7A5C3A);
 
   // ─── Accent ──────────────────────────────────────────────────────────
   /// Gold metallic accent — icons, active tabs, highlights
-  static const Color gold = Color(0xFFD4AF37);
+  static const Color gold = Color(0xFFCD7F32);
 
   /// Bright gold hover / pressed
-  static const Color goldBright = Color(0xFFF0CA50);
+  static const Color goldBright = Color(0xFFDAA520);
 
   /// Muted gold for disabled states
-  static const Color goldMuted = Color(0xFF8A6A10);
+  static const Color goldMuted = Color(0xFFA67B3D);
 
   // ─── Chess board ─────────────────────────────────────────────────────
   /// Light square colour
@@ -58,26 +58,26 @@ abstract final class WoodColors {
   static const Color boardHighlight = Color(0xCCF6F669);
 
   // ─── Medal colours ───────────────────────────────────────────────────
-  static const Color medalGold   = Color(0xFFD4AF37);
+  static const Color medalGold   = Color(0xFFCD7F32);
   static const Color medalSilver = Color(0xFFC0C0C0);
-  static const Color medalBronze = Color(0xFFCD7F32);
+  static const Color medalBronze = Color(0xFFA0522D);
 
   // ─── Overlay helpers ─────────────────────────────────────────────────
   /// Top-edge highlight — simulates light catching polished wood
   static const Color topHighlight = Color(0x1FFFFFFF); // ~12 % white
 
   /// Bottom-edge shadow — depth below the board
-  static const Color bottomShadow = Color(0x59000000);  // ~35 % black
+  static const Color bottomShadow = Color(0x33000000);  // ~20 % black
 
   /// Button inner highlight
   static const Color buttonHighlight = Color(0x2DFFFFFF); // ~18 % white
 
   /// Pressed/hover tint overlay
-  static const Color pressedOverlay = Color(0x0FFFFFFF);  //  ~6 % white
+  static const Color pressedOverlay = Color(0x14000000);  //  ~8 % black
 
   /// Row hover tint
-  static const Color rowHover = Color(0x0FFFFFFF);
+  static const Color rowHover = Color(0x14000000);
 
   /// Leaderboard row background
-  static const Color leaderboardRow = Color(0x33000000); // 20 % black
+  static const Color leaderboardRow = Color(0x14000000); // 8 % black
 }

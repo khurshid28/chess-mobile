@@ -172,7 +172,7 @@ class PuzzleLobbyView extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.error_outline, color: Colors.redAccent, size: 48),
+                    Icon(Icons.error_outline, color: AppTheme.kColorError, size: 48),
                     const SizedBox(height: 16),
                     const Text('Error', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
@@ -261,13 +261,13 @@ class PuzzleLobbyView extends StatelessWidget {
     
     if (isSolved) {
       puzzleIcon = Icons.check_circle;
-      iconColor = Colors.green;
-      bgColor = Colors.green.withOpacity(0.15);
+      iconColor = AppTheme.kColorWin;
+      bgColor = AppTheme.kColorWin.withOpacity(0.15);
     } else if (isUnlocked) {
       if (isDaily) {
         puzzleIcon = Icons.today;
-        iconColor = Colors.amber;
-        bgColor = Colors.amber.withOpacity(0.15);
+        iconColor = AppTheme.kColorWarning;
+        bgColor = AppTheme.kColorWarning.withOpacity(0.15);
       } else {
         puzzleIcon = Icons.extension;
         iconColor = AppTheme.kColorAccent;
@@ -275,8 +275,8 @@ class PuzzleLobbyView extends StatelessWidget {
       }
     } else {
       puzzleIcon = Icons.lock;
-      iconColor = Colors.grey;
-      bgColor = Colors.grey.withOpacity(0.1);
+      iconColor = AppTheme.kColorTextSecondary;
+      bgColor = AppTheme.kColorTextSecondary.withOpacity(0.1);
     }
     
     return GestureDetector(
@@ -297,7 +297,7 @@ class PuzzleLobbyView extends StatelessWidget {
           SnackBar(
             content: Text('Solve puzzle #$index first'),
             duration: const Duration(seconds: 2),
-            backgroundColor: Colors.orange.shade700,
+            backgroundColor: AppTheme.kColorWarning,
           ),
         );
       },
@@ -308,8 +308,8 @@ class PuzzleLobbyView extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSolved 
-                ? Colors.green.withOpacity(0.5) 
-                : (isUnlocked ? AppTheme.kColorAccent.withOpacity(0.3) : Colors.grey.withOpacity(0.2)),
+                ? AppTheme.kColorWin.withOpacity(0.5) 
+                : (isUnlocked ? AppTheme.kColorAccent.withOpacity(0.3) : AppTheme.kColorTextSecondary.withOpacity(0.2)),
             width: 2,
           ),
           boxShadow: isUnlocked && !isSolved ? [
@@ -331,7 +331,7 @@ class PuzzleLobbyView extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
-                  color: isUnlocked ? AppTheme.kColorTextPrimary.withOpacity(0.9) : Colors.grey.withOpacity(0.5),
+                  color: isUnlocked ? AppTheme.kColorTextPrimary.withOpacity(0.9) : AppTheme.kColorTextSecondary.withOpacity(0.5),
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/tournament_model.dart';
+import '../theme/app_theme.dart';
 
 class CategoryBadge extends StatelessWidget {
   final TournamentCategory category;
@@ -60,13 +61,13 @@ class CategoryBadge extends StatelessWidget {
   Color _getCategoryColor() {
     switch (category) {
       case TournamentCategory.a:
-        return Colors.blue[600]!;
+        return AppTheme.kColorInfo;
       case TournamentCategory.b:
         return Colors.purple[600]!;
       case TournamentCategory.c:
-        return Colors.orange[600]!;
+        return AppTheme.kColorWarning;
       case TournamentCategory.d:
-        return Colors.red[600]!;
+        return AppTheme.kColorLoss;
     }
   }
 

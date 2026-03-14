@@ -413,15 +413,15 @@ class _BotGameViewState extends State<BotGameView> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: isBotTurn && !botGameProvider.isGameOver 
-                      ? Colors.orange 
-                      : (timeLeft < 60 ? Colors.red : AppTheme.kColorTextSecondary),
+                      ? AppTheme.kColorWarning 
+                      : (timeLeft < 60 ? AppTheme.kColorError : AppTheme.kColorTextSecondary),
                   width: 2,
                 ),
               ),
               child: Text(
                 '$minutes:$seconds',
                 style: TextStyle(
-                  color: timeLeft < 60 ? Colors.red : AppTheme.kColorTextPrimary,
+                  color: timeLeft < 60 ? AppTheme.kColorError : AppTheme.kColorTextPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   fontFeatures: const [FontFeature.tabularFigures()],
@@ -504,15 +504,15 @@ class _BotGameViewState extends State<BotGameView> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: isUserTurn && !botGameProvider.isGameOver 
-                      ? Colors.green 
-                      : (timeLeft < 60 ? Colors.red : AppTheme.kColorTextSecondary),
+                      ? AppTheme.kColorSuccess 
+                      : (timeLeft < 60 ? AppTheme.kColorError : AppTheme.kColorTextSecondary),
                   width: 2,
                 ),
               ),
               child: Text(
                 '$minutes:$seconds',
                 style: TextStyle(
-                  color: timeLeft < 60 ? Colors.red : AppTheme.kColorTextPrimary,
+                  color: timeLeft < 60 ? AppTheme.kColorError : AppTheme.kColorTextPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   fontFeatures: const [FontFeature.tabularFigures()],
@@ -537,8 +537,8 @@ class _BotGameViewState extends State<BotGameView> {
               icon: const Icon(Icons.flag),
               label: const Text('Resign'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red.withOpacity(0.2),
-                foregroundColor: Colors.red,
+                backgroundColor: AppTheme.kColorError.withOpacity(0.2),
+                foregroundColor: AppTheme.kColorError,
               ),
             ),
           ),
@@ -551,8 +551,8 @@ class _BotGameViewState extends State<BotGameView> {
               icon: const Icon(Icons.handshake),
               label: const Text('Draw'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.withOpacity(0.2),
-                foregroundColor: Colors.blue,
+                backgroundColor: AppTheme.kColorInfo.withOpacity(0.2),
+                foregroundColor: AppTheme.kColorInfo,
               ),
             ),
           ),
@@ -605,19 +605,19 @@ class _BotGameViewState extends State<BotGameView> {
         print('📊 Promotion move result: $success');
         if (!success && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invalid move'),
-              duration: Duration(seconds: 1),
-              backgroundColor: Colors.red,
+            SnackBar(
+              content: const Text('Invalid move'),
+              duration: const Duration(seconds: 1),
+              backgroundColor: AppTheme.kColorError,
             ),
           );
         }
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error occurred'),
-            duration: Duration(seconds: 1),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text('Error occurred'),
+            duration: const Duration(seconds: 1),
+            backgroundColor: AppTheme.kColorError,
           ),
         );
       }
@@ -628,10 +628,10 @@ class _BotGameViewState extends State<BotGameView> {
       
       if (!success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid move'),
-            duration: Duration(seconds: 1),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text('Invalid move'),
+            duration: const Duration(seconds: 1),
+            backgroundColor: AppTheme.kColorError,
           ),
         );
       } else {
@@ -724,12 +724,12 @@ class _BotGameViewState extends State<BotGameView> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.15),
+                color: AppTheme.kColorWarning.withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.flag_rounded,
-                color: Colors.orange,
+                color: AppTheme.kColorWarning,
                 size: 40,
               ),
             ),
@@ -774,7 +774,7 @@ class _BotGameViewState extends State<BotGameView> {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
+                      backgroundColor: AppTheme.kColorError,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -814,12 +814,12 @@ class _BotGameViewState extends State<BotGameView> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.redAccent.withOpacity(0.15),
+                color: AppTheme.kColorError.withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.flag_rounded,
-                color: Colors.redAccent,
+                color: AppTheme.kColorError,
                 size: 40,
               ),
             ),
@@ -864,7 +864,7 @@ class _BotGameViewState extends State<BotGameView> {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
+                      backgroundColor: AppTheme.kColorError,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -894,37 +894,37 @@ class _BotGameViewState extends State<BotGameView> {
     
     String title = 'Game Over';
     String result = '';
-    Color resultColor = Colors.grey;
+    Color resultColor = AppTheme.kColorDraw;
     IconData resultIcon = Icons.sports_esports;
 
     if (provider.gameResult == '1-0') {
       if (provider.userSide == dartchess.Side.white) {
         title = 'You Won!';
         result = 'Victory';
-        resultColor = Colors.green;
+        resultColor = AppTheme.kColorWin;
         resultIcon = Icons.emoji_events;
       } else {
         title = 'You Lost';
         result = 'Defeat';
-        resultColor = Colors.red;
+        resultColor = AppTheme.kColorLoss;
         resultIcon = Icons.sentiment_dissatisfied;
       }
     } else if (provider.gameResult == '0-1') {
       if (provider.userSide == dartchess.Side.black) {
         title = 'You Won!';
         result = 'Victory';
-        resultColor = Colors.green;
+        resultColor = AppTheme.kColorWin;
         resultIcon = Icons.emoji_events;
       } else {
         title = 'You Lost';
         result = 'Defeat';
-        resultColor = Colors.red;
+        resultColor = AppTheme.kColorLoss;
         resultIcon = Icons.sentiment_dissatisfied;
       }
     } else {
       title = 'Draw';
       result = 'Draw';
-      resultColor = Colors.orange;
+      resultColor = AppTheme.kColorWarning;
       resultIcon = Icons.handshake;
     }
 
@@ -985,19 +985,19 @@ class _BotGameViewState extends State<BotGameView> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
+                  color: AppTheme.kColorWin.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.green),
+                  border: Border.all(color: AppTheme.kColorWin),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.trending_up, color: Colors.green),
+                    Icon(Icons.trending_up, color: AppTheme.kColorWin),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         '+${(provider.currentBot?.rating ?? 1200) ~/ 50} rating',
-                        style: const TextStyle(
-                          color: Colors.green,
+                        style: TextStyle(
+                          color: AppTheme.kColorWin,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1009,19 +1009,19 @@ class _BotGameViewState extends State<BotGameView> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
+                  color: AppTheme.kColorLoss.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.red),
+                  border: Border.all(color: AppTheme.kColorLoss),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.trending_down, color: Colors.red),
+                    Icon(Icons.trending_down, color: AppTheme.kColorLoss),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         '-${(provider.currentBot?.rating ?? 1200) ~/ 50} rating',
-                        style: const TextStyle(
-                          color: Colors.red,
+                        style: TextStyle(
+                          color: AppTheme.kColorLoss,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1083,7 +1083,7 @@ class _BotGameViewState extends State<BotGameView> {
   Widget _buildStatItem(String label, String value, IconData icon) {
     return Column(
       children: [
-        Icon(icon, size: 24, color: Colors.blue),
+        Icon(icon, size: 24, color: AppTheme.kColorAccent),
         const SizedBox(height: 4),
         Text(
           value,
@@ -1096,7 +1096,7 @@ class _BotGameViewState extends State<BotGameView> {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: Colors.grey[600],
+            color: AppTheme.kColorTextSecondary,
           ),
         ),
       ],

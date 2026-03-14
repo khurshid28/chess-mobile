@@ -64,7 +64,7 @@ class CategoryBotsScreen extends StatelessWidget {
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.3),
+                                color: AppTheme.containerBgColor,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Center(
@@ -74,7 +74,7 @@ class CategoryBotsScreen extends StatelessWidget {
                             errorWidget: (context, url, error) => Container(
                               width: 50,
                               height: 50,
-                              color: Colors.grey.withOpacity(0.3),
+                              color: AppTheme.containerBgColor,
                               child: const Icon(Icons.sports_esports),
                             ),
                           ),
@@ -119,7 +119,7 @@ class CategoryBotsScreen extends StatelessWidget {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(Icons.star_rounded, size: 12, color: Colors.amber),
+                                        const Icon(Icons.star_rounded, size: 12, color: Color(0xFFFFB300)),
                                         const SizedBox(width: 4),
                                         Text(
                                           '${category.minRating} - ${category.maxRating}',
@@ -284,11 +284,6 @@ class CategoryBotsScreen extends StatelessWidget {
   }
   
   Color _getRatingColor(int rating) {
-    if (rating < 800) return Colors.green;
-    if (rating < 1200) return Colors.teal;
-    if (rating < 1600) return Colors.blue;
-    if (rating < 2000) return Colors.purple;
-    if (rating < 2400) return Colors.orange;
-    return Colors.red;
+    return AppTheme.getRatingColor(rating);
   }
 }

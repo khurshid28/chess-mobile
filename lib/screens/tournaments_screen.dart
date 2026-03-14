@@ -365,14 +365,14 @@ class _TournamentsScreenState extends State<TournamentsScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Successfully joined tournament!'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.kColorWin,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(tournamentProvider.error ?? 'Failed to join tournament'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.kColorError,
         ),
       );
     }

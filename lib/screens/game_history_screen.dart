@@ -140,15 +140,15 @@ class _BotGameHistoryTile extends StatelessWidget {
     
     if (game.isDraw) {
       result = 'Draw';
-      resultColor = Colors.orange;
+      resultColor = AppTheme.kColorWarning;
       resultIcon = Icons.handshake;
     } else if (game.isWin) {
       result = 'Win';
-      resultColor = Colors.green;
+      resultColor = AppTheme.kColorWin;
       resultIcon = Icons.emoji_events;
     } else {
       result = 'Loss';
-      resultColor = Colors.red;
+      resultColor = AppTheme.kColorLoss;
       resultIcon = Icons.close;
     }
 
@@ -173,7 +173,7 @@ class _BotGameHistoryTile extends StatelessWidget {
         );
       },
       leading: CircleAvatar(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: AppTheme.containerBgColor,
         child: Text(
           _getBotAvatar(game.botId),
           style: const TextStyle(fontSize: 24),
@@ -219,7 +219,7 @@ class _BotGameHistoryTile extends StatelessWidget {
             Text(
               '${game.ratingChange > 0 ? '+' : ''}${game.ratingChange}',
               style: TextStyle(
-                color: game.ratingChange > 0 ? Colors.green : Colors.red,
+                color: game.ratingChange > 0 ? AppTheme.kColorWin : AppTheme.kColorLoss,
                 fontSize: 12,
               ),
             ),

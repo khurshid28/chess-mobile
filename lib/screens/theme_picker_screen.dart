@@ -114,7 +114,7 @@ class _ThemeCard extends StatelessWidget {
             color: isSelected 
                 ? theme.accent 
                 : isLightTheme 
-                    ? Colors.grey.withOpacity(0.3) 
+                    ? AppTheme.kColorTextSecondary.withOpacity(0.3) 
                     : Colors.white.withOpacity(0.1),
             width: isSelected ? 3 : 1,
           ),

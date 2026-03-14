@@ -101,14 +101,14 @@ class GameHistoryTile extends StatelessWidget {
                 Icon(
                   Icons.emoji_events,
                   size: 14,
-                  color: Colors.amber,
+                  color: AppTheme.kGoldColor,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   'Tournament',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.amber,
+                    color: AppTheme.kGoldColor,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

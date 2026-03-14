@@ -46,6 +46,10 @@ class AppThemeColors {
   final Color? profileCardColor;      // ui.profileCard
   final Color? buttonHoverColor;      // buttons.hover
 
+  // Custom text colors (optional)
+  final Color? textPrimaryColor;
+  final Color? textSecondaryColor;
+
   const AppThemeColors({
     required this.name,
     required this.emoji,
@@ -56,6 +60,8 @@ class AppThemeColors {
     required this.surfaceColor,
     required this.glassColor,
     this.isLight = false,
+    this.textPrimaryColor,
+    this.textSecondaryColor,
     // Extended properties (optional for backward compatibility)
     this.primaryColor,
     this.primaryDark,
@@ -81,10 +87,10 @@ class AppThemeColors {
         color: bgColor2,
       );
 
-  Color get textPrimary => isLight ? const Color(0xFF1a1a1a) : Colors.white;
-  Color get textSecondary => isLight 
+  Color get textPrimary => textPrimaryColor ?? (isLight ? const Color(0xFF1a1a1a) : Colors.white);
+  Color get textSecondary => textSecondaryColor ?? (isLight 
       ? const Color(0xFF1a1a1a).withOpacity(0.7) 
-      : Colors.white.withOpacity(0.75);
+      : Colors.white.withOpacity(0.75));
 
   // Getters with fallback to existing properties
   Color get primary => primaryColor ?? accent;
@@ -136,63 +142,67 @@ class AppThemes {
   static const woodClassic = AppThemeColors(
     name: 'Classic Wood',
     emoji: '🪵',
-    accent: Color(0xFF8B5A2B),
-    bgColor1: Color(0xFF5A3A1F),
-    bgColor2: Color(0xFF3A2414),
-    bgColor3: Color(0xFF3A2414),
-    surfaceColor: Color(0xFF5A3A1F),
-    glassColor: Color(0xFF8B5A2B),
-    isLight: false,
-    // Extended properties from JSON
-    primaryColor: Color(0xFF8B5A2B),
-    primaryDark: Color(0xFF5E3A1A),
-    secondaryColor: Color(0xFFC79A63),
-    accentHighlight: Color(0xFFE3B77B),
-    cardColor: Color(0xFF6B4423),
-    borderDefault: Color(0xFF7A4F2A),
-    borderDivider: Color(0xFF5A3A1F),
-    appBarColor: Color(0xFF4A2E1A),
-    navigationColor: Color(0xFF3A2414),
-    menuItemColor: Color(0xFF5A3A1F),
+    accent: Color(0xFFCD7F32),       // Oltin rang
+    bgColor1: Color(0xFFF4E4C1),     // Och yog'och
+    bgColor2: Color(0xFFDEB887),     // BurlyWood fon
+    bgColor3: Color(0xFFD2B48C),     // Tan
+    surfaceColor: Color(0xFFF4E4C1), // Card fon
+    glassColor: Color(0xFFCD7F32),
+    isLight: true,
+    textPrimaryColor: Color(0xFF4A2C1A),   // To'q jigarrang
+    textSecondaryColor: Color(0xFF7A5C3A), // O'rta jigarrang
+    // Extended properties
+    primaryColor: Color(0xFF8B4513),  // SaddleBrown
+    primaryDark: Color(0xFF6B3410),
+    secondaryColor: Color(0xFFD2B48C), // Tan
+    accentHighlight: Color(0xFFCD7F32),
+    cardColor: Color(0xFFF4E4C1),
+    borderDefault: Color(0xFFC4956A),
+    borderDivider: Color(0xFFA0522D), // Sienna
+    appBarColor: Color(0xFF8B4513),
+    navigationColor: Color(0xFFDEB887),
+    menuItemColor: Color(0xFFF4E4C1),
     boardLightSquare: Color(0xFFF0D9B5),
     boardDarkSquare: Color(0xFFB58863),
     boardHighlight: Color(0xFFE3B77B),
     buttonText: Color(0xFFFFFFFF),
-    textAccent: Color(0xFFFFD28A),
-    leaderboardCardColor: Color(0xFF6B4423),
-    profileCardColor: Color(0xFF5A3A1F),
-    buttonHoverColor: Color(0xFFA36B37),
+    textAccent: Color(0xFFCD7F32),
+    leaderboardCardColor: Color(0xFFF4E4C1),
+    profileCardColor: Color(0xFFF4E4C1),
+    buttonHoverColor: Color(0xFFA06E3A),
   );
 
   static const glassLight = AppThemeColors(
-    name: 'Glass Light',
-    emoji: '💎',
-    accent: Color(0xFF7BA7A6),
-    bgColor1: Color(0xFFF4F7F9),
-    bgColor2: Color(0xFFE9F0F3),
-    bgColor3: Color(0xFFE9F0F3),
-    surfaceColor: Color(0xFFF4F7F9),
-    glassColor: Color(0xFF7BA7A6),
+    name: 'Clean White',
+    emoji: '⬜',
+    accent: Color(0xFF8A6DE9),       // Purple
+    bgColor1: Color(0xFFFFFFFF),     // Oq
+    bgColor2: Color(0xFFFFFFFF),     // Oq
+    bgColor3: Color(0xFFF2F2F7),     // Och kulrang
+    surfaceColor: Color(0xFFFFFFFF), // Oq
+    glassColor: Color(0xFF8A6DE9),
     isLight: true,
-    // Extended properties from JSON
-    primaryColor: Color(0xFF7BA7A6),
-    primaryDark: Color(0xFF5C8F8D),
-    secondaryColor: Color(0xFFA6C8C6),
-    accentHighlight: Color(0xFF8FD0CE),
+    textPrimaryColor: Color(0xFF1C1C1E),   // Qora
+    textSecondaryColor: Color(0xFF6C6C70), // Kulrang
+    // Extended properties
+    primaryColor: Color(0xFF8A6DE9),  // Purple
+    primaryDark: Color(0xFF6B4FCC),
+    secondaryColor: Color(0xFFF2F2F7), // Och kulrang
+    accentHighlight: Color(0xFF8A6DE9),
     cardColor: Color(0xFFFFFFFF),
-    borderDefault: Color(0xFFD6E1E6),
-    borderDivider: Color(0xFFE3EDF2),
-    appBarColor: Color(0xFFF4F7F9),
-    navigationColor: Color(0xFFE9F0F3),
+    borderDefault: Color(0xFFE5E5EA),
+    borderDivider: Color(0xFFE5E5EA),
+    appBarColor: Color(0xFFFFFFFF),
+    navigationColor: Color(0xFFF2F2F7),
     menuItemColor: Color(0xFFFFFFFF),
     boardLightSquare: Color(0xFFEEEED2),
     boardDarkSquare: Color(0xFF769656),
-    boardHighlight: Color(0xFF8FD0CE),
+    boardHighlight: Color(0xFFB5AFEE),
     buttonText: Color(0xFFFFFFFF),
-    textAccent: Color(0xFF4C9A97),
+    textAccent: Color(0xFF8A6DE9),
     leaderboardCardColor: Color(0xFFFFFFFF),
     profileCardColor: Color(0xFFFFFFFF),
-    buttonHoverColor: Color(0xFF8EC1BF),
+    buttonHoverColor: Color(0xFF9D84EE),
   );
 
   static List<AppThemeColors> get all => [

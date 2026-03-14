@@ -174,34 +174,34 @@ class ChessThemes {
   static const woodClassic = ChessThemeColors(
     name: 'Classic Wood',
     emoji: '🪵',
-    isDark: true,
-    description: 'Traditional wooden chess board style',
+    isDark: false,
+    description: 'Warm wooden chess board style',
     
     // Background
-    backgroundApp: Color(0xFF3A2414),
-    backgroundSurface: Color(0xFF5A3A1F),
-    backgroundCard: Color(0xFF6B4423),
+    backgroundApp: Color(0xFFDEB887),
+    backgroundSurface: Color(0xFFF4E4C1),
+    backgroundCard: Color(0xFFF4E4C1),
     
     // Colors
-    colorPrimary: Color(0xFF8B5A2B),
-    colorPrimaryDark: Color(0xFF5E3A1A),
-    colorSecondary: Color(0xFFC79A63),
-    colorAccent: Color(0xFFE3B77B),
+    colorPrimary: Color(0xFF8B4513),
+    colorPrimaryDark: Color(0xFF6B3410),
+    colorSecondary: Color(0xFFD2B48C),
+    colorAccent: Color(0xFFCD7F32),
     
     // Text
-    textPrimary: Color(0xFFF5E7D3),
-    textSecondary: Color(0xFFD2B48C),
-    textAccent: Color(0xFFFFD28A),
+    textPrimary: Color(0xFF4A2C1A),
+    textSecondary: Color(0xFF7A5C3A),
+    textAccent: Color(0xFFCD7F32),
     
     // Buttons
-    buttonPrimary: Color(0xFF8B5A2B),
-    buttonSecondary: Color(0xFF6B4423),
-    buttonHover: Color(0xFFA36B37),
+    buttonPrimary: Color(0xFF8B4513),
+    buttonSecondary: Color(0xFFD2B48C),
+    buttonHover: Color(0xFFA06E3A),
     buttonText: Color(0xFFFFFFFF),
     
     // Borders
-    borderDefault: Color(0xFF7A4F2A),
-    borderDivider: Color(0xFF5A3A1F),
+    borderDefault: Color(0xFFC4956A),
+    borderDivider: Color(0xFFA0522D),
     
     // Chess Board
     boardLight: Color(0xFFF0D9B5),
@@ -209,56 +209,56 @@ class ChessThemes {
     boardHighlight: Color(0xFFE3B77B),
     
     // UI Components
-    uiAppBar: Color(0xFF4A2E1A),
-    uiNavigation: Color(0xFF3A2414),
-    uiMenuItem: Color(0xFF5A3A1F),
-    uiLeaderboardCard: Color(0xFF6B4423),
-    uiProfileCard: Color(0xFF5A3A1F),
+    uiAppBar: Color(0xFF8B4513),
+    uiNavigation: Color(0xFFDEB887),
+    uiMenuItem: Color(0xFFF4E4C1),
+    uiLeaderboardCard: Color(0xFFF4E4C1),
+    uiProfileCard: Color(0xFFF4E4C1),
   );
 
   // ═══════════════════════════════════════════════════════════════════
-  // GLASS LIGHT THEME
+  // CLEAN WHITE THEME
   // ═══════════════════════════════════════════════════════════════════
   static const glassLight = ChessThemeColors(
-    name: 'Glass Light',
-    emoji: '💎',
+    name: 'Clean White',
+    emoji: '⬜',
     isDark: false,
-    description: 'Soft modern glass UI theme',
+    description: 'Clean white UI with purple accent',
     
     // Background
-    backgroundApp: Color(0xFFE9F0F3),
-    backgroundSurface: Color(0xFFF4F7F9),
+    backgroundApp: Color(0xFFFFFFFF),
+    backgroundSurface: Color(0xFFFFFFFF),
     backgroundCard: Color(0xFFFFFFFF),
     
     // Colors
-    colorPrimary: Color(0xFF7BA7A6),
-    colorPrimaryDark: Color(0xFF5C8F8D),
-    colorSecondary: Color(0xFFA6C8C6),
-    colorAccent: Color(0xFF8FD0CE),
+    colorPrimary: Color(0xFF8A6DE9),
+    colorPrimaryDark: Color(0xFF6B4FCC),
+    colorSecondary: Color(0xFFF2F2F7),
+    colorAccent: Color(0xFF8A6DE9),
     
     // Text
-    textPrimary: Color(0xFF2E3A3F),
-    textSecondary: Color(0xFF6B7B82),
-    textAccent: Color(0xFF4C9A97),
+    textPrimary: Color(0xFF1C1C1E),
+    textSecondary: Color(0xFF6C6C70),
+    textAccent: Color(0xFF8A6DE9),
     
     // Buttons
-    buttonPrimary: Color(0xFF7BA7A6),
-    buttonSecondary: Color(0xFFDCE6EA),
-    buttonHover: Color(0xFF8EC1BF),
+    buttonPrimary: Color(0xFF8A6DE9),
+    buttonSecondary: Color(0xFFF2F2F7),
+    buttonHover: Color(0xFF9D84EE),
     buttonText: Color(0xFFFFFFFF),
     
     // Borders
-    borderDefault: Color(0xFFD6E1E6),
-    borderDivider: Color(0xFFE3EDF2),
+    borderDefault: Color(0xFFE5E5EA),
+    borderDivider: Color(0xFFE5E5EA),
     
     // Chess Board
     boardLight: Color(0xFFEEEED2),
     boardDark: Color(0xFF769656),
-    boardHighlight: Color(0xFF8FD0CE),
+    boardHighlight: Color(0xFFB5AFEE),
     
     // UI Components
-    uiAppBar: Color(0xFFF4F7F9),
-    uiNavigation: Color(0xFFE9F0F3),
+    uiAppBar: Color(0xFFFFFFFF),
+    uiNavigation: Color(0xFFF2F2F7),
     uiMenuItem: Color(0xFFFFFFFF),
     uiLeaderboardCard: Color(0xFFFFFFFF),
     uiProfileCard: Color(0xFFFFFFFF),

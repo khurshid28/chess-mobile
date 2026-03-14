@@ -1,0 +1,247 @@
+FLUTTER UI GENERATION PROMPT - GLASSMORPHISM LIGHT THEME
+========================================================
+
+Generate Flutter code for a mobile app home screen with Glassmorphism Light theme. This must be pixel-perfect with exact dimensions, colors, blur effects, and shadows below.
+
+SCREEN SPECIFICATIONS:
+- Device: Mobile (375px width - iPhone SE standard)
+- Platform: Flutter (iOS/Android)
+- Font Family: SF Pro or Roboto
+- Icon Pack: Phosphor Icons (line style)
+
+┌─────────────────────────────────────────────────┐
+│                   375 px                         │
+├─────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────┐ │
+│  │  ● Bekpolat Normurodov           48px top   │ │
+│  │  ★ 1185                                      │ │
+│  │  bekpolatdev1995@gmail.com                   │ │
+│  └─────────────────────────────────────────────┘ │
+│                                                   │
+│  ┌─────────────────────────────────────────────┐ │
+│  │ DAILY TOURNAMENT            100px height    │ │
+│  │ Daily at 11:00                    GLASS     │ │
+│  │ Starts in: 19h 42m 10s       PURPLE         │ │
+│  └─────────────────────────────────────────────┘ │
+│                                                   │
+│  ┌─────────────┐  ┌─────────────┐                │
+│  │ Online Game │  │ Play Bot    │   GLASS        │
+│  │ worldwide   │  │ against AI  │   EFFECTS      │
+│  └─────────────┘  └─────────────┘                │
+│  ┌─────────────┐  ┌─────────────┐                │
+│  │Invite Friends│ │   Puzzles   │                │
+│  │with friends │ │chess puzzles│                │
+│  └─────────────┘  └─────────────┘                │
+│                                                   │
+│  LEADERBOARD                        SEE ALL     │
+│  ┌─────────────────────────────────────────────┐ │
+│  │ 1  khurshid28                   1357       │ │
+│  ├─────────────────────────────────────────────┤ │
+│  │ 2  Bekpolat Normurodoy        ● 1185       │ │
+│  ├─────────────────────────────────────────────┤ │
+│  │ 3                                 1120      │ │
+│  └─────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────┘
+
+EXACT LAYOUT STRUCTURE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Top Padding: 48px (status bar space)
+├── Profile Section: 80px height
+├── Spacer: 16px
+├── Tournament Card: 100px height
+├── Spacer: 24px
+├── Game Modes Grid: 2 × 2
+│   ├── Card size: 165.5×90px each
+│   ├── Margin: 16px horizontal
+│   └── Gap: 12px
+├── Spacer: 24px
+├── Leaderboard:
+│   ├── Header: 40px
+│   └── 3 items: 48px each
+└── Bottom Padding: 16px
+
+COLOR PALETTE (HEX CODES):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BACKGROUND:
+  Soft Lavender White (main)    → #FFF2F2F7
+  White 80% (cards/surfaces)    → #CCFFFFFF
+  Almost White (with blur)       → #F2FFFFFF
+  Light Gray lines (dividers)    → #FFE5E5EA
+
+TEXT:
+  Dark Gray/Black (primary)      → #FF1C1C1E
+  Medium Gray (secondary)        → #FF6C6C70
+  Light Gray (tertiary)          → #FF8E8E93
+
+ACCENT:
+  Purple (star, SEE ALL, count)  → #FF8A6DE9
+  White Border (glass effect)    → #80FFFFFF
+
+PROFILE SECTION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Avatar:
+  Size: 48×48px (circle)
+  Background: #FF8A6DE9 (Purple)
+  Icon: User icon (white, 24px)
+
+Name:
+  Text: "Bekpolat Normurodov"
+  Font: 18px, SemiBold (w600), #FF1C1C1E
+
+Rating:
+  Star: ★ (16px) - #FF8A6DE9 (Purple)
+  Number: "1185" - 16px, Bold, #FF1C1C1E
+
+Email:
+  Text: "bekpolatdev1995@gmail.com"
+  Font: 12px, #FF6C6C70
+
+TOURNAMENT CARD (GLASS EFFECT):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Container:
+  Width: 343px
+  Height: 100px
+  Margin: 0 16px
+  Background: #CCFFFFFF (80% white)
+  Backdrop Filter: blur(10px)
+  Border Radius: 20px (more rounded)
+  Border: 1px solid #80FFFFFF
+  Box Shadow:
+    Color: #0D000000 (5% black)
+    Blur Radius: 20px
+    Offset: 0, 4px
+  Padding: 16px
+
+  Title: "DAILY TOURNAMENT"
+    Font: 11px, Medium, Letter-spacing 0.5px, #FF6C6C70
+
+  Time: "Daily at 11:00"
+    Font: 15px, SemiBold, #FF1C1C1E
+    Margin top: 8px
+
+  Countdown: "Starts in: 19h 42m 10s"
+    Font: 13px, Bold, #FF8A6DE9 (Purple)
+    Margin top: 4px
+
+GAME MODES GRID (GLASS CARDS):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Game Card:
+  Width: 165.5px
+  Height: 90px
+  Background: #CCFFFFFF
+  Backdrop Filter: blur(10px)
+  Border Radius: 20px
+  Border: 1px solid #80FFFFFF
+  Box Shadow:
+    Color: #0D000000 (5% black)
+    Blur Radius: 15px
+    Offset: 0, 2px
+  Padding: 12px
+
+  Icon:
+    Size: 24×24px
+    Color: #FF1C1C1E (Dark Gray)
+
+  Title:
+    Font: 14px, SemiBold, #FF1C1C1E
+    Margin top: 8px
+
+  Subtitle:
+    Font: 10px, Regular, #FF6C6C70
+
+FOUR CARDS CONTENT (same as dark theme):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Online Game - "Play with players worldwide"
+2. Play Bot - "Practice against AI"
+3. Invite Friends - "Play with your friends"
+4. Puzzles - "Daily chess puzzles"
+
+LEADERBOARD SECTION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Header:
+  Title: "LEADERBOARD"
+    Font: 13px, Medium, #FF6C6C70
+  
+  See All: "SEE ALL"
+    Font: 13px, SemiBold, #FF8A6DE9 (Purple)
+
+List Items:
+  Item Container:
+    Height: 48px
+    Border bottom: 1px solid #FFE5E5EA
+
+    Rank:
+      Font: 15px, Regular, #FF6C6C70
+
+    Name:
+      Font: 15px, Regular, #FF1C1C1E
+
+    Rating:
+      Font: 15px, Bold, #FF1C1C1E
+
+Current User Highlight (Bekpolat Normurodov):
+  OPTION 1: Purple dot indicator (8px circle) before name
+  OPTION 2: Subtle purple background: #1A8A6DE9 (10% opacity)
+  OPTION 3: Purple star next to name
+
+Leaderboard Data:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. khurshid28 - 1357
+2. Bekpolat Normurodov - 1185 (CURRENT USER)
+3. (Third place) - 1120
+
+GLASS EFFECT SPECIFICATIONS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+All cards must have:
+1. Semi-transparent background: #CCFFFFFF
+2. Backdrop filter blur: 10px
+3. White border: 1px solid #80FFFFFF
+4. Soft shadow: 5% black, 15-20px blur
+
+HOVER/TAP EFFECTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Cards on tap:
+  Scale: 0.98
+  Background: #FFFFFFFF (full white temporarily)
+  Shadow intensity: 0.1 (10% black)
+  Blur intensity: 15px
+
+FLUTTER IMPLEMENTATION NOTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Use BackdropFilter widget with ImageFilter.blur
+2. Stack with ClipRRect for proper border radius with blur
+3. SafeArea for top padding
+4. Exact SizedBox heights for spacing
+5. GridView.count for 2×2 game modes
+6. ListView.builder for leaderboard
+
+CRITICAL GLASSMORPHISM IMPLEMENTATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+For each glass card:
+
+Container(
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(20),
+    border: Border.all(color: Color(0x80FFFFFF)),
+    boxShadow: [
+      BoxShadow(
+        color: Color(0x0D000000),
+        blurRadius: 15,
+        offset: Offset(0, 2),
+      )
+    ],
+  ),
+  child: ClipRRect(
+    borderRadius: BorderRadius.circular(20),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: Container(
+        color: Color(0xCCFFFFFF),
+        padding: EdgeInsets.all(12),
+        child: // Content
+      ),
+    ),
+  ),
+)
+
+Generate complete Flutter code with these exact specifications.

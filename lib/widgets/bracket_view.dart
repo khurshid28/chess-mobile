@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/tournament_match_model.dart';
+import '../theme/app_theme.dart';
 
 class BracketView extends StatelessWidget {
   final List<TournamentRoundModel> rounds;
@@ -40,7 +41,7 @@ class BracketView extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: Colors.blue[600],
+            color: AppTheme.kColorInfo,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
@@ -67,7 +68,7 @@ class BracketView extends StatelessWidget {
         color: Colors.white.withAlpha(26),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: match.isCompleted ? Colors.green : Colors.grey[300]!,
+          color: match.isCompleted ? AppTheme.kColorWin : AppTheme.kColorTextSecondary.withOpacity(0.3),
           width: 2,
         ),
         boxShadow: [
@@ -90,7 +91,7 @@ class BracketView extends StatelessWidget {
           // Divider
           Container(
             height: 1,
-            color: Colors.grey[300],
+            color: AppTheme.kColorTextSecondary.withOpacity(0.3),
           ),
           // Player 2
           _buildPlayerRow(
@@ -103,7 +104,7 @@ class BracketView extends StatelessWidget {
           if (match.status == MatchStatus.inProgress)
             Container(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              color: Colors.green[50],
+              color: AppTheme.kColorWin.withOpacity(0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -111,15 +112,15 @@ class BracketView extends StatelessWidget {
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: Colors.green,
+                      color: AppTheme.kColorWin,
                       shape: BoxShape.circle,
                     ),
                   ),
                   const SizedBox(width: 4),
-                  const Text(
+                  Text(
                     'LIVE',
                     style: TextStyle(
-                      color: Colors.green,
+                      color: AppTheme.kColorWin,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
@@ -140,7 +141,7 @@ class BracketView extends StatelessWidget {
   ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      color: isWinner ? Colors.green[50] : null,
+      color: isWinner ? AppTheme.kColorWin.withOpacity(0.1) : null,
       child: Row(
         children: [
           Expanded(
@@ -149,7 +150,7 @@ class BracketView extends StatelessWidget {
               style: TextStyle(
                 fontWeight: isWinner ? FontWeight.bold : FontWeight.normal,
                 fontSize: 13,
-                color: name == 'BYE' ? Colors.grey : Colors.black,
+                color: name == 'BYE' ? AppTheme.kColorTextSecondary : AppTheme.kColorTextPrimary,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -160,7 +161,7 @@ class BracketView extends StatelessWidget {
             width: 24,
             height: 24,
             decoration: BoxDecoration(
-              color: isWinner ? Colors.green : Colors.grey[200],
+              color: isWinner ? AppTheme.kColorWin : AppTheme.kColorTextSecondary.withOpacity(0.2),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Center(
@@ -169,7 +170,7 @@ class BracketView extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
-                  color: isWinner ? Colors.white : Colors.black,
+                  color: isWinner ? Colors.white : AppTheme.kColorTextPrimary,
                 ),
               ),
             ),

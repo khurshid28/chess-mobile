@@ -252,9 +252,9 @@ class _PlayerTile extends StatelessWidget {
       case 1:
         return AppTheme.kGoldColor;
       case 2:
-        return Colors.grey.shade400;
+        return const Color(0xFFC0C0C0);
       case 3:
-        return Colors.brown.shade400;
+        return const Color(0xFFCD7F32);
       default:
         return AppTheme.kColorTextSecondary;
     }

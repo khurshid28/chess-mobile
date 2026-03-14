@@ -230,7 +230,7 @@ class _PuzzleViewState extends State<PuzzleView> {
         );
       case PuzzleState.failed:
         return Card(
-          color: Colors.red[800],
+          color: AppTheme.kColorLoss,
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Padding(
             padding: const EdgeInsets.all(16.0),

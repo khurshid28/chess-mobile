@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// Premium wooden chess table background.
+/// Premium wooden chess table background — light warm wood.
 ///
 /// Layers (back → front):
-///   1. Base dark wood vertical gradient  (#2B1A0F → #1E140D → #120B07)
+///   1. Base warm wood vertical gradient  (#DEB887 → #D2B48C → #C4956A)
 ///   2. Center warm lamp glow             (rgba 255,220,150 @ 8 %)
-///   3. Cinematic vignette — 4 edges      (rgba 0,0,0 @ 55 %, LinearGradient per side)
+///   3. Subtle edge vignette              (light shadow for depth)
 class WoodBackground extends StatelessWidget {
   const WoodBackground({super.key, required this.child});
 
@@ -16,30 +16,28 @@ class WoodBackground extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // ── 1: Base dark polished wood gradient ─────────────────────────
-        Positioned.fill(
+        // ── 1: Base warm wood gradient ──────────────────────────────────
+        const Positioned.fill(
           child: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF2B1A0F),
-                  Color(0xFF1E140D),
-                  Color(0xFF120B07),
+                  Color(0xFFDEB887), // BurlyWood
+                  Color(0xFFD2B48C), // Tan
+                  Color(0xFFC4956A), // Darker wood
                 ],
-                stops: [0.0, 0.45, 1.0],
+                stops: [0.0, 0.5, 1.0],
               ),
             ),
           ),
         ),
 
-        // ── 2: Center warm lamp glow  rgba(255,220,150,0.08) ────────────
-        // Uses a RadialGradient with large radius so the falloff is very
-        // gradual — no visible circle edge on any screen size.
-        Positioned.fill(
+        // ── 2: Center warm lamp glow ────────────────────────────────────
+        const Positioned.fill(
           child: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: RadialGradient(
                 center: Alignment.center,
                 radius: 2.0,
@@ -50,57 +48,29 @@ class WoodBackground extends StatelessWidget {
           ),
         ),
 
-        // ── 3a: Vignette — top edge ──────────────────────────────────────
-        Positioned(
-          top: 0, left: 0, right: 0, height: 200,
-          child: const DecoratedBox(
+        // ── 3: Subtle top vignette ──────────────────────────────────────
+        const Positioned(
+          top: 0, left: 0, right: 0, height: 150,
+          child: DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0x8C000000), Color(0x00000000)],
+                colors: [Color(0x18000000), Color(0x00000000)],
               ),
             ),
           ),
         ),
 
-        // ── 3b: Vignette — bottom edge ───────────────────────────────────
-        Positioned(
-          bottom: 0, left: 0, right: 0, height: 200,
-          child: const DecoratedBox(
+        // ── 4: Subtle bottom vignette ───────────────────────────────────
+        const Positioned(
+          bottom: 0, left: 0, right: 0, height: 100,
+          child: DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [Color(0x8C000000), Color(0x00000000)],
-              ),
-            ),
-          ),
-        ),
-
-        // ── 3c: Vignette — left edge ─────────────────────────────────────
-        Positioned(
-          top: 0, bottom: 0, left: 0, width: 120,
-          child: const DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [Color(0x8C000000), Color(0x00000000)],
-              ),
-            ),
-          ),
-        ),
-
-        // ── 3d: Vignette — right edge ────────────────────────────────────
-        Positioned(
-          top: 0, bottom: 0, right: 0, width: 120,
-          child: const DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-                colors: [Color(0x8C000000), Color(0x00000000)],
+                colors: [Color(0x14000000), Color(0x00000000)],
               ),
             ),
           ),

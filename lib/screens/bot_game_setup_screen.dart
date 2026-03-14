@@ -23,12 +23,7 @@ class _BotGameSetupScreenState extends State<BotGameSetupScreen> {
   Side? _selectedSide;
 
   Color _getRatingColor(int rating) {
-    if (rating < 800) return Colors.green;
-    if (rating < 1200) return Colors.teal;
-    if (rating < 1600) return Colors.blue;
-    if (rating < 2000) return Colors.purple;
-    if (rating < 2400) return Colors.orange;
-    return Colors.red;
+    return AppTheme.getRatingColor(rating);
   }
 
   @override
@@ -252,11 +247,11 @@ class _BotGameSetupScreenState extends State<BotGameSetupScreen> {
                   shape: BoxShape.circle,
                   color: side == Side.white 
                       ? Colors.white 
-                      : (side == Side.black ? Colors.grey[900] : null),
-                  border: Border.all(color: Colors.grey, width: 2),
+                      : (side == Side.black ? AppTheme.kBgColor1 : null),
+                  border: Border.all(color: AppTheme.kBorderColor, width: 2),
                 ),
                 child: side == null 
-                    ? const Icon(Icons.shuffle, color: Colors.grey, size: 20) 
+                    ? Icon(Icons.shuffle, color: AppTheme.kColorTextSecondary, size: 20) 
                     : null,
               ),
               const SizedBox(height: 8),

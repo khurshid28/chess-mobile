@@ -66,23 +66,23 @@ class TournamentCard extends StatelessWidget {
                   Icon(
                     Icons.access_time,
                     size: 16,
-                    color: isStartingSoon ? Colors.orange : Colors.grey,
+                    color: isStartingSoon ? AppTheme.kColorWarning : AppTheme.kColorTextSecondary,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     _getTimeDisplay(timeUntilStart),
                     style: TextStyle(
-                      color: isStartingSoon ? Colors.orange : Colors.white70,
+                      color: isStartingSoon ? AppTheme.kColorWarning : AppTheme.kColorTextSecondary,
                       fontWeight: isStartingSoon ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                   const Spacer(),
-                  Icon(Icons.people, size: 16, color: Colors.white70),
+                  Icon(Icons.people, size: 16, color: AppTheme.kColorTextSecondary),
                   const SizedBox(width: 4),
                   Text(
                     '${tournament.currentPlayers}/${tournament.maxPlayers}',
-                    style: const TextStyle(
-                      color: Colors.white70,
+                    style: TextStyle(
+                      color: AppTheme.kColorTextSecondary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -95,7 +95,7 @@ class TournamentCard extends StatelessWidget {
                 value: tournament.currentPlayers / tournament.maxPlayers,
                 backgroundColor: Colors.white12,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  tournament.isFull ? Colors.green : theme.primaryColor,
+                  tournament.isFull ? AppTheme.kColorWin : theme.primaryColor,
                 ),
               ),
               const SizedBox(height: 12),
@@ -103,13 +103,13 @@ class TournamentCard extends StatelessWidget {
               // Rewards info
               Row(
                 children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 16),
+                  Icon(Icons.star, color: AppTheme.kGoldColor, size: 16),
                   const SizedBox(width: 4),
                   Text(
                     'Rewards: ${_getRewardsText()}',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: AppTheme.kColorTextSecondary,
                     ),
                   ),
                 ],
@@ -139,19 +139,19 @@ class TournamentCard extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                      color: Colors.green[50],
+                      color: AppTheme.kColorWin.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.green),
+                      border: Border.all(color: AppTheme.kColorWin),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.check_circle, color: Colors.green, size: 20),
+                        Icon(Icons.check_circle, color: AppTheme.kColorWin, size: 20),
                         SizedBox(width: 8),
                         Text(
                           'Joined',
                           style: TextStyle(
-                            color: Colors.green,
+                            color: AppTheme.kColorWin,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -174,22 +174,22 @@ class TournamentCard extends StatelessWidget {
     switch (tournament.status) {
       case TournamentStatus.registration:
         icon = Icons.app_registration;
-        color = Colors.blue;
+        color = AppTheme.kColorInfo;
         text = 'Open';
         break;
       case TournamentStatus.inProgress:
         icon = Icons.play_circle;
-        color = Colors.green;
+        color = AppTheme.kColorWin;
         text = 'Live';
         break;
       case TournamentStatus.completed:
         icon = Icons.emoji_events;
-        color = Colors.amber;
+        color = AppTheme.kGoldColor;
         text = 'Finished';
         break;
       default:
         icon = Icons.schedule;
-        color = Colors.grey;
+        color = AppTheme.kColorTextSecondary;
         text = 'Scheduled';
     }
 
@@ -220,13 +220,13 @@ class TournamentCard extends StatelessWidget {
   Color _getCategoryColor(TournamentCategory category) {
     switch (category) {
       case TournamentCategory.a:
-        return Colors.blue;
+        return AppTheme.kColorInfo;
       case TournamentCategory.b:
         return Colors.purple;
       case TournamentCategory.c:
-        return Colors.orange;
+        return AppTheme.kColorWarning;
       case TournamentCategory.d:
-        return Colors.red;
+        return AppTheme.kColorLoss;
     }
   }
 

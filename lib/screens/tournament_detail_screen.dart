@@ -133,22 +133,22 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     switch (status) {
       case TournamentStatus.registration:
         icon = Icons.app_registration;
-        color = Colors.blue;
+        color = AppTheme.kColorInfo;
         text = 'Registration Open';
         break;
       case TournamentStatus.inProgress:
         icon = Icons.play_circle;
-        color = Colors.green;
+        color = AppTheme.kColorWin;
         text = 'In Progress';
         break;
       case TournamentStatus.completed:
         icon = Icons.emoji_events;
-        color = Colors.amber;
+        color = AppTheme.kGoldColor;
         text = 'Completed';
         break;
       default:
         icon = Icons.schedule;
-        color = Colors.grey;
+        color = AppTheme.kColorTextSecondary;
         text = 'Scheduled';
     }
 
@@ -308,8 +308,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: participant.eliminated
-                  ? Colors.grey
-                  : Colors.green,
+                  ? AppTheme.kColorTextSecondary
+                  : AppTheme.kColorWin,
               child: Text(
                 participant.seed.toString(),
                 style: const TextStyle(
@@ -331,7 +331,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
                 ? Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 16),
+                      const Icon(Icons.star, color: Color(0xFFFFB300), size: 16),
                       const SizedBox(width: 4),
                       Text(
                         participant.starsEarned.toString(),
@@ -376,7 +376,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.grey[700]),
+            style: TextStyle(color: AppTheme.kColorTextSecondary),
           ),
           Text(
             value,
@@ -394,13 +394,13 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
   Color _getCategoryColor(TournamentCategory category) {
     switch (category) {
       case TournamentCategory.a:
-        return Colors.blue[600]!;
+        return AppTheme.kColorInfo;
       case TournamentCategory.b:
-        return Colors.purple[600]!;
+        return const Color(0xFF7B1FA2);
       case TournamentCategory.c:
-        return Colors.orange[600]!;
+        return AppTheme.kColorWarning;
       case TournamentCategory.d:
-        return Colors.red[600]!;
+        return AppTheme.kColorError;
     }
   }
 }

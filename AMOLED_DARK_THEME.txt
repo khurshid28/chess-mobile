@@ -1,0 +1,228 @@
+FLUTTER UI GENERATION PROMPT - AMOLED DARK THEME
+=================================================
+
+Generate Flutter code for a mobile app home screen with AMOLED Dark theme. This must be pixel-perfect with exact dimensions and colors below.
+
+SCREEN SPECIFICATIONS:
+- Device: Mobile (375px width - iPhone SE standard)
+- Platform: Flutter (iOS/Android)
+- Font Family: SF Pro or Roboto
+- Icon Pack: Phosphor Icons (line style)
+
+┌─────────────────────────────────────────────────┐
+│                   375 px                         │
+├─────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────┐ │
+│  │  ● Bekpolat Normurodov           48px top   │ │
+│  │  ★ 1185                                      │ │
+│  │  bekpolatdev1995@gmail.com                   │ │
+│  └─────────────────────────────────────────────┘ │
+│                                                   │
+│  ┌─────────────────────────────────────────────┐ │
+│  │ DAILY TOURNAMENT            100px height    │ │
+│  │ Daily at 11:00                               │ │
+│  │ Starts in: 19h 49m 41s       ORANGE         │ │
+│  └─────────────────────────────────────────────┘ │
+│                                                   │
+│  ┌─────────────┐  ┌─────────────┐                │
+│  │ Online Game │  │ Play Bot    │   2×2 Grid     │
+│  │ worldwide   │  │ against AI  │   90px each    │
+│  └─────────────┘  └─────────────┘                │
+│  ┌─────────────┐  ┌─────────────┐                │
+│  │Invite Friends│ │   Puzzles   │                │
+│  │with friends │ │chess puzzles│                │
+│  └─────────────┘  └─────────────┘                │
+│                                                   │
+│  LEADERBOARD                        SEE ALL     │
+│  ┌─────────────────────────────────────────────┐ │
+│  │ 1  khurshid28                   1357       │ │
+│  ├─────────────────────────────────────────────┤ │
+│  │ 2  Bekpolat Normurodoy            1185      │ │
+│  ├─────────────────────────────────────────────┤ │
+│  │ 3                                 1120      │ │
+│  └─────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────┘
+
+EXACT LAYOUT STRUCTURE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Top Padding: 48px (status bar space)
+├── Profile Section: 80px height
+├── Spacer: 16px
+├── Tournament Card: 100px height
+├── Spacer: 24px
+├── Game Modes Grid: 2 × 2
+│   ├── Card size: 165.5×90px each
+│   ├── Margin: 16px horizontal
+│   └── Gap: 12px
+├── Spacer: 24px
+├── Leaderboard:
+│   ├── Header: 40px
+│   └── 3 items: 48px each
+└── Bottom Padding: 16px
+
+COLOR PALETTE (HEX CODES):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BACKGROUND:
+  Pure Black (main background)  → #FF000000
+  Dark Gray (cards/surfaces)    → #FF1C1C1E
+  Darker Gray (dividers)         → #FF2C2C2E
+  Border Subtle                  → #FF3A3A3C
+
+TEXT:
+  Pure White (primary text)      → #FFFFFFFF
+  Light Gray (secondary text)    → #FF8E8E93
+  Vibrant Orange (accent)        → #FFFF9F0A
+
+ACCENT:
+  Star, Countdown, SEE ALL       → #FFFF9F0A
+
+PROFILE SECTION (DETAILS):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Avatar:
+  Size: 48×48px (circle)
+  Background: #FF2C2C2E
+  Icon: User icon (white, 24px)
+
+Name:
+  Text: "Bekpolat Normurodov"
+  Font: 18px, SemiBold (w600), White (#FFFFFF)
+  Position: 72px from left, 48px from top
+
+Rating:
+  Star: ★ (16px) - #FFFF9F0A
+  Number: "1185" - 16px, Bold, White
+  Position: 72px from left, 70px from top
+
+Email:
+  Text: "bekpolatdev1995@gmail.com"
+  Font: 12px, #FF8E8E93
+  Margin: 16px left, 104px from top
+
+TOURNAMENT CARD:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Container:
+  Width: 343px (375-32)
+  Height: 100px
+  Margin: 0 16px
+  Background: #FF1C1C1E
+  Border Radius: 16px
+  Border: 0.5px solid #FF3A3A3C
+  Padding: 16px
+
+  Title: "DAILY TOURNAMENT"
+    Font: 11px, Medium, Letter-spacing 0.5px, #FF8E8E93
+
+  Time: "Daily at 11:00"
+    Font: 15px, SemiBold, White (#FFFFFF)
+    Margin top: 8px from title
+
+  Countdown: "Starts in: 19h 49m 41s"
+    Font: 13px, Bold, #FFFF9F0A
+    Margin top: 4px from time
+
+GAME MODES GRID (2×2):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Grid Container:
+  Margin: 16px horizontal
+  ChildAspectRatio: 165.5 : 90
+  CrossAxisSpacing: 12px
+  MainAxisSpacing: 12px
+
+Game Card:
+  Width: 165.5px
+  Height: 90px
+  Background: #FF1C1C1E
+  Border Radius: 12px
+  Padding: 12px
+
+  Icon:
+    Size: 24×24px
+    Color: White (#FFFFFF)
+
+  Title:
+    Font: 14px, SemiBold, White
+    Margin top: 8px
+
+  Subtitle:
+    Font: 10px, Regular, #FF8E8E93
+
+FOUR CARDS CONTENT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Online Game
+   Subtitle: "Play with players worldwide"
+
+2. Play Bot
+   Subtitle: "Practice against AI"
+
+3. Invite Friends
+   Subtitle: "Play with your friends"
+
+4. Puzzles
+   Subtitle: "Daily chess puzzles"
+
+LEADERBOARD SECTION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Header:
+  Margin: 16px 16px 8px 16px
+  
+  Title: "LEADERBOARD"
+    Font: 13px, Medium, Letter-spacing 0.5px, #FF8E8E93
+    Alignment: left
+
+  See All: "SEE ALL"
+    Font: 13px, SemiBold, #FFFF9F0A
+    Alignment: right
+
+List Items:
+  Margin: 0 16px
+
+Item Container:
+  Height: 48px
+  Border bottom: 1px solid #FF2C2C2E
+
+  Rank:
+    Width: 35px
+    Font: 15px, Regular, #FF8E8E93
+
+  Name:
+    Font: 15px, Regular, White (#FFFFFF)
+
+  Rating:
+    Font: 15px, Bold, White (#FFFFFF)
+    Alignment: right
+
+Current User Highlight (Bekpolat Normurodov):
+  Name Color: #FFFF9F0A
+  Rating Color: #FFFF9F0A
+  Background: #FF2C2C2E (subtle highlight)
+
+Leaderboard Data:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. khurshid28 - 1357
+2. Bekpolat Normurodov - 1185 (CURRENT USER)
+3. (Third place) - 1120
+
+HOVER/TAP EFFECTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Cards on tap:
+  Scale: 0.98
+  Background: #FF3A3A3C (slightly lighter)
+
+Tournament Card inner glow:
+  Color: #1FFFFFFF (6% white)
+  Blur radius: 8px
+
+FLUTTER IMPLEMENTATION NOTES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Use SafeArea widget for top padding
+2. Column with CrossAxisAlignment.start
+3. Exact SizedBox heights for spacers
+4. GridView.count for 2×2 game modes
+5. ListView.builder for leaderboard (shrinkWrap: true)
+6. BoxDecoration with exact colors and borders
+7. No shadows - rely on contrast
+
+Generate complete Flutter code with these exact specifications.
+
+
+
