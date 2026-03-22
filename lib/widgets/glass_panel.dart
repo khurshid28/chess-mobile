@@ -107,10 +107,6 @@ class GlassPanel extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: radius,
           color: Colors.white,
-          border: Border.all(
-            color: AppTheme.kBorderColor,
-            width: 1.0,
-          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.10),
@@ -149,9 +145,9 @@ class GlassPanel extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: radius,
-        color: baseTint.withOpacity(0.6),
+        color: baseTint.withOpacity(0.75),
         border: Border.all(
-          color: AppTheme.kColorAccent.withOpacity(0.2),
+          color: AppTheme.kColorAccent.withOpacity(0.5),
           width: 1.0,
         ),
       ),
@@ -167,8 +163,8 @@ class GlassPanel extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  baseTint.withOpacity(0.4),
-                  baseTint.withOpacity(0.2),
+                  baseTint.withOpacity(0.55),
+                  baseTint.withOpacity(0.35),
                 ],
               ),
             ),

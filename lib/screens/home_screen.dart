@@ -1,6 +1,5 @@
 import 'package:chess_park/models/user_model.dart';
 import 'package:chess_park/providers/auth_provider.dart';
-import 'package:chess_park/providers/theme_provider.dart';
 import 'package:chess_park/screens/bot_selection_screen.dart';
 import 'package:chess_park/screens/leaderboard_screen.dart';
 import 'package:chess_park/screens/online_games_screen.dart';
@@ -9,20 +8,13 @@ import 'package:chess_park/screens/puzzle_lobby_screen.dart';
 import 'package:chess_park/screens/invite_friends_screen.dart';
 import 'package:chess_park/screens/settings_screen.dart';
 import 'package:chess_park/screens/tournaments_screen.dart';
-import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/theme/app_icons.dart';
 import 'package:chess_park/theme/wood_colors.dart';
-import 'package:chess_park/theme/wood_gradients.dart';
 import 'package:chess_park/theme/wood_textures.dart';
-import 'package:chess_park/theme/wood_borders.dart';
-import 'package:chess_park/theme/wood_shadows.dart';
 import 'package:chess_park/theme/wood_text_styles.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:chess_park/widgets/user_header.dart';
-import 'package:chess_park/widgets/wood_panel.dart';
-import 'package:chess_park/widgets/wood_leaderboard_tile.dart';
-import 'package:chess_park/widgets/wood_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -58,16 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthProvider>().userModel;
-    final topPadding = MediaQuery.of(context).padding.top + 16;
-
-    final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: isWood || !AppTheme.isLight
+      value: !AppTheme.isLight
           ? SystemUiOverlayStyle.light
           : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: isWood ? Colors.transparent : AppTheme.kBgColor2,
+        backgroundColor: Colors.transparent,
         body: Container(
           decoration: AppTheme.backgroundDecoration,
           child: CustomScrollView(
@@ -159,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 50),
+                  padding: EdgeInsets.fromLTRB(20, 12, 20, MediaQuery.of(context).padding.bottom + 30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -225,14 +214,11 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
     return Row(
       children: [
-        isWood ? WoodIcon(icon, color: WoodColors.textPrimary, size: 20) : Icon(icon, color: AppTheme.kColorAccent, size: 22),
+        Icon(icon, color: AppTheme.kColorAccent, size: 22),
         const SizedBox(width: 8),
-        isWood
-            ? Text(title, style: WoodTextStyles.sectionHeading)
-            : Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.kColorTextPrimary)),
+        Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.kColorTextPrimary)),
         const Spacer(),
         if (trailing != null) trailing!,
       ],
@@ -262,38 +248,7 @@ class _MenuListItemState extends State<_MenuListItem> {
 
   @override
   Widget build(BuildContext context) {
-    final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
-
-    if (!isWood) {
-      return GestureDetector(
-        onTap: () {
-          HapticFeedback.lightImpact();
-          widget.onTap();
-        },
-        child: GlassPanel(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Row(
-            children: [
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: AppTheme.kColorAccent.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(widget.icon, color: AppTheme.kColorAccent, size: 22),
-              ),
-             
-              const SizedBox(width: 14),
-              Expanded(
-                child: Text(widget.title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppTheme.kColorTextPrimary)),
-              ),
-              Icon(AppIcons.chevronRight, color: AppTheme.kColorTextSecondary, size: 20),
-            ],
-          ),
-        ),
-      );
-    }
+    final isWood = AppTheme.isWoodClassic;
 
     return GestureDetector(
       onTap: () {
@@ -301,56 +256,33 @@ class _MenuListItemState extends State<_MenuListItem> {
         widget.onTap();
       },
       onTapDown: (_) => setState(() => _pressed = true),
-      onTapUp: (_)   => setState(() => _pressed = false),
+      onTapUp: (_) => setState(() => _pressed = false),
       onTapCancel: () => setState(() => _pressed = false),
-      child: AnimatedContainer(
+      child: AnimatedScale(
+        scale: _pressed ? 0.96 : 1.0,
         duration: const Duration(milliseconds: 80),
-        decoration: BoxDecoration(
-          borderRadius: WoodBorders.normalRadius,
-          image: _pressed ? WoodTextures.buttonPressed() : WoodTextures.panel(),
-          border: WoodBorders.panel,
-          boxShadow: _pressed ? [WoodShadows.small] : WoodShadows.panelShadow,
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: IgnorePointer(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: WoodBorders.normalRadius,
-                    gradient: _pressed ? null : WoodGradients.topHighlight,
-                  ),
+        child: GlassPanel(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: isWood ? null : AppTheme.kColorAccent.withOpacity(0.15),
+                  image: isWood ? WoodTextures.icon() : null,
+                  borderRadius: BorderRadius.circular(isWood ? 8 : 10),
+                  border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
                 ),
+                child: Icon(widget.icon, color: isWood ? Colors.white : AppTheme.kColorAccent, size: isWood ? 20 : 22),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      image: WoodTextures.icon(),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: WoodColors.border, width: 1.5),
-                    ),
-                    child: WoodIcon(widget.icon, color: WoodColors.textPrimary, size: 20),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(widget.title, style: WoodTextStyles.menuLabel),
-                      ],
-                    ),
-                  ),
-                  const WoodIcon(Icons.chevron_right_rounded, color: WoodColors.textPrimary, size: 22),
-                ],
+              const SizedBox(width: 14),
+              Expanded(
+                child: Text(widget.title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: isWood ? Colors.white : AppTheme.kColorTextPrimary, shadows: isWood ? WoodTextStyles.woodShadow : null)),
               ),
-            ),
-          ],
+              Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white70 : AppTheme.kColorTextSecondary, size: 22),
+            ],
+          ),
         ),
       ),
     );
@@ -377,40 +309,7 @@ class _MenuGridItemState extends State<_MenuGridItem> {
 
   @override
   Widget build(BuildContext context) {
-    final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
-
-    if (!isWood) {
-      return GestureDetector(
-        onTap: () {
-          HapticFeedback.lightImpact();
-          widget.onTap();
-        },
-        child: GlassPanel(
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: AppTheme.kColorAccent.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(widget.icon, color: AppTheme.kColorAccent, size: 26),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                widget.title,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.kColorTextPrimary),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          ),
-        ),
-      );
-    }
+    final isWood = AppTheme.isWoodClassic;
 
     return GestureDetector(
       onTap: () {
@@ -420,50 +319,34 @@ class _MenuGridItemState extends State<_MenuGridItem> {
       onTapDown: (_) => setState(() => _pressed = true),
       onTapUp: (_) => setState(() => _pressed = false),
       onTapCancel: () => setState(() => _pressed = false),
-      child: AnimatedContainer(
+      child: AnimatedScale(
+        scale: _pressed ? 0.96 : 1.0,
         duration: const Duration(milliseconds: 80),
-        decoration: BoxDecoration(
-          borderRadius: WoodBorders.normalRadius,
-          image: _pressed ? WoodTextures.buttonPressed() : WoodTextures.panel(),
-          border: WoodBorders.panel,
-          boxShadow: _pressed ? [WoodShadows.small] : WoodShadows.panelShadow,
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: IgnorePointer(
-                child: DecoratedBox(
+        child: GlassPanel(
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
                   decoration: BoxDecoration(
-                    borderRadius: WoodBorders.normalRadius,
-                    gradient: _pressed ? null : WoodGradients.topHighlight,
+                    color: isWood ? null : AppTheme.kColorAccent.withOpacity(0.15),
+                    image: isWood ? WoodTextures.icon() : null,
+                    borderRadius: BorderRadius.circular(isWood ? 12 : 14),
+                    border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
                   ),
+                  child: Icon(widget.icon, color: isWood ? Colors.white : AppTheme.kColorAccent, size: isWood ? 24 : 26),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.title,
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: isWood ? Colors.white : AppTheme.kColorTextPrimary, shadows: isWood ? WoodTextStyles.woodShadow : null),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      image: WoodTextures.icon(),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: WoodColors.border, width: 1.5),
-                    ),
-                    child: WoodIcon(widget.icon, color: WoodColors.textPrimary, size: 24),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.title,
-                    style: WoodTextStyles.menuLabel.copyWith(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -477,53 +360,24 @@ class _MiniLeaderboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
     return FutureBuilder<List<UserModel>>(
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return isWood
-              ? WoodPanel(
-                  padding: const EdgeInsets.all(24),
-                  child: Center(child: CircularProgressIndicator(color: WoodColors.gold, strokeWidth: 2)),
-                )
-              : GlassPanel(
-                  padding: const EdgeInsets.all(24),
-                  child: Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent, strokeWidth: 2)),
-                );
+          return GlassPanel(
+            padding: const EdgeInsets.all(24),
+            child: Center(child: CircularProgressIndicator(color: AppTheme.kColorAccent, strokeWidth: 2)),
+          );
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return isWood
-              ? WoodPanel(
-                  padding: const EdgeInsets.all(24),
-                  child: Center(child: Text('No players yet', style: WoodTextStyles.caption)),
-                )
-              : GlassPanel(
-                  padding: const EdgeInsets.all(24),
-                  child: Center(child: Text('No players yet', style: TextStyle(color: AppTheme.kColorTextSecondary))),
-                );
+          return GlassPanel(
+            padding: const EdgeInsets.all(24),
+            child: Center(child: Text('No players yet', style: TextStyle(color: AppTheme.kColorTextSecondary))),
+          );
         }
 
         final players = snapshot.data!;
-        if (isWood) {
-          return WoodPanel(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Column(
-              children: [
-                for (int i = 0; i < players.length; i++) ...[
-                  WoodLeaderboardTile(
-                    rank: i + 1,
-                    name: players[i].displayName,
-                    rating: players[i].elo,
-                    avatarUrl: players[i].profileImage,
-                  ),
-                  if (i < players.length - 1) const WoodDivider(indent: 56),
-                ],
-              ],
-            ),
-          );
-        }
         return GlassPanel(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Column(
@@ -566,7 +420,7 @@ class _LeaderboardRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
       child: Row(
         children: [
           SizedBox(
@@ -684,7 +538,7 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
 
   @override
   Widget build(BuildContext context) {
-    final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
+    final isWood = AppTheme.isWoodClassic;
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
@@ -692,12 +546,7 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
           MaterialPageRoute(builder: (_) => const TournamentsScreen()),
         );
       },
-      child: isWood ? _buildWoodCard() : _buildGlassCard(),
-    );
-  }
-
-  Widget _buildWoodCard() {
-    return WoodPanel(
+      child: GlassPanel(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           children: [
@@ -705,19 +554,19 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                image: WoodTextures.icon(),
                 color: _isLive
-                    ? const Color(0x33CC3333)
-                    : null,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: _isLive ? const Color(0x66CC3333) : WoodColors.border,
-                  width: 1.5,
-                ),
+                    ? AppTheme.kColorLoss.withOpacity(0.15)
+                    : (isWood ? null : AppTheme.kColorAccent.withOpacity(0.15)),
+                image: isWood ? WoodTextures.icon() : null,
+                borderRadius: BorderRadius.circular(isWood ? 10 : 12),
+                border: isWood ? Border.all(
+                    color: _isLive ? const Color(0x66CC3333) : WoodColors.border,
+                    width: 1.5,
+                  ) : null,
               ),
-              child: WoodIcon(
+              child: Icon(
                 _isLive ? AppIcons.live : AppIcons.tournament,
-                color: _isLive ? const Color(0xFFCC3333) : WoodColors.textPrimary,
+                color: _isLive ? AppTheme.kColorLoss : (isWood ? Colors.white : AppTheme.kColorAccent),
                 size: 24,
               ),
             ),
@@ -728,12 +577,12 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
                 children: [
                   Text(
                     _isLive ? 'LIVE NOW' : 'Daily Tournament',
-                    style: WoodTextStyles.menuLabel,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: isWood ? Colors.white : AppTheme.kColorTextPrimary, shadows: isWood ? WoodTextStyles.woodShadow : null),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     _isLive ? 'Ends in: ${_formatDuration(_timeRemaining)}' : 'Starts at $tournamentHour:00',
-                    style: WoodTextStyles.caption,
+                    style: TextStyle(fontSize: 13, color: isWood ? Colors.white70 : AppTheme.kColorTextSecondary, shadows: isWood ? WoodTextStyles.woodShadow : null),
                   ),
                 ],
               ),
@@ -741,64 +590,16 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
             Container(
               width: 34, height: 34,
               decoration: BoxDecoration(
-                image: WoodTextures.icon(),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: WoodColors.border, width: 1.5),
+                color: isWood ? null : AppTheme.kColorAccent.withOpacity(0.15),
+                image: isWood ? WoodTextures.icon() : null,
+                borderRadius: BorderRadius.circular(isWood ? 8 : 10),
+                border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
               ),
-              child: const WoodIcon(Icons.chevron_right_rounded, color: WoodColors.textPrimary, size: 20),
+              child: Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white : AppTheme.kColorAccent, size: 20),
             ),
           ],
         ),
-      );
-  }
-
-  Widget _buildGlassCard() {
-    return GlassPanel(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Row(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: _isLive
-                    ? AppTheme.kColorLoss.withOpacity(0.15)
-                    : AppTheme.kColorAccent.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                _isLive ? AppIcons.live : AppIcons.tournament,
-                color: _isLive ? AppTheme.kColorLoss : AppTheme.kColorAccent,
-                size: 26,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _isLive ? 'LIVE NOW' : 'Daily Tournament',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.kColorTextPrimary),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    _isLive ? 'Ends in: ${_formatDuration(_timeRemaining)}' : 'Starts at $tournamentHour:00',
-                    style: TextStyle(fontSize: 13, color: AppTheme.kColorTextSecondary),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 34, height: 34,
-              decoration: BoxDecoration(
-                color: AppTheme.kColorAccent.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(AppIcons.chevronRight, color: AppTheme.kColorAccent, size: 20),
-            ),
-          ],
-        ),
-      );
+      ),
+    );
   }
 }

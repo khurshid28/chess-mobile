@@ -104,7 +104,6 @@ flutter:
     - assets/piece_sets/staunty/
     - assets/piece_sets/alpha/
     - assets/piece_sets/california/
-    - assets/piece_sets/cardinal/
     - assets/logo/
 
     - assets/boards/metal.jpg

@@ -13,6 +13,9 @@ abstract final class WoodTextStyles {
     Shadow(color: Color(0xFF000000), offset: Offset(0, 3), blurRadius: 6),
   ];
 
+  /// Public accessor for wood text shadow
+  static const woodShadow = _textShadow;
+
   // ─── Display / Hero title ────────────────────────────────────────────
   /// Large screen title — app name, section headers
   static TextStyle get displayTitle => GoogleFonts.cinzel(
