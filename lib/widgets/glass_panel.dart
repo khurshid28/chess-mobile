@@ -107,17 +107,6 @@ class GlassPanel extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: radius,
           color: AppTheme.kColorAccent,
-          boxShadow: [
-            BoxShadow(
-              color: AppTheme.kColorAccent.withOpacity(0.35),
-              offset: const Offset(0.5, 0.5),
-              spreadRadius: 1,
-            ),
-            BoxShadow(
-              color: AppTheme.kColorAccent.withOpacity(0.15),
-              offset: const Offset(0.5, 0.5),
-            ),
-          ],
         ),
         child: ClipRRect(
           borderRadius: radius,

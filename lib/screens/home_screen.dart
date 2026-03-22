@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ? SystemUiOverlayStyle.light
           : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: AppTheme.isWhiteClean ? Colors.grey[200]! : Colors.transparent,
+        backgroundColor: AppTheme.isWhiteClean ? Colors.grey[100]! : Colors.transparent,
         body: Container(
           decoration: AppTheme.isWhiteClean ? null : AppTheme.backgroundDecoration,
           child: CustomScrollView(
@@ -289,7 +289,7 @@ class _MenuListItemState extends State<_MenuListItem> {
                   borderRadius: BorderRadius.circular(isWood ? 6 : 8),
                   border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
                 ),
-                child: Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white70 : (AppTheme.isWhiteClean ? Colors.white70 : AppTheme.kColorAccent), size: 20),
+                child: Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white70 : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorAccent), size: 20),
               ),
             ],
           ),
