@@ -56,9 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ? SystemUiOverlayStyle.light
           : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppTheme.isWhiteClean ? Colors.grey[200]! : Colors.transparent,
         body: Container(
-          decoration: AppTheme.backgroundDecoration,
+          decoration: AppTheme.isWhiteClean ? null : AppTheme.backgroundDecoration,
           child: CustomScrollView(
             physics: const ClampingScrollPhysics(),
             slivers: [
@@ -269,18 +269,28 @@ class _MenuListItemState extends State<_MenuListItem> {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: isWood ? null : AppTheme.kColorAccent.withOpacity(0.15),
+                  color: isWood ? null : (AppTheme.isWhiteClean ? Colors.white.withOpacity(0.2) : AppTheme.kColorAccent.withOpacity(0.15)),
                   image: isWood ? WoodTextures.icon() : null,
                   borderRadius: BorderRadius.circular(isWood ? 8 : 10),
                   border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
                 ),
-                child: Icon(widget.icon, color: isWood ? Colors.white : AppTheme.kColorAccent, size: isWood ? 20 : 22),
+                child: Icon(widget.icon, color: isWood ? Colors.white : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorAccent), size: isWood ? 20 : 22),
               ),
               const SizedBox(width: 14),
               Expanded(
-                child: Text(widget.title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: isWood ? Colors.white : AppTheme.kColorTextPrimary, shadows: isWood ? WoodTextStyles.woodShadow : null)),
+                child: Text(widget.title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: isWood ? Colors.white : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorTextPrimary), shadows: isWood ? WoodTextStyles.woodShadow : null)),
               ),
-              Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white70 : AppTheme.kColorTextSecondary, size: 22),
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: isWood ? null : (AppTheme.isWhiteClean ? Colors.white.withOpacity(0.2) : AppTheme.kColorAccent.withOpacity(0.15)),
+                  image: isWood ? WoodTextures.icon() : null,
+                  borderRadius: BorderRadius.circular(isWood ? 6 : 8),
+                  border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
+                ),
+                child: Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white70 : (AppTheme.isWhiteClean ? Colors.white70 : AppTheme.kColorAccent), size: 20),
+              ),
             ],
           ),
         ),
@@ -331,17 +341,17 @@ class _MenuGridItemState extends State<_MenuGridItem> {
                   width: 52,
                   height: 52,
                   decoration: BoxDecoration(
-                    color: isWood ? null : AppTheme.kColorAccent.withOpacity(0.15),
+                    color: isWood ? null : (AppTheme.isWhiteClean ? Colors.white.withOpacity(0.2) : AppTheme.kColorAccent.withOpacity(0.15)),
                     image: isWood ? WoodTextures.icon() : null,
                     borderRadius: BorderRadius.circular(isWood ? 12 : 14),
                     border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
                   ),
-                  child: Icon(widget.icon, color: isWood ? Colors.white : AppTheme.kColorAccent, size: isWood ? 24 : 26),
+                  child: Icon(widget.icon, color: isWood ? Colors.white : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorAccent), size: isWood ? 24 : 26),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Text(
                   widget.title,
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: isWood ? Colors.white : AppTheme.kColorTextPrimary, shadows: isWood ? WoodTextStyles.woodShadow : null),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: isWood ? Colors.white : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorTextPrimary), shadows: isWood ? WoodTextStyles.woodShadow : null),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -432,17 +442,17 @@ class _LeaderboardRow extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(player.displayName,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.kColorTextPrimary),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorTextPrimary),
                 overflow: TextOverflow.ellipsis),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AppTheme.kColorAccent.withOpacity(0.15),
+              color: AppTheme.isWhiteClean ? Colors.white.withOpacity(0.2) : AppTheme.kColorAccent.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text('${player.elo}',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.kColorAccent)),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorAccent)),
           ),
         ],
       ),
@@ -556,7 +566,7 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
               decoration: BoxDecoration(
                 color: _isLive
                     ? AppTheme.kColorLoss.withOpacity(0.15)
-                    : (isWood ? null : AppTheme.kColorAccent.withOpacity(0.15)),
+                    : (isWood ? null : (AppTheme.isWhiteClean ? Colors.white.withOpacity(0.2) : AppTheme.kColorAccent.withOpacity(0.15))),
                 image: isWood ? WoodTextures.icon() : null,
                 borderRadius: BorderRadius.circular(isWood ? 10 : 12),
                 border: isWood ? Border.all(
@@ -566,7 +576,7 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
               ),
               child: Icon(
                 _isLive ? AppIcons.live : AppIcons.tournament,
-                color: _isLive ? AppTheme.kColorLoss : (isWood ? Colors.white : AppTheme.kColorAccent),
+                color: _isLive ? AppTheme.kColorLoss : (isWood ? Colors.white : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorAccent)),
                 size: 24,
               ),
             ),
@@ -577,12 +587,12 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
                 children: [
                   Text(
                     _isLive ? 'LIVE NOW' : 'Daily Tournament',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: isWood ? Colors.white : AppTheme.kColorTextPrimary, shadows: isWood ? WoodTextStyles.woodShadow : null),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: isWood ? Colors.white : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorTextPrimary), shadows: isWood ? WoodTextStyles.woodShadow : null),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     _isLive ? 'Ends in: ${_formatDuration(_timeRemaining)}' : 'Starts at $tournamentHour:00',
-                    style: TextStyle(fontSize: 13, color: isWood ? Colors.white70 : AppTheme.kColorTextSecondary, shadows: isWood ? WoodTextStyles.woodShadow : null),
+                    style: TextStyle(fontSize: 13, color: isWood ? Colors.white70 : (AppTheme.isWhiteClean ? Colors.white70 : AppTheme.kColorTextSecondary), shadows: isWood ? WoodTextStyles.woodShadow : null),
                   ),
                 ],
               ),
@@ -590,12 +600,12 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
             Container(
               width: 34, height: 34,
               decoration: BoxDecoration(
-                color: isWood ? null : AppTheme.kColorAccent.withOpacity(0.15),
+                color: isWood ? null : (AppTheme.isWhiteClean ? Colors.white.withOpacity(0.2) : AppTheme.kColorAccent.withOpacity(0.15)),
                 image: isWood ? WoodTextures.icon() : null,
                 borderRadius: BorderRadius.circular(isWood ? 8 : 10),
                 border: isWood ? Border.all(color: WoodColors.border, width: 1.5) : null,
               ),
-              child: Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white : AppTheme.kColorAccent, size: 20),
+              child: Icon(Icons.chevron_right_rounded, color: isWood ? Colors.white : (AppTheme.isWhiteClean ? Colors.white : AppTheme.kColorAccent), size: 20),
             ),
           ],
         ),

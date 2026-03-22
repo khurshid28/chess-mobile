@@ -15,13 +15,13 @@ class WhiteTheme {
   // ═══════════════════════════════════════════════════════════════════
   // RANGLAR (COLORS)
   // ═══════════════════════════════════════════════════════════════════
-  static const Color primary = Color(0xFF7B5CD6);       // To'q Purple
+  static const Color primary = Color(0xFF00838F);       // Cyan 800
   static const Color secondary = Color(0xFFF2F2F7);     // Och kulrang
   static const Color background = Color(0xFFFFFFFF);    // Oq
   static const Color surface = Color(0xFFFFFFFF);       // Oq (card lar)
   static const Color textColor = Color(0xFF1C1C1E);     // Qora
   static const Color textColorSecondary = Color(0xFF48484A); // To'q kulrang
-  static const Color accent = Color(0xFF7B5CD6);        // To'q Purple
+  static const Color accent = Color(0xFF00838F);        // Cyan 800
   static const Color borderColor = Color(0xFFD1D1D6);   // Aniq ko'rinadigan border
   static const Color dividerColor = Color(0xFFE5E5EA);  // Och kulrang chiziq
   static const Color error = Color(0xFFF44336);

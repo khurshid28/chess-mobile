@@ -102,21 +102,20 @@ class GlassPanel extends StatelessWidget {
     final Color baseTint = backgroundColor ?? AppTheme.kBgColor1;
     
     if (isLight) {
-      // Premium light theme style with subtle shadow
+      // Premium light theme style
       return Container(
         decoration: BoxDecoration(
           borderRadius: radius,
-          color: Colors.white,
+          color: AppTheme.kColorAccent,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.10),
-              blurRadius: 12,
-              offset: const Offset(0, 3),
+              color: AppTheme.kColorAccent.withOpacity(0.35),
+              offset: const Offset(1, 1),
+              spreadRadius: 1,
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 4,
-              offset: const Offset(0, 1),
+              color: AppTheme.kColorAccent.withOpacity(0.15),
+              offset: const Offset(1, 1),
             ),
           ],
         ),
@@ -126,14 +125,7 @@ class GlassPanel extends StatelessWidget {
             padding: padding,
             decoration: BoxDecoration(
               borderRadius: radius,
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.white,
-                  Colors.white.withOpacity(0.95),
-                ],
-              ),
+              color: AppTheme.kColorAccent,
             ),
             child: child,
           ),

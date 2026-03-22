@@ -223,7 +223,7 @@ class ChessThemes {
     name: 'Clean White',
     emoji: '⬜',
     isDark: false,
-    description: 'Clean white UI with purple accent',
+    description: 'Clean white UI with cyan accent',
     
     // Background
     backgroundApp: Color(0xFFFFFFFF),
@@ -231,20 +231,20 @@ class ChessThemes {
     backgroundCard: Color(0xFFFFFFFF),
     
     // Colors
-    colorPrimary: Color(0xFF7B5CD6),
-    colorPrimaryDark: Color(0xFF6347B8),
+    colorPrimary: Color(0xFF00838F),
+    colorPrimaryDark: Color(0xFF006064),
     colorSecondary: Color(0xFFF2F2F7),
-    colorAccent: Color(0xFF7B5CD6),
+    colorAccent: Color(0xFF00838F),
     
     // Text
     textPrimary: Color(0xFF1C1C1E),
     textSecondary: Color(0xFF48484A),
-    textAccent: Color(0xFF7B5CD6),
+    textAccent: Color(0xFF00838F),
     
     // Buttons
-    buttonPrimary: Color(0xFF7B5CD6),
+    buttonPrimary: Color(0xFF00838F),
     buttonSecondary: Color(0xFFF2F2F7),
-    buttonHover: Color(0xFF8E72DD),
+    buttonHover: Color(0xFF00ACC1),
     buttonText: Color(0xFFFFFFFF),
     
     // Borders
