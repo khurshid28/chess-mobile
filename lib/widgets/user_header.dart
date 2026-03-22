@@ -52,7 +52,7 @@ class UserHeader extends StatelessWidget {
               boxShadow: const [BoxShadow(color: Color(0x66000000), offset: Offset(1, 2), blurRadius: 4)],
             ),
             child: CircleAvatar(
-              radius: 20,
+              radius: 24,
               backgroundColor: WoodColors.woodDark,
               backgroundImage: user.profileImage != null ? CachedNetworkImageProvider(user.profileImage!) : null,
               child: user.profileImage == null
@@ -70,7 +70,7 @@ class UserHeader extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(user.displayName,
-                          style: WoodTextStyles.menuLabel.copyWith(fontSize: 14),
+                          style: WoodTextStyles.menuLabel.copyWith(fontSize: 16),
                           overflow: TextOverflow.ellipsis),
                     ),
                     if (user.countryCode != null)
@@ -78,7 +78,7 @@ class UserHeader extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(3),
-                          child: CountryFlag.fromCountryCode(user.countryCode!, height: 14, width: 21),
+                          child: CountryFlag.fromCountryCode(user.countryCode!, height: 16, width: 24),
                         ),
                       ),
                   ],
@@ -86,9 +86,9 @@ class UserHeader extends StatelessWidget {
                 const SizedBox(height: 2),
                 Row(
                   children: [
-                    const WoodIcon(Icons.star_rounded, color: WoodColors.textPrimary, size: 16),
+                    const WoodIcon(Icons.star_rounded, color: WoodColors.textPrimary, size: 18),
                     const SizedBox(width: 3),
-                    Text('${user.elo}', style: WoodTextStyles.rating.copyWith(fontSize: 13), overflow: TextOverflow.ellipsis),
+                    Text('${user.elo}', style: WoodTextStyles.rating.copyWith(fontSize: 15), overflow: TextOverflow.ellipsis),
                   ],
                 ),
               ],

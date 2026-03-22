@@ -199,7 +199,7 @@ class _UserHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get _headerHeight {
     final statusBar = WidgetsBinding.instance.platformDispatcher.views.first.padding.top /
         WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
-    return statusBar + 64;
+    return statusBar + 80;
   }
 
   @override
