@@ -34,7 +34,7 @@ abstract final class WoodBorders {
   /// Standard carved panel border — uniform warm brown (required for borderRadius support)
   static Border get panel => Border.all(
     color: WoodColors.border,
-    width: thin,
+    width: regular,
   );
 
   /// Thin divider border
@@ -45,7 +45,7 @@ abstract final class WoodBorders {
   /// Chess board outer-frame border
   static Border get boardFrame => Border.all(
     color: WoodColors.woodDark,
-    width: frame,
+    width: 8.0,
   );
 
   /// Button border — slightly raised

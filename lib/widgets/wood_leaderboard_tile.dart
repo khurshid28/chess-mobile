@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:chess_park/theme/wood_borders.dart';
 import 'package:chess_park/theme/wood_colors.dart';
 import 'package:chess_park/theme/wood_text_styles.dart';
+import 'package:chess_park/theme/wood_textures.dart';
+import 'package:chess_park/widgets/wood_icon.dart';
 
 /// Classic wooden chess design system — leaderboard row tile.
 ///
@@ -48,9 +50,8 @@ class WoodLeaderboardTile extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: isCurrentUser
-              ? WoodColors.woodLight.withOpacity(0.25)
-              : WoodColors.leaderboardRow,
+          image: isCurrentUser ? WoodTextures.panelDark() : null,
+          color: isCurrentUser ? null : WoodColors.leaderboardRow,
           borderRadius: WoodBorders.smallRadius,
           border: isCurrentUser ? WoodBorders.goldAccent : null,
         ),
@@ -258,7 +259,7 @@ class _Avatar extends StatelessWidget {
             radius: size / 2,
             backgroundColor: WoodColors.woodDark,
             child: placeholder ??
-                Icon(Icons.person_rounded, color: WoodColors.gold, size: size * 0.5),
+                WoodIcon(Icons.person_rounded, color: WoodColors.textPrimary, size: size * 0.5),
           );
 
     return Container(

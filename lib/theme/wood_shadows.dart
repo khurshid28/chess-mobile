@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 abstract final class WoodShadows {
   WoodShadows._();
 
-  static const Color _shadowColor = Color(0x40000000); // 25 % black
-  static const Color _deepShadow  = Color(0x55000000); // 33 % black
+  static const Color _shadowColor = Color(0x66000000); // 40 % black
+  static const Color _deepShadow  = Color(0x80000000); // 50 % black
 
   // ─── Single-shadow helpers ───────────────────────────────────────────
 

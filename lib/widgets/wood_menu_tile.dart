@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:chess_park/theme/wood_borders.dart';
 import 'package:chess_park/theme/wood_colors.dart';
 import 'package:chess_park/theme/wood_text_styles.dart';
+import 'package:chess_park/theme/wood_textures.dart';
+import 'package:chess_park/widgets/wood_icon.dart';
 
 /// Classic wooden chess design system — menu list tile.
 ///
@@ -87,9 +89,9 @@ class _WoodMenuTileState extends State<WoodMenuTile> {
 
                 // Trailing — default chevron arrow
                 widget.trailing ??
-                    const Icon(
+                    const WoodIcon(
                       Icons.chevron_right_rounded,
-                      color: WoodColors.gold,
+                      color: WoodColors.textPrimary,
                       size: 22,
                     ),
               ],
@@ -125,7 +127,7 @@ class WoodMenuList extends StatelessWidget {
     return Container(
       margin: margin,
       decoration: BoxDecoration(
-        color: WoodColors.woodMedium.withOpacity(0.6),
+        image: WoodTextures.menuList(),
         borderRadius: WoodBorders.normalRadius,
         border: WoodBorders.panel,
       ),
@@ -164,7 +166,7 @@ class _GoldIcon extends StatelessWidget {
       width: 38,
       height: 38,
       decoration: BoxDecoration(
-        color: WoodColors.woodDark,
+        image: WoodTextures.icon(),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: WoodColors.border, width: 1.5),
         boxShadow: const [
@@ -175,7 +177,7 @@ class _GoldIcon extends StatelessWidget {
           ),
         ],
       ),
-      child: Icon(icon, color: WoodColors.gold, size: 20),
+      child: WoodIcon(icon, color: WoodColors.textPrimary, size: 20),
     );
   }
 }

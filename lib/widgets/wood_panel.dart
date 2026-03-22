@@ -3,6 +3,7 @@ import 'package:chess_park/theme/wood_borders.dart';
 import 'package:chess_park/theme/wood_colors.dart';
 import 'package:chess_park/theme/wood_gradients.dart';
 import 'package:chess_park/theme/wood_shadows.dart';
+import 'package:chess_park/theme/wood_textures.dart';
 
 /// Classic wooden chess design system — carved wood panel container.
 ///
@@ -53,7 +54,8 @@ class WoodPanel extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         borderRadius: radius,
-        gradient: gradient ?? WoodGradients.panel,
+        image: gradient != null ? null : WoodTextures.panel(),
+        gradient: gradient,
         border: WoodBorders.panel,
         boxShadow: shadows ?? WoodShadows.panelShadow,
       ),
@@ -98,13 +100,32 @@ class WoodPanelDark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WoodPanel(
-      padding: padding,
+    return Container(
       margin: margin,
-      gradient: WoodGradients.panelDark,
-      borderRadius: WoodBorders.normalRadius,
-      shadows: WoodShadows.cardShadow,
-      child: child,
+      decoration: BoxDecoration(
+        borderRadius: WoodBorders.normalRadius,
+        image: WoodTextures.panelDark(),
+        border: WoodBorders.panel,
+        boxShadow: WoodShadows.cardShadow,
+      ),
+      child: ClipRRect(
+        borderRadius: WoodBorders.normalRadius,
+        child: Stack(
+          children: [
+            Padding(padding: padding, child: child),
+            Positioned.fill(
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: WoodBorders.normalRadius,
+                    gradient: WoodGradients.topHighlight,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

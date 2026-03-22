@@ -18,9 +18,9 @@ class WoodTheme {
   static const Color secondary = Color(0xFFD2B48C);     // Och yog'och (Tan)
   static const Color background = Color(0xFFDEB887);    // Yog'och fon (BurlyWood)
   static const Color surface = Color(0xFFF4E4C1);       // Card fon (och yog'och)
-  static const Color textColor = Color(0xFF4A2C1A);     // To'q jigarrang
-  static const Color textColorSecondary = Color(0xFF7A5C3A); // O'rta jigarrang
-  static const Color accent = Color(0xFFCD7F32);        // Oltin rang
+  static const Color textColor = Color(0xFFF5DEB3);     // Och krem (qorong'i fon uchun)
+  static const Color textColorSecondary = Color(0xFFD2B48C); // O'rta krem
+  static const Color accent = Color(0xFFFFD700);        // Yorqin oltin rang
   static const Color dividerColor = Color(0xFFA0522D);  // Sienna (yog'och soya)
   static const Color borderColor = Color(0xFFC4956A);   // Yog'och border
   static const Color error = Color(0xFFF44336);
@@ -140,18 +140,18 @@ class WoodTheme {
   // ═══════════════════════════════════════════════════════════════════
   static ThemeData get themeData {
     return ThemeData(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primaryColor: primary,
       scaffoldBackgroundColor: Colors.transparent, // WoodBackground handles it
       cardColor: surface,
       dividerColor: dividerColor,
-      colorScheme: const ColorScheme.light(
+      colorScheme: const ColorScheme.dark(
         primary: primary,
         secondary: secondary,
         surface: background,
-        onPrimary: Colors.white,
-        onSecondary: textColor,
-        onSurface: textColor,
+        onPrimary: Color(0xFFF5DEB3),
+        onSecondary: Color(0xFFF5DEB3),
+        onSurface: Color(0xFFF5DEB3),
         error: error,
         onError: Colors.white,
       ),

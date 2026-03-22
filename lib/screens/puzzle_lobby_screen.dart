@@ -4,7 +4,15 @@ import 'package:chess_park/screens/puzzle_screen.dart';
 import 'package:chess_park/services/puzzle_service.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/theme/app_icons.dart';
+import 'package:chess_park/theme/wood_borders.dart';
+import 'package:chess_park/theme/wood_colors.dart';
+import 'package:chess_park/theme/wood_gradients.dart';
+import 'package:chess_park/theme/wood_shadows.dart';
+import 'package:chess_park/theme/wood_textures.dart';
+import 'package:chess_park/theme/wood_text_styles.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
+import 'package:chess_park/widgets/wood_icon.dart';
+import 'package:chess_park/widgets/wood_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +67,72 @@ class PuzzleLobbyView extends StatelessWidget {
               if (provider.state == PuzzleLoadState.loaded)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: GlassPanel(
+                  child: AppTheme.isWoodClassic
+                    ? WoodPanel(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  image: WoodTextures.icon(),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: WoodColors.border, width: 1.5),
+                                ),
+                                child: WoodIcon(AppIcons.puzzles, color: WoodColors.textPrimary, size: 24),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${provider.solvedPuzzleIds.length}/${provider.puzzles.length}',
+                                      style: WoodTextStyles.menuLabel.copyWith(fontSize: 18),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '${provider.unlockedCount} unlocked',
+                                      style: WoodTextStyles.caption,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: CircularProgressIndicator(
+                                        value: provider.puzzles.isEmpty 
+                                            ? 0 
+                                            : provider.solvedPuzzleIds.length / provider.puzzles.length,
+                                        strokeWidth: 5,
+                                        backgroundColor: WoodColors.woodDark,
+                                        valueColor: AlwaysStoppedAnimation<Color>(WoodColors.gold),
+                                      ),
+                                    ),
+                                    Text(
+                                      '${((provider.solvedPuzzleIds.length / (provider.puzzles.isEmpty ? 1 : provider.puzzles.length)) * 100).toInt()}%',
+                                      style: WoodTextStyles.caption.copyWith(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : GlassPanel(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
@@ -166,7 +239,33 @@ class PuzzleLobbyView extends StatelessWidget {
         return Center(
           child: Padding(
             padding: const EdgeInsets.all(32.0),
-            child: GlassPanel(
+            child: AppTheme.isWoodClassic
+              ? WoodPanel(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        WoodIcon(Icons.error_outline, color: WoodColors.textPrimary, size: 48),
+                        const SizedBox(height: 16),
+                        Text('Error', style: WoodTextStyles.menuLabel.copyWith(fontSize: 18)),
+                        const SizedBox(height: 8),
+                        Text(
+                          provider.errorMessage ?? 'Please try again',
+                          textAlign: TextAlign.center,
+                          style: WoodTextStyles.caption,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton.icon(
+                          onPressed: () => provider.refreshPuzzles(),
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('Retry'),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : GlassPanel(
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
@@ -217,7 +316,36 @@ class PuzzleLobbyView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: AppTheme.isWoodClassic
+                    ? GestureDetector(
+                        onTap: provider.isLoadingMore ? null : () => provider.loadMorePuzzles(),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(
+                            image: WoodTextures.button(),
+                            borderRadius: BorderRadius.circular(12),
+                            border: WoodBorders.panel,
+                            boxShadow: WoodShadows.panelShadow,
+                          ),
+                          child: provider.isLoadingMore
+                              ? Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: WoodColors.gold,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  'Load More Puzzles',
+                                  style: WoodTextStyles.buttonLabel,
+                                  textAlign: TextAlign.center,
+                                ),
+                        ),
+                      )
+                    : ElevatedButton(
                     onPressed: provider.isLoadingMore ? null : () => provider.loadMorePuzzles(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.kColorAccent,
@@ -257,26 +385,33 @@ class PuzzleLobbyView extends StatelessWidget {
     // Icon for each puzzle
     IconData puzzleIcon;
     Color iconColor;
+    DecorationImage? bgImage;
     Color bgColor;
+    
+    final isWood = AppTheme.isWoodClassic;
     
     if (isSolved) {
       puzzleIcon = Icons.check_circle;
-      iconColor = AppTheme.kColorWin;
-      bgColor = AppTheme.kColorWin.withOpacity(0.15);
+      iconColor = isWood ? WoodColors.textPrimary : AppTheme.kColorWin;
+      bgImage = isWood ? WoodTextures.panelDark() : null;
+      bgColor = isWood ? Colors.transparent : AppTheme.kColorWin.withOpacity(0.15);
     } else if (isUnlocked) {
       if (isDaily) {
         puzzleIcon = Icons.today;
-        iconColor = AppTheme.kColorWarning;
-        bgColor = AppTheme.kColorWarning.withOpacity(0.15);
+        iconColor = isWood ? WoodColors.textPrimary : AppTheme.kColorWarning;
+        bgImage = isWood ? WoodTextures.panel() : null;
+        bgColor = isWood ? Colors.transparent : AppTheme.kColorWarning.withOpacity(0.15);
       } else {
         puzzleIcon = Icons.extension;
-        iconColor = AppTheme.kColorAccent;
-        bgColor = AppTheme.kColorAccent.withOpacity(0.15);
+        iconColor = isWood ? WoodColors.textPrimary : AppTheme.kColorAccent;
+        bgImage = isWood ? WoodTextures.panel() : null;
+        bgColor = isWood ? Colors.transparent : AppTheme.kColorAccent.withOpacity(0.15);
       }
     } else {
       puzzleIcon = Icons.lock;
-      iconColor = AppTheme.kColorTextSecondary;
-      bgColor = AppTheme.kColorTextSecondary.withOpacity(0.1);
+      iconColor = isWood ? WoodColors.textSecondary : AppTheme.kColorTextSecondary;
+      bgImage = isWood ? WoodTextures.icon() : null;
+      bgColor = isWood ? Colors.transparent : AppTheme.kColorTextSecondary.withOpacity(0.1);
     }
     
     return GestureDetector(
@@ -304,17 +439,20 @@ class PuzzleLobbyView extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
-          color: bgColor,
+          color: bgImage != null ? null : bgColor,
+          image: bgImage,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSolved 
-                ? AppTheme.kColorWin.withOpacity(0.5) 
-                : (isUnlocked ? AppTheme.kColorAccent.withOpacity(0.3) : AppTheme.kColorTextSecondary.withOpacity(0.2)),
+            color: isWood
+                ? WoodColors.border
+                : (isSolved 
+                    ? AppTheme.kColorWin.withOpacity(0.5) 
+                    : (isUnlocked ? AppTheme.kColorAccent.withOpacity(0.3) : AppTheme.kColorTextSecondary.withOpacity(0.2))),
             width: 2,
           ),
           boxShadow: isUnlocked && !isSolved ? [
             BoxShadow(
-              color: AppTheme.kColorAccent.withOpacity(0.2),
+              color: isWood ? const Color(0x40000000) : AppTheme.kColorAccent.withOpacity(0.2),
               blurRadius: 8,
               spreadRadius: 1,
             ),
@@ -337,11 +475,9 @@ class PuzzleLobbyView extends StatelessWidget {
             ),
             // Icon
             Center(
-              child: Icon(
-                puzzleIcon,
-                size: 28,
-                color: iconColor,
-              ),
+              child: isWood
+                  ? WoodIcon(puzzleIcon, size: 28, color: iconColor)
+                  : Icon(puzzleIcon, size: 28, color: iconColor),
             ),
             // Rating badge for unlocked puzzles
             if (isUnlocked && !isSolved)

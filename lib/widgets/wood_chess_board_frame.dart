@@ -4,6 +4,7 @@ import 'package:chess_park/theme/wood_colors.dart';
 import 'package:chess_park/theme/wood_gradients.dart';
 import 'package:chess_park/theme/wood_shadows.dart';
 import 'package:chess_park/theme/wood_text_styles.dart';
+import 'package:chess_park/theme/wood_textures.dart';
 
 /// Classic wooden chess design system — chess board with carved wooden frame.
 ///
@@ -74,7 +75,7 @@ class WoodChessBoardFrame extends StatelessWidget {
           width: outerSize,
           height: outerSize,
           decoration: BoxDecoration(
-            gradient: WoodGradients.boardFrame,
+            image: WoodTextures.frame(),
             borderRadius: WoodBorders.smallRadius,
             border: WoodBorders.boardFrame,
             boxShadow: WoodShadows.boardShadow,

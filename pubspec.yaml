@@ -110,6 +110,8 @@ flutter:
     - assets/boards/metal.jpg
     - assets/boards/olive.jpg
     - assets/boards/wood.jpg
+    - assets/boards/wood_bg.jpg
+    - assets/boards/wood_panel.jpg
 
 
 flutter_launcher_icons:

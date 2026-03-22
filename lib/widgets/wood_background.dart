@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:chess_park/theme/wood_textures.dart';
 
-/// Premium wooden chess table background — light warm wood.
+/// Premium wooden chess table background — real wood texture.
 ///
-/// Layers (back → front):
-///   1. Base warm wood vertical gradient  (#DEB887 → #D2B48C → #C4956A)
-///   2. Center warm lamp glow             (rgba 255,220,150 @ 8 %)
-///   3. Subtle edge vignette              (light shadow for depth)
+/// Full-screen wood texture that fully covers the page.
+/// No circular effects — just clean wood grain.
 class WoodBackground extends StatelessWidget {
   const WoodBackground({super.key, required this.child});
 
@@ -16,61 +15,20 @@ class WoodBackground extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // ── 1: Base warm wood gradient ──────────────────────────────────
-        const Positioned.fill(
+        // ── Static background layers (never rebuild) ───────────────────
+        RepaintBoundary(
           child: DecoratedBox(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFFDEB887), // BurlyWood
-                  Color(0xFFD2B48C), // Tan
-                  Color(0xFFC4956A), // Darker wood
-                ],
-                stops: [0.0, 0.5, 1.0],
-              ),
+              image: WoodTextures.background(),
             ),
-          ),
-        ),
-
-        // ── 2: Center warm lamp glow ────────────────────────────────────
-        const Positioned.fill(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment.center,
-                radius: 2.0,
-                colors: [Color(0x14FFDC96), Color(0x00000000)],
-                stops: [0.0, 1.0],
+            child: const DecoratedBox(
+              decoration: BoxDecoration(
+                color: Color(0x40000000), // ~25% black darken
               ),
-            ),
-          ),
-        ),
-
-        // ── 3: Subtle top vignette ──────────────────────────────────────
-        const Positioned(
-          top: 0, left: 0, right: 0, height: 150,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0x18000000), Color(0x00000000)],
-              ),
-            ),
-          ),
-        ),
-
-        // ── 4: Subtle bottom vignette ───────────────────────────────────
-        const Positioned(
-          bottom: 0, left: 0, right: 0, height: 100,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [Color(0x14000000), Color(0x00000000)],
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Color(0x0DFFD700), // kColorAccent ~5% opacity
+                ),
               ),
             ),
           ),

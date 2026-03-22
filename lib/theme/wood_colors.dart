@@ -31,21 +31,21 @@ abstract final class WoodColors {
   static const Color divider = Color(0xFFA0522D);
 
   // ─── Text ────────────────────────────────────────────────────────────
-  /// Primary label colour — dark brown
-  static const Color textPrimary = Color(0xFF4A2C1A);
+  /// Primary label colour — white
+  static const Color textPrimary = Color(0xFFFFFFFF);
 
-  /// Secondary / caption — medium brown
-  static const Color textSecondary = Color(0xFF7A5C3A);
+  /// Secondary / caption — light white
+  static const Color textSecondary = Color(0xFFE0E0E0);
 
   // ─── Accent ──────────────────────────────────────────────────────────
   /// Gold metallic accent — icons, active tabs, highlights
-  static const Color gold = Color(0xFFCD7F32);
+  static const Color gold = Color(0xFFFFD700);
 
   /// Bright gold hover / pressed
-  static const Color goldBright = Color(0xFFDAA520);
+  static const Color goldBright = Color(0xFFFFE44D);
 
   /// Muted gold for disabled states
-  static const Color goldMuted = Color(0xFFA67B3D);
+  static const Color goldMuted = Color(0xFFBFA54D);
 
   // ─── Chess board ─────────────────────────────────────────────────────
   /// Light square colour

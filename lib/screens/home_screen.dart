@@ -7,12 +7,14 @@ import 'package:chess_park/screens/online_games_screen.dart';
 import 'package:chess_park/screens/profile_screen.dart';
 import 'package:chess_park/screens/puzzle_lobby_screen.dart';
 import 'package:chess_park/screens/invite_friends_screen.dart';
+import 'package:chess_park/screens/settings_screen.dart';
 import 'package:chess_park/screens/tournaments_screen.dart';
 import 'package:chess_park/services/firestore_services.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/theme/app_icons.dart';
 import 'package:chess_park/theme/wood_colors.dart';
 import 'package:chess_park/theme/wood_gradients.dart';
+import 'package:chess_park/theme/wood_textures.dart';
 import 'package:chess_park/theme/wood_borders.dart';
 import 'package:chess_park/theme/wood_shadows.dart';
 import 'package:chess_park/theme/wood_text_styles.dart';
@@ -20,6 +22,7 @@ import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:chess_park/widgets/user_header.dart';
 import 'package:chess_park/widgets/wood_panel.dart';
 import 'package:chess_park/widgets/wood_leaderboard_tile.dart';
+import 'package:chess_park/widgets/wood_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -33,19 +36,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<UserModel>> _leaderboardFuture;
 
   @override
   void initState() {
     super.initState();
-    _leaderboardFuture = FirestoreService().getTopPlayers(limit: 5);
   }
 
   Future<void> _refreshData() async {
     final authProvider = context.read<AuthProvider>();
     await authProvider.refreshUser();
     setState(() {
-      _leaderboardFuture = FirestoreService().getTopPlayers(limit: 5);
     });
   }
 
@@ -70,95 +70,146 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: isWood ? Colors.transparent : AppTheme.kBgColor2,
         body: Container(
           decoration: AppTheme.backgroundDecoration,
-          child: RefreshIndicator(
-            onRefresh: _refreshData,
-            color: isWood ? WoodColors.gold : AppTheme.kColorAccent,
-            backgroundColor: isWood ? WoodColors.woodDark : AppTheme.kBgColor1,
-            child: ListView(
-              padding: EdgeInsets.fromLTRB(20, topPadding, 20, 40),
-              children: [
-                  // User Header - tappable to go to profile
-                  if (user != null)
-                    UserHeader(user: user, onTap: _goToProfile),
-                  const SizedBox(height: 24),
-
-                  // Daily Tournament Card
-                  const _DailyTournamentCard(),
-                  const SizedBox(height: 24),
-
-                  // Play Section
-                  _SectionTitle(title: 'Play', icon: AppIcons.play),
-                  const SizedBox(height: 12),
-                  _MenuListItem(
-                    icon: AppIcons.onlineGame,
-                    title: 'Online Game',
-                    subtitle: 'Play with players worldwide',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const OnlineGamesScreen()),
+          child: CustomScrollView(
+            physics: const ClampingScrollPhysics(),
+            slivers: [
+              // User Header - pinned app bar
+              if (user != null)
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _UserHeaderDelegate(
+                    user: user,
+                    onTap: _goToProfile,
+                    onSettingsTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const SettingsScreen()),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  _MenuListItem(
-                    icon: AppIcons.playBot,
-                    title: 'Play Bot',
-                    subtitle: 'Practice against AI',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const BotSelectionScreen()),
+                ),
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(20, 50, 20, 0),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    // Daily Tournament Card
+                    const _DailyTournamentCard(),
+                    const SizedBox(height: 40),
+
+                    // 2x2 Grid
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AspectRatio(
+                            aspectRatio: 4 / 3,
+                            child: _MenuGridItem(
+                              icon: AppIcons.onlineGame,
+                              title: 'Online Game',
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => const OnlineGamesScreen()),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: AspectRatio(
+                            aspectRatio: 4 / 3,
+                            child: _MenuGridItem(
+                              icon: AppIcons.playBot,
+                              title: 'Play Bot',
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => const BotSelectionScreen()),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  _MenuListItem(
-                    icon: AppIcons.invite,
-                    title: 'Invite Friends',
-                    subtitle: 'Play with your friends',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const InviteFriendsScreen()),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AspectRatio(
+                            aspectRatio: 4 / 3,
+                            child: _MenuGridItem(
+                              icon: AppIcons.invite,
+                              title: 'Invite',
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => const InviteFriendsScreen()),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: AspectRatio(
+                            aspectRatio: 4 / 3,
+                            child: _MenuGridItem(
+                              icon: AppIcons.puzzles,
+                              title: 'Puzzles',
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => const PuzzleLobbyScreen()),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-
-                  const SizedBox(height: 28),
-
-                  // Puzzles Section
-                  _SectionTitle(title: 'Puzzles', icon: AppIcons.puzzles),
-                  const SizedBox(height: 12),
-                  _MenuListItem(
-                    icon: AppIcons.puzzles,
-                    title: 'Puzzles',
-                    subtitle: 'Daily chess puzzles',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const PuzzleLobbyScreen()),
-                    ),
-                  ),
-
-                  const SizedBox(height: 28),
-
-                  // Leaderboard Section
-                  _SectionTitle(
-                    title: 'Leaderboard',
-                    icon: AppIcons.leaderboard,
-                    trailing: TextButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
-                      ),
-                      child: Text(
-                        'See All',
-                        style: isWood
-                            ? WoodTextStyles.goldLabel.copyWith(fontSize: 13)
-                            : TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.kColorAccent),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  _MiniLeaderboard(future: _leaderboardFuture),
-
-                  const SizedBox(height: 20),
-                ],
+                  ]),
+                ),
               ),
-            ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _MenuListItem(
+                        icon: AppIcons.leaderboard,
+                        title: 'Leaderboard',
+                        subtitle: '',
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
+      ),
       );
   }
+}
+
+class _UserHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final UserModel user;
+  final VoidCallback? onTap;
+  final VoidCallback? onSettingsTap;
+
+  _UserHeaderDelegate({required this.user, this.onTap, this.onSettingsTap});
+
+  @override
+  double get maxExtent => _headerHeight;
+  @override
+  double get minExtent => _headerHeight;
+
+  // status bar + avatar(52) + vertical padding(28)
+  double get _headerHeight {
+    final statusBar = WidgetsBinding.instance.platformDispatcher.views.first.padding.top /
+        WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
+    return statusBar + 64;
+  }
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return UserHeader(user: user, onTap: onTap, onSettingsTap: onSettingsTap);
+  }
+
+  @override
+  bool shouldRebuild(covariant _UserHeaderDelegate oldDelegate) =>
+      user != oldDelegate.user;
 }
 
 class _SectionTitle extends StatelessWidget {
@@ -177,7 +228,7 @@ class _SectionTitle extends StatelessWidget {
     final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
     return Row(
       children: [
-        Icon(icon, color: isWood ? WoodColors.gold : AppTheme.kColorAccent, size: isWood ? 20 : 22),
+        isWood ? WoodIcon(icon, color: WoodColors.textPrimary, size: 20) : Icon(icon, color: AppTheme.kColorAccent, size: 22),
         const SizedBox(width: 8),
         isWood
             ? Text(title, style: WoodTextStyles.sectionHeading)
@@ -220,30 +271,24 @@ class _MenuListItemState extends State<_MenuListItem> {
           widget.onTap();
         },
         child: GlassPanel(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
                   color: AppTheme.kColorAccent.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(widget.icon, color: AppTheme.kColorAccent, size: 26),
+                child: Icon(widget.icon, color: AppTheme.kColorAccent, size: 22),
               ),
-              const SizedBox(width: 16),
+             
+              const SizedBox(width: 14),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.kColorTextPrimary)),
-                    const SizedBox(height: 2),
-                    Text(widget.subtitle, style: TextStyle(fontSize: 13, color: AppTheme.kColorTextSecondary)),
-                  ],
-                ),
+                child: Text(widget.title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppTheme.kColorTextPrimary)),
               ),
-              Icon(AppIcons.chevronRight, color: AppTheme.kColorTextSecondary),
+              Icon(AppIcons.chevronRight, color: AppTheme.kColorTextSecondary, size: 20),
             ],
           ),
         ),
@@ -262,7 +307,7 @@ class _MenuListItemState extends State<_MenuListItem> {
         duration: const Duration(milliseconds: 80),
         decoration: BoxDecoration(
           borderRadius: WoodBorders.normalRadius,
-          gradient: _pressed ? WoodGradients.panelDark : WoodGradients.panel,
+          image: _pressed ? WoodTextures.buttonPressed() : WoodTextures.panel(),
           border: WoodBorders.panel,
           boxShadow: _pressed ? [WoodShadows.small] : WoodShadows.panelShadow,
         ),
@@ -279,34 +324,142 @@ class _MenuListItemState extends State<_MenuListItem> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 children: [
                   Container(
-                    width: 46,
-                    height: 46,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
-                      color: WoodColors.woodDark,
-                      borderRadius: BorderRadius.circular(10),
+                      image: WoodTextures.icon(),
+                      borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: WoodColors.border, width: 1.5),
-                      boxShadow: const [
-                        BoxShadow(color: Color(0x66000000), offset: Offset(1, 2), blurRadius: 4),
-                      ],
                     ),
-                    child: Icon(widget.icon, color: WoodColors.gold, size: 24),
+                    child: WoodIcon(widget.icon, color: WoodColors.textPrimary, size: 20),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(widget.title, style: WoodTextStyles.menuLabel),
-                        const SizedBox(height: 2),
-                        Text(widget.subtitle, style: WoodTextStyles.caption),
                       ],
                     ),
                   ),
-                  const Icon(Icons.chevron_right_rounded, color: WoodColors.gold, size: 22),
+                  const WoodIcon(Icons.chevron_right_rounded, color: WoodColors.textPrimary, size: 22),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MenuGridItem extends StatefulWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const _MenuGridItem({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  State<_MenuGridItem> createState() => _MenuGridItemState();
+}
+
+class _MenuGridItemState extends State<_MenuGridItem> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isWood = context.watch<ThemeProvider>().currentThemeType == AppThemeType.woodClassic;
+
+    if (!isWood) {
+      return GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          widget.onTap();
+        },
+        child: GlassPanel(
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: AppTheme.kColorAccent.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(widget.icon, color: AppTheme.kColorAccent, size: 26),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                widget.title,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.kColorTextPrimary),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          ),
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        widget.onTap();
+      },
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) => setState(() => _pressed = false),
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 80),
+        decoration: BoxDecoration(
+          borderRadius: WoodBorders.normalRadius,
+          image: _pressed ? WoodTextures.buttonPressed() : WoodTextures.panel(),
+          border: WoodBorders.panel,
+          boxShadow: _pressed ? [WoodShadows.small] : WoodShadows.panelShadow,
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: WoodBorders.normalRadius,
+                    gradient: _pressed ? null : WoodGradients.topHighlight,
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      image: WoodTextures.icon(),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: WoodColors.border, width: 1.5),
+                    ),
+                    child: WoodIcon(widget.icon, color: WoodColors.textPrimary, size: 24),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.title,
+                    style: WoodTextStyles.menuLabel.copyWith(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ),
@@ -545,26 +698,27 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
 
   Widget _buildWoodCard() {
     return WoodPanel(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           children: [
             Container(
-              width: 56,
-              height: 56,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
+                image: WoodTextures.icon(),
                 color: _isLive
-                    ? AppTheme.kColorLoss.withOpacity(0.20)
-                    : WoodColors.gold.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(14),
+                    ? const Color(0x33CC3333)
+                    : null,
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isLive ? AppTheme.kColorLoss.withOpacity(0.4) : WoodColors.border,
+                  color: _isLive ? const Color(0x66CC3333) : WoodColors.border,
                   width: 1.5,
                 ),
               ),
-              child: Icon(
+              child: WoodIcon(
                 _isLive ? AppIcons.live : AppIcons.tournament,
-                color: _isLive ? AppTheme.kColorLoss : WoodColors.gold,
-                size: 28,
+                color: _isLive ? const Color(0xFFCC3333) : WoodColors.textPrimary,
+                size: 24,
               ),
             ),
             const SizedBox(width: 16),
@@ -572,34 +726,13 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        _isLive ? 'LIVE NOW' : 'DAILY TOURNAMENT',
-                        style: WoodTextStyles.goldLabel.copyWith(
-                          fontSize: 11,
-                          color: _isLive ? AppTheme.kColorLoss : WoodColors.gold,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      if (_isLive) ...[
-                        const SizedBox(width: 8),
-                        Container(
-                          width: 8, height: 8,
-                          decoration: BoxDecoration(
-                            color: AppTheme.kColorLoss, shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: AppTheme.kColorLoss.withOpacity(0.5), blurRadius: 6)],
-                          ),
-                        ),
-                      ],
-                    ],
+                  Text(
+                    _isLive ? 'LIVE NOW' : 'Daily Tournament',
+                    style: WoodTextStyles.menuLabel,
                   ),
-                  const SizedBox(height: 4),
-                  Text(_isLive ? 'Tournament in progress!' : 'Daily at $tournamentHour:00',
-                      style: WoodTextStyles.sectionHeading.copyWith(fontSize: 15)),
                   const SizedBox(height: 2),
                   Text(
-                    _isLive ? 'Ends in: ${_formatDuration(_timeRemaining)}' : 'Starts in: ${_formatDuration(_timeRemaining)}',
+                    _isLive ? 'Ends in: ${_formatDuration(_timeRemaining)}' : 'Starts at $tournamentHour:00',
                     style: WoodTextStyles.caption,
                   ),
                 ],
@@ -608,11 +741,11 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
             Container(
               width: 34, height: 34,
               decoration: BoxDecoration(
-                color: WoodColors.woodDark,
+                image: WoodTextures.icon(),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: WoodColors.border, width: 1.5),
               ),
-              child: const Icon(Icons.chevron_right_rounded, color: WoodColors.gold, size: 20),
+              child: const WoodIcon(Icons.chevron_right_rounded, color: WoodColors.textPrimary, size: 20),
             ),
           ],
         ),
@@ -621,22 +754,22 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
 
   Widget _buildGlassCard() {
     return GlassPanel(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           children: [
             Container(
-              width: 56,
-              height: 56,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 color: _isLive
                     ? AppTheme.kColorLoss.withOpacity(0.15)
                     : AppTheme.kColorAccent.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 _isLive ? AppIcons.live : AppIcons.tournament,
                 color: _isLive ? AppTheme.kColorLoss : AppTheme.kColorAccent,
-                size: 28,
+                size: 26,
               ),
             ),
             const SizedBox(width: 16),
@@ -644,43 +777,20 @@ class _DailyTournamentCardState extends State<_DailyTournamentCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        _isLive ? 'LIVE NOW' : 'DAILY TOURNAMENT',
-                        style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w700,
-                          color: _isLive ? AppTheme.kColorLoss : AppTheme.kColorAccent,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                      if (_isLive) ...[
-                        const SizedBox(width: 8),
-                        Container(
-                          width: 8, height: 8,
-                          decoration: BoxDecoration(
-                            color: AppTheme.kColorLoss, shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: AppTheme.kColorLoss.withOpacity(0.5), blurRadius: 6)],
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: 4),
                   Text(
-                    _isLive ? 'Tournament in progress!' : 'Daily at $tournamentHour:00',
+                    _isLive ? 'LIVE NOW' : 'Daily Tournament',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.kColorTextPrimary),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    _isLive ? 'Ends in: ${_formatDuration(_timeRemaining)}' : 'Starts in: ${_formatDuration(_timeRemaining)}',
+                    _isLive ? 'Ends in: ${_formatDuration(_timeRemaining)}' : 'Starts at $tournamentHour:00',
                     style: TextStyle(fontSize: 13, color: AppTheme.kColorTextSecondary),
                   ),
                 ],
               ),
             ),
             Container(
-              width: 36, height: 36,
+              width: 34, height: 34,
               decoration: BoxDecoration(
                 color: AppTheme.kColorAccent.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(10),

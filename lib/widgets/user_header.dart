@@ -3,7 +3,9 @@ import 'package:chess_park/models/user_model.dart';
 import 'package:chess_park/providers/theme_provider.dart';
 import 'package:chess_park/theme/app_theme.dart';
 import 'package:chess_park/theme/wood_colors.dart';
+import 'package:chess_park/widgets/wood_icon.dart';
 import 'package:chess_park/theme/wood_text_styles.dart';
+import 'package:chess_park/theme/wood_textures.dart';
 import 'package:chess_park/widgets/glass_panel.dart';
 import 'package:chess_park/widgets/wood_panel.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,9 @@ import 'package:provider/provider.dart';
 class UserHeader extends StatelessWidget {
   final UserModel user;
   final VoidCallback? onTap;
+  final VoidCallback? onSettingsTap;
 
-  const UserHeader({super.key, required this.user, this.onTap});
+  const UserHeader({super.key, required this.user, this.onTap, this.onSettingsTap});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +37,11 @@ class UserHeader extends StatelessWidget {
   }
 
   Widget _buildWood() {
-    return WoodPanel(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+    return Builder(
+      builder: (context) {
+        final statusBarHeight = MediaQuery.of(context).padding.top;
+        return Container(
+          padding: EdgeInsets.fromLTRB(16, statusBarHeight + 10, 16, 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -46,15 +52,15 @@ class UserHeader extends StatelessWidget {
               boxShadow: const [BoxShadow(color: Color(0x66000000), offset: Offset(1, 2), blurRadius: 4)],
             ),
             child: CircleAvatar(
-              radius: 26,
+              radius: 20,
               backgroundColor: WoodColors.woodDark,
               backgroundImage: user.profileImage != null ? CachedNetworkImageProvider(user.profileImage!) : null,
               child: user.profileImage == null
-                  ? const Icon(Icons.person_rounded, size: 28, color: WoodColors.gold)
+                  ? const WoodIcon(Icons.person_rounded, size: 22, color: WoodColors.textPrimary)
                   : null,
             ),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +70,7 @@ class UserHeader extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(user.displayName,
-                          style: WoodTextStyles.menuLabel.copyWith(fontSize: 16),
+                          style: WoodTextStyles.menuLabel.copyWith(fontSize: 14),
                           overflow: TextOverflow.ellipsis),
                     ),
                     if (user.countryCode != null)
@@ -77,29 +83,38 @@ class UserHeader extends StatelessWidget {
                       ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Text(user.email, style: WoodTextStyles.caption, overflow: TextOverflow.ellipsis),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    const WoodIcon(Icons.star_rounded, color: WoodColors.textPrimary, size: 16),
+                    const SizedBox(width: 3),
+                    Text('${user.elo}', style: WoodTextStyles.rating.copyWith(fontSize: 13), overflow: TextOverflow.ellipsis),
+                  ],
+                ),
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: WoodColors.woodDark,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: WoodColors.border, width: 1.5),
+          if (onSettingsTap != null)
+            GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                onSettingsTap!();
+              },
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  image: WoodTextures.icon(),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: WoodColors.border, width: 1.5),
+                ),
+                child: const WoodIcon(Icons.settings_rounded, color: WoodColors.textPrimary, size: 22),
+              ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.star_rounded, color: WoodColors.gold, size: 17),
-                const SizedBox(width: 4),
-                Text(user.elo.toString(), style: WoodTextStyles.rating),
-              ],
-            ),
-          ),
         ],
       ),
+    );
+      },
     );
   }
 

@@ -4,6 +4,8 @@ import 'package:chess_park/theme/wood_colors.dart';
 import 'package:chess_park/theme/wood_gradients.dart';
 import 'package:chess_park/theme/wood_shadows.dart';
 import 'package:chess_park/theme/wood_text_styles.dart';
+import 'package:chess_park/theme/wood_textures.dart';
+import 'package:chess_park/widgets/wood_icon.dart';
 
 /// Classic wooden chess design system — tactile 3-D wooden button.
 ///
@@ -66,9 +68,9 @@ class _WoodButtonState extends State<WoodButton>
         padding: widget.padding,
         decoration: BoxDecoration(
           borderRadius: radius,
-          gradient: _pressed
-              ? WoodGradients.buttonPressed
-              : WoodGradients.button,
+          image: _pressed
+              ? WoodTextures.buttonPressed()
+              : WoodTextures.button(),
           border: WoodBorders.button,
           boxShadow: _pressed
               ? [WoodShadows.buttonPressed]
@@ -121,7 +123,7 @@ class WoodIconButton extends StatefulWidget {
     required this.icon,
     required this.onPressed,
     this.size = 48.0,
-    this.iconColor = WoodColors.gold,
+    this.iconColor = WoodColors.textPrimary,
     this.tooltip,
   });
 
@@ -151,15 +153,15 @@ class _WoodIconButtonState extends State<WoodIconButton> {
         height: widget.size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: _pressed
-              ? WoodGradients.buttonPressed
-              : WoodGradients.button,
+          image: _pressed
+              ? WoodTextures.buttonPressed()
+              : WoodTextures.button(),
           border: WoodBorders.button,
           boxShadow: _pressed
               ? [WoodShadows.buttonPressed]
               : WoodShadows.buttonShadow,
         ),
-        child: Icon(
+        child: WoodIcon(
           widget.icon,
           color: widget.iconColor,
           size: widget.size * 0.45,
