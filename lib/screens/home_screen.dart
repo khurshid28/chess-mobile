@@ -417,6 +417,7 @@ class _LeaderboardRow extends StatelessWidget {
   const _LeaderboardRow({required this.player, required this.rank});
 
   Color get _rankColor {
+    if (AppTheme.isWhiteClean) return Colors.white;
     switch (rank) {
       case 1: return AppTheme.kColorAccent;
       case 2: return AppTheme.kColorTextSecondary;

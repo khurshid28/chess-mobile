@@ -110,12 +110,12 @@ class GlassPanel extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: AppTheme.kColorAccent.withOpacity(0.35),
-              offset: const Offset(1, 1),
+              offset: const Offset(0.5, 0.5),
               spreadRadius: 1,
             ),
             BoxShadow(
               color: AppTheme.kColorAccent.withOpacity(0.15),
-              offset: const Offset(1, 1),
+              offset: const Offset(0.5, 0.5),
             ),
           ],
         ),

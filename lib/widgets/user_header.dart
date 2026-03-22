@@ -39,8 +39,8 @@ class UserHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isWood ? WoodColors.border : AppTheme.kBorderColor,
-                  width: 2,
+                  color: isWood ? WoodColors.border : (AppTheme.isWhiteClean ? AppTheme.kColorAccent : AppTheme.kBorderColor),
+                  width: AppTheme.isWhiteClean ? 1 : 2,
                 ),
                 boxShadow: const [
                   BoxShadow(color: Color(0x66000000), offset: Offset(1, 2), blurRadius: 4),
@@ -61,9 +61,12 @@ class UserHeader extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
                         child: Text(
@@ -93,6 +96,7 @@ class UserHeader extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Row(
+                      mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.star_rounded, color: isWood ? Colors.white : AppTheme.kColorAccent, size: 18),
                       const SizedBox(width: 3),
